@@ -4,7 +4,11 @@
 
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [C++](/etiketler/C++)
+## [Cinsiyet Meseleleri](/etiketler/Cinsiyet Meseleleri)
+
+- [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
+
+## [Cpp](/etiketler/Cpp)
 
 - [C++ Şablon Bok Çukuru](/gönderiler/2024/04/şablon-cehennemi)
 - [CENG795-HW1: Simple Recursive Raytracer](/gönderiler/2024/10/ceng795-hw1)
@@ -14,10 +18,6 @@
 - [CENG795-HW5: High Dynamic Raytracing](/gönderiler/2024/12/ceng795-hw5)
 - [CENG795-HW6: The End of the Homework to End All Homeworks](/gönderiler/2025/01/ceng795-hw6)
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
-
-## [Cinsiyet Meseleleri](/etiketler/Cinsiyet Meseleleri)
-
-- [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
 ## [Ders](/etiketler/Ders)
 
