@@ -1,18 +1,5 @@
 # CENG795-HW1: Simple Recursive Raytracer
 
-- [Implementation](#implementation)
-  - [Architecture](#architecture)
-  - [Shading](#shading)
-    - [Simple](#simple)
-    - [Mirror](#mirror)
-    - [Conductor](#conductor)
-    - [Dielectric](#dielectric)
-  - [PLY Format](#ply-format)
-- [Other Scenes](#other-scenes)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-
-
 Hello everybody. Welcome to my blog post about the first homework of the course CENG785, Advanced Ray Tracing.
 
 Ray tracing is a fundemental approach to rendering in the computer graphics. Our homework was to implement a simple one have a base for more advanced concepts in the ray tracing.

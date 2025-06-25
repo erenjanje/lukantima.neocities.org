@@ -1,15 +1,5 @@
 # CENG795-HW5: High Dynamic Raytracing
 
-- [Implementation](#implementation)
-  - [Material Refactor](#material-refactor)
-  - [Directional Lights](#directional-lights)
-  - [Spot Light](#spot-light)
-  - [Tonemapping](#tonemapping)
-  - [HDR Environment Map](#hdr-environment-map)
-- [Results](#results)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-
 Hello again minasan! Welcome again to yet another CENG795 homework post. Unfortunately, this post will not be that nice compared to the previous ones. HW3, HW4 and HW5 have been all pretty easy to do. In this one however, unlike the others, I have not done any "adventurous" thing in this one unfortunately; nevertheless, I will try to do my best to make this post interesting.
 
 ## Implementation

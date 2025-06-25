@@ -2,19 +2,6 @@
 
 [^1]
 
-- [Implementation](#implementation)
-  - [BRDF](#brdf)
-  - [Path Tracing](#path-tracing)
-    - [Monte Carlo Path Tracing](#monte-carlo-path-tracing)
-    - [Object Lights](#object-lights)
-    - [Importance Sampling](#importance-sampling)
-    - [Russian Roulette](#russian-roulette)
-    - [Next Event Estimation](#next-event-estimation)
-    - [Splitting](#splitting)
-- [Results](#results)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-
 Kon'nichiwa everybody! Finally, the semester is finished, with only this homework and the final project remaining. Unfortunately, the future seems a bit bleak for me. Even though not as bad as [HW2](/posts/2024/11/ceng795-hw2) was, path tracing is unfortunately not correct in its current form. It becomes even worse when I consider that the instructor extended the deadline by more than one week to let us concentrate on the homework after our final exams. It is a great shame on my part! I guess that the main reason of my failure was pretty much the same with the HW2's failure, my over-confidence to do the homeworks. It seems like managing to do three consecutive homeworks correctly, each in one or two days, inflated my ego, resulting in this mess.
 
 ## Implementation

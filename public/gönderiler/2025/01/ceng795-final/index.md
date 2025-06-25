@@ -2,21 +2,6 @@
 
 [^1] [^2] [^3]
 
-- [Theory](#theory)
-- [Implementation](#implementation)
-  - [Sparse Voxel Octree](#sparse-voxel-octree)
-    - [Types](#types)
-    - [Input Augmentation](#input-augmentation)
-    - [Sparse Voxel Octree Creation](#sparse-voxel-octree-creation)
-    - [Sparse Voxel Octree Traversal](#sparse-voxel-octree-traversal)
-    - [Texture Support](#texture-support)
-  - [Minecraft World](#minecraft-world)
-    - [World Format](#world-format)
-    - [Materials \& Textures](#materials--textures)
-- [Results](#results)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-
 Kon'nichiwa and ciao everybody, welcome to our blog post about the final project of the course Advanced Ray Tracing. It has been a very interesting, challenging, educating and entertaining semester with ray tracing. After countless hours, we have managed to create (mostly) working ray tracers with a great set of features. As we have finished the homeworks, we decided our final projects, each of us choosing a different augment. Alp and me decided to implement Sparse Voxel Octree, which is a nice acceleration structure that can be used to represent huge amounts of blocks while taking small amount of space, and also have a fast intersection routine.
 
 I (Erencan) did the SVO part while Alp did the Minecraft importer part. The project is based on my ray tracer, so its rendering has all the quirks and errors that my HW6 ray tracer has.

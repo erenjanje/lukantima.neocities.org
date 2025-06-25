@@ -1,14 +1,5 @@
 # CENG795-HW2: Raytracing with BVH and Transformations
 
-- [Implementation](#implementation)
-  - [Bounding Volume Hierarchy](#bounding-volume-hierarchy)
-  - [Instancing](#instancing)
-  - [Transformations](#transformations)
-- [Results](#results)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-
-
 **WARNING**: This blog post discusses not only my submission, but also a few fixes I have done while writing the post. Whenever such a deviation from the submission occurs, it is denoted as **\[NYI\]**.
 
 Hello everybody. Welcome to my second blog post about the first homework of the course CENG795, Advanced Ray Tracing.

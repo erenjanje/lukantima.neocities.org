@@ -20,20 +20,7 @@
 <div id="content">
 
 	<article class="card">
-		<ul>
-<li><a href="#implementation">Implementation</a>
-<ul>
-<li><a href="#material-refactor">Material Refactor</a></li>
-<li><a href="#directional-lights">Directional Lights</a></li>
-<li><a href="#spot-light">Spot Light</a></li>
-<li><a href="#tonemapping">Tonemapping</a></li>
-<li><a href="#hdr-environment-map">HDR Environment Map</a></li>
-</ul></li>
-<li><a href="#results">Results</a></li>
-<li><a href="#performance">Performance</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
-</ul>
-<p>Hello again minasan! Welcome again to yet another CENG795 homework post. Unfortunately, this post will not be that nice compared to the previous ones. HW3, HW4 and HW5 have been all pretty easy to do. In this one however, unlike the others, I have not done any “adventurous” thing in this one unfortunately; nevertheless, I will try to do my best to make this post interesting.</p>
+		<p>Hello again minasan! Welcome again to yet another CENG795 homework post. Unfortunately, this post will not be that nice compared to the previous ones. HW3, HW4 and HW5 have been all pretty easy to do. In this one however, unlike the others, I have not done any “adventurous” thing in this one unfortunately; nevertheless, I will try to do my best to make this post interesting.</p>
 <h1 id="implementation">Implementation</h1>
 <h2 id="material-refactor">Material Refactor</h2>
 <p>I have started doing some refactoring since the previous homework, as I had written in the blog post of the previous homework. In this homework, I have pretty much completed the refactoring by migrating material system from <code>std::variant</code> to virtual methods. In the <a href="#performance">performance</a> section, you can see a comparison between the two implementations, a benchmark I did before implementing HDR support.</p>

@@ -1,15 +1,5 @@
 # CENG795-HW3: Distributed Ray Tracing
 
-- [Implementation](#implementation)
-  - [Multisampling](#multisampling)
-  - [Roughness](#roughness)
-  - [Depth of Field](#depth-of-field)
-  - [Area Light](#area-light)
-  - [Motion Blur](#motion-blur)
-- [Results](#results)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-
 Hello, minasan! Welcome to my blog post for the third assignment. The weather was somewhat clear in the previous homework, while I was gloomy. This homework, it seems like weather and I swapped roles. I managed to complete the homework while also finishing the remnants from the previous one. Meanwhile, we now have snow and a gloomy weather in Ankara.
 
 The homework was suprisingly easy. I gave 3 full days to complete it, but I finished before the half of the second day. I could have finished even earlier but I tried to fix the intersection problem, which shows itself as gaps in some meshes, especially the Chinese dragon mesh, which has been used for at least one test case in each homework (`chinese_dragon`, `marching_dragons` and `focusing_dragons`). Unfortunately, I did not succeed to fix this bug. I however realized that those black points are not the background, but instead ambient light. For some reason, the ray correctly intersects with the mesh but the light ray intersects with something even though it should not. I will try to solve it again for the next homework, but it seems that I need some sort of revelation to do it, it should be an easy problem but all the fixes I thought failed.

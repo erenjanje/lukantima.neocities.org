@@ -1,16 +1,5 @@
 # CENG795-HW4: Raytracing with Textures
 
-- [Reimplementation (Failure)](#reimplementation-failure)
-- [Implementation](#implementation)
-  - [Diffuse and Specular Textures](#diffuse-and-specular-textures)
-  - [Noise and Checkerboard](#noise-and-checkerboard)
-  - [Normal and Bump Mapping](#normal-and-bump-mapping)
-- [Results](#results)
-- [Performance](#performance)
-  - [Compiler Benchmark](#compiler-benchmark)
-  - [Texture Benchmark](#texture-benchmark)
-- [Conclusion](#conclusion)
-
 Welcome again to my blog post about yet another CENG795 homework, minasan! I think my recovery from my failure of the HW2 is pretty much done, now I implement the homeworks on time, and even, sometime before the deadline. Actually, in this homework, I managed to finish the homework about 3 days early except a small fix to sphere tangent/bitangent calculation, while using almost half of the time (about 1 week) to something I did in vain.
 
 ## Reimplementation (Failure)
