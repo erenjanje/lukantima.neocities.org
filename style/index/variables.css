@@ -1,0 +1,30 @@
+:root {
+    --sidebar-width: 160px;
+    --page-width: 840px;
+    --width: calc(var(--page-width) + var(--sidebar-width));
+    --text-color: white;
+
+    --background-image: url('/style/background-other-cropped.png');
+
+    --header-font-size: 48pt;
+    --font-size: 12pt;
+    --sans-font: 'Segoe UI', 'Arial', sans-serif;
+    --header-font: var(--header-font-size) var(--sans-font);
+
+    --h1-font-size: 20pt;
+    --h2-font-size: 18pt;
+    --h3-font-size: 16pt;
+    --h4-font-size: 14pt;
+    --h5-font-size: 12pt;
+    --h6-font-size: 12pt;
+
+    --source-font: var(--font-size) 'Fantasque Sans Mono', 'Consolas', 'Liberation Mono', monospace;
+}
+
+@media (max-width: var(--width)) or (orientation: portrait) {
+    :root {
+        --header-font-size: 72pt;
+        --font-size: 24pt;
+        /* TODO: Add responsive header font sizes */
+    }
+}
