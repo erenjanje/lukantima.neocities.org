@@ -293,7 +293,7 @@ Bir dahaki C++ gönderim muhtemelen CRTP (_Curiously Recurring Template Pattern_
 {
    "author": "Erencan Ceyhan",
    "lang": "tr",
-   "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Üstprogramlama", "Haskell"]
+   "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Üstprogramlama", "Haskell"]
 }
 ---
 

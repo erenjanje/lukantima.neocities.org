@@ -438,7 +438,7 @@ Speaking of engineering, these homeworks and projects have been pretty much the 
 {
     "author": ["Erencan Ceyhan", "Alp Beysir"],
     "lang": "en",
-    "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+    "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 

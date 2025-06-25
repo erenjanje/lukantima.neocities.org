@@ -380,7 +380,7 @@ Yet another homework, and again something easy while being definitely non-trivia
 {
   "author": "Erencan Ceyhan",
   "lang": "en",
-  "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 

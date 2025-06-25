@@ -254,7 +254,7 @@ Even though this homework did not improve me that much, it is still an important
 {
   "author": "Erencan Ceyhan",
   "lang": "en",
-  "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 

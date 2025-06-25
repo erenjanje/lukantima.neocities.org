@@ -1,4 +1,4 @@
-# C++
+# Cpp
 
 - [C++ Şablon Bok Çukuru](/gönderiler/2024/04/şablon-cehennemi)
 - [CENG795-HW1: Simple Recursive Raytracer](/gönderiler/2024/10/ceng795-hw1)

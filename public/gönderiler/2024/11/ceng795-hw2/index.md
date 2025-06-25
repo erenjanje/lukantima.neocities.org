@@ -211,7 +211,7 @@ The homework was, well, not a success. My half-baked submission is so bad that I
 {
   "author": "Erencan Ceyhan",
   "lang": "en",
-  "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 

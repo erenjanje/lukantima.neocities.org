@@ -529,7 +529,7 @@ As we get closer to the end of the semester, our outputs have been becoming bett
 {
   "author": "Erencan Ceyhan",
   "lang": "en",
-  "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 

@@ -194,7 +194,7 @@ I also think about the difference between the difficulties of the homeworks. The
 {
   "author": "Erencan Ceyhan",
   "lang": "en",
-  "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 

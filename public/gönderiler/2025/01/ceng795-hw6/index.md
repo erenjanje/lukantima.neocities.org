@@ -546,7 +546,7 @@ Between the messy codebase and non-exact requirements, I really felt that I am d
 {
     "author": "Erencan Ceyhan",
     "lang": "en",
-    "tags": ["C++", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
+    "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
 }
 ---
 
