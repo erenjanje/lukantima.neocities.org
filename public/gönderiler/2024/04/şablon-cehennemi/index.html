@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html  lang="tr" >
+<head>
+	<meta charset="UTF-8"/>
+		<meta name="author" content="Erencan Ceyhan"/>
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Üstprogramlama, Haskell"/>
+		<title>C++ Şablon Bok Çukuru</title>
+	<link href="/style/index.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="header">
+	<h1 id="site-header">Erencan'ın Köşesi</h1>
+
+	<div id="page-header">
+		<h1>C++ Şablon Bok Çukuru</h1>
+	</div>
+</div>
+
+<div id="content">
+
+	<article class="card">
+		<p>Şu aralar C++ ile bir Entity Component System sistemi yapmakla uğraşmaktayım. Entity Component System’i (kısaca ECS) açıklamam gerekirse, genellikle oyunlarda kullanılan bir sistemdir ve temel amacı, oyundaki her bir varlığı (<em>Entity</em>) sadece veri içeren birden fazla bileşenden (<em>Component</em>) oluşturmak ve bu bileşenler üzerinde dönen sistemler (<em>System</em>) ile oyunu ayağa kaldırmaktır. Ana iki faydası ise sistemlerin, ardışık bileşenler üzerinde dönmesinden kaynaklı olarak işlemcinin önbelleğini oldukça verimli bir şekilde kullanması ile oyundaki birçok kavramın birbirinden bağımsız hâle gelmesidir -ki bu da oyunun kodunun anlaşılabilirliği için oldukça faydalıdır-. Bu konu üzerine konuşabileceğim şeyler var ama bu gönderinin konusu bu değil. Bu sistemin işinin çoğunu (mesela bileşen listeleri gibi) yürütme değil derleme zamanında gerçekleştirmek istemem sonucu olarak düştüğüm -affedersiniz- bok çukurunu anlatmak istiyorum bugün.</p>
+<p>C++ şablonlarından (<code>template</code>) bahsetmem gerekiyor ilk olarak. C++ kullanmış aşağı yukarı herkes ama az ama çok şablonları görmüş olsa gerekir. İlk başta dile eklenme amacı, farklı türler üzerinde çalışması gereken ve bu türlerin hepsine aynı davranan bilimum veri yapıları ve algoritmaları yazarken kolaylık sağlamaktır. Klasik örneği vermek gerekirse:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{};</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>v<span class="op">.</span>push_back<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>v<span class="op">.</span>push_back<span class="op">(</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> c <span class="op">=</span> <span class="op">{};</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>c<span class="op">.</span>push_back<span class="op">(</span><span class="fl">3.14</span><span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>c<span class="op">.</span>push_back<span class="op">(</span><span class="fl">2.71</span><span class="op">);</span></span></code></pre></div>
+<p>Burada <code>std::vector</code> bir şablon tip (<em>template type</em>) olduğundan dolayı farklı tiplerde veriyi depolayabileceğimiz varyantlarını istediğimiz gibi oluşturabiliyoruz. Örnekte <code>int</code> ve <code>double</code> tiplerinden veri tutabiliyor vektörlerimiz. Şablonların temel niteliklerinden birisi farklı tip parametresi (<em>type parameter</em>) almış tiplerin birbiriyle varsayılan olarak uyumsuz olmasıdır -yani <code>v = c</code> gibi bir ifade yasaktır-. Bu da dilin tip güvenliği açısından önemlidir. Keza bu vektörler sadece belirtilen tiplerden veri depolayabilir, aynı vektörde farklı tiplerde veriler depolamak için daha farklı tip parametreleri kullanmak gerekir.</p>
+<h1 id="şablonlar">Şablonlar</h1>
+<p>Buraya kadar hava hoş. Şablonlar sayesinde hem tip güvenliğini ihlal etmiyoruz (C’de benzer bir vektör türü için <code>void*</code> kullanmamız gerekli ve bu da vektörün hangi tip veri depoladığı bilgisini kaybetmemiz demek, bir bakıma tip silme yani <em>type erasure</em> uyguluyoruz, bunu yöntemi kullanan diller mevcut, o ayrı mesele) hem de kodu tekrarlamamız gerekmiyor (C’de makro cehennemine girmeden vektör yapmaya kalkışırsak vereceğimiz her tip parametresi için ayrı vektör yazmamız gerekir, bu da takdir edersiniz ki <em>çok</em> koddur). C++’ın bir dönemler çağdaşı dillere göre en büyük üstünlüklerinden birisi bu şablon kullanımı. Ki derlenen kod da elle yazılmış gibi hızlı, yani dizilerin/vektörün işlenme şeklinde temel değişiklikler yapmadan <code>std::vector</code>’den daha hızlı bir dizi sistemi yapamayız. C++’ın çok sayıda bedelsiz soyutlamasından (<em>zero-cost abstraction</em>) birisi bu şablonlar. Dediğim gibi buraya kadar her şey mükemmel.</p>
+<p>Ancak şablonlar sadece bu amaçla kullanılabilen şeyler değiller. Öncelikle şunu söylemem gerekir: C++’ın şablon sistemi Turing-complete’tir (bunu çeviremedim). Elbette bu hâliyle yapabileceklerimiz sınırlı. Fakat buna sebep olan birtakım ekstra özellik mevcut C++’ın şablon sisteminde -özellikle de yeni sürümlerinde-.</p>
+<h1 id="turing-complete-şablonlar">Turing-complete Şablonlar</h1>
+<h2 id="değişken-sayıda-argüman-variadic-arguments">Değişken Sayıda Argüman (<em>Variadic Arguments</em>)</h2>
+<p>C++ şablonlarını tanımlamaya ufaktan bakalım:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Tip <span class="op">{</span><span class="co">/* ... */</span><span class="op">};</span></span></code></pre></div>
+<p>Buradaki <code>Tip</code>, sadece tek bir şablon parametresi alıyor: <code>T</code>. <code>typename</code> ise bu <code>T</code>’nin bir tip olduğunu belirtiyor. Bu tipi kullanırken <code>Tip&lt;int&gt;</code> gibi kullanabiliriz anlamına geliyor bu. Fakat C++’ta şablonlar C++11 standardından beridir değişken sayıda argüman da alabilir.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Tip <span class="op">{</span><span class="co">/* ... */</span><span class="op">};</span></span></code></pre></div>
+<p>Burada <code>Ts</code> aslında -boş olma ihtimali olan- bir parametre listesine tekabül ediyor. Artık <code>Tip&lt;int&gt;</code> dışında <code>Tip&lt;int, float&gt;</code> veya <code>Tip&lt;int, float, std::string&gt;</code> de verilebilir oluyor. Ancak bu <code>Ts</code> şu anki hâliyle kullanılabilir değil. <code>Ts</code> üzerinde <code>for</code> döngüsü dönemiyoruz herhangi bir şekilde. İşte bu noktada şunu söylemek gerekir: C++ şablonları <em>fonksiyonel programlama</em> mantığıyla çalışır. Turing-complete derken aslında Turing makinesi usûlü döngüler ve şartlarla değil, Lambda kalkülüsü usûlü özyineleme ve desen eşleme (<em>pattern matching</em>) ile düşünmek gerekir. Birden fazla şablon tanımlayacağımız anlamına geliyor bu.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Tip <span class="op">{};</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Tip<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{};</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Tip<span class="op">&lt;&gt;</span> <span class="op">{};</span></span></code></pre></div>
+<p>İkinci ve üçüncü tanımlarda değişik durumlar var görebileceğiniz üzere.</p>
+<h3 id="eksik-ve-tam-özelleştirmeler-partial-and-full-specializations">Eksik ve Tam Özelleştirmeler (<em>Partial</em> and <em>Full Specializations</em>)</h3>
+<p>Üstteki kodda gerçekleşen şey <em>özelleştirme</em>lerdir.</p>
+<p>İlk tanım aslında ana şablon (<em>primary template</em>), yani o şablonun genel tanımı, diğer özelleştirmeler tutmadığı takdirde kullanılacak olan tanımı, yani temel durum (<em>base case</em>).</p>
+<p>İkinci tanım ise eksik özelleştirme (<em>partial specialization</em>). Eksik olmasının sebebi, kendisinin de şablon argümanına sahip olması (üstünde <code>T</code> ve <code>Ts</code> argümanları görülebiliyor). En az bir parametre içeren bütün <code>Tip</code> kullanımları bu tanımı kullanacaktır, Yani <code>Tip&lt;int&gt;</code>, <code>Tip&lt;float&gt;</code>, <code>Tip&lt;int, float&gt;</code>, <code>Tip&lt;int, float, std::string, std::queue&lt;long&gt;&gt;</code> gibi örneklerin hepsi bu tanımı kullanacakken <code>Tip&lt;&gt;</code> bu tanımı kullanmayacaktır (şablon parametresi olmadığı, dolayısıyla <code>T</code>’ye denk gelen bir parametreye sahip olmadığı için).</p>
+<p>Üçüncü tanım ise bir tam özelleştirme (<em>full specialization</em>). Tam olmasının sebebi herhangi bir şablon parametresi almıyor olması, görebileceğiniz üzere <code>template</code> ifadesinden sonraki liste boş. Bunun anlamı, bu özelleştirmeye denk sadece bir tane olası parametre listesinin bulunmasıdır -<code>Tip&lt;&gt;</code> dışındaki hiçbir kullanım üçüncü tanımı kullanmayacaktır-.</p>
+<p>Burada görebileceğimiz üzere aslında yazdığımız iki özelleştirme, bütün olası <code>Tip</code> kullanımlarını karşılıyor, parametre verilirse ikinci, verilmezse üçüncü tanım kullanılıyor. Haskell gibi desen eşleştirme destekleyen bir dil kullanmışsanız bunun şundan çok farklı olmadığını fark etmişsinizdir:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode hs"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tip (t<span class="op">:</span>ts)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tip ()</span></code></pre></div>
+<p>Ancak Haskell’de yazmak pek mümkün değil çünkü şu anda bu argümanlarla hiçbir şey yapılmıyor, yani <code>Tip</code>’in içerisinde hiçbir şey mevcut değil. Gelin <code>head</code> işlevini tanımlayalım bu şekilde, yani listenin ilk parametresini dönsün. Tabii ki şablonlarda “dönmek” kavramı yok, biz de bunun yerine döndüreceğimiz tipi tanımlayacağız.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">...&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Head <span class="op">{};</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Head<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>   <span class="kw">using</span> type <span class="op">=</span> T<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Head<span class="op">&lt;&gt;</span> <span class="op">{};</span></span></code></pre></div>
+<p>Artık <code>Head&lt;int, float&gt;::type</code> dediğimizde <code>int</code> anlamına geliyor. Ancak fark etmişsinizdir ki <code>Head&lt;&gt;::type</code> diye bir tip yok. Boş bir listenin head’i olması saçma olurdu keza. Haskell’de benzeri bir tanım yapmamız gerekirse şöyle olabilir</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode hs"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> (x<span class="op">:</span>xs) <span class="ot">=</span> x</span></code></pre></div>
+<p>Boş tuple (<em>demet</em> diye çevrilmiş de bana bile tuhaf geldi) desenine (<code>head ()</code>) fonksiyon tanımlamadım çünkü öyle bir durum/desen geldiği takdirde hata verilmesi gerekmeli, keza Haskell’in kendi <code>head</code>’i de bu şekilde çalışıyor. Aradaki en önemli fark hata mesajları olsa gerek, “<code>type</code>, <code>Head&lt;&gt;</code>’in bir elemanı değil” gibi sorunun kendisini belirtmeyen hata mesajları ile karşılaşmak oldukça kolay. Bazı durumlarda <code>static_assert</code> ile daha düzgün hata mesajları verilebilir fakat boş listede herhangi bir argüman olmadığı için <em>assert ettiğimiz</em> ifadeyi dolaylayamıyoruz, dolayısıyla da boş <code>Head</code> olmasa dahi <code>static_assert</code> çalışıp kodumuzun derlenmesini önlüyor.</p>
+<p><code>Head</code>’de bahsetmek istediğim ufak bir kısım ise <code>using</code>. Anladığınızı düşünüyorum ama yine de anlatmam gerekirse yaptığı şey, o isim alanı içerisinde (<code>namepsace</code> veya <code>class</code>/<code>struct</code>) bir tipe başka bir isim vermek. C’deki <code>typedef</code>’in daha da güçlü hâli, nitekim kendisi de şablon olabiliyor.</p>
+<h2 id="tamsayı-argümanlar">Tamsayı Argümanlar</h2>
+<p>Desen eşleme yetmediği gibi tamsayı parametre verebiliyoruz şablonlara. Bunun için argüman listesinde yapmamız gereken tek değişiklik <code>typename</code> yerine <code>int</code> -veya herhangi bir tamsayı türü- yazmak.</p>
+<h3 id="derlenme-zamanı-değişkenler">Derlenme Zamanı Değişkenler</h3>
+<p>C++11 ile hayatımıza <code>constexpr</code> diye bir ifade girdi. Bir değişken <code>constexpr</code> olarak tanımlandığı takdirde derlenme zamanında erişilebilir olur ve şablonlara parametre olarak verilebilir hâle gelir. <code>using</code>’in tip değil değere dönüşen hâli olarak düşünebiliriz <code>constexpr</code> değişkenleri. O zaman derleme zamanında faktoriyel hesaplayabilir anlamına geliyor bu!</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Factorial <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">int</span> value <span class="op">=</span> N <span class="op">*</span> Factorial<span class="op">&lt;</span>N<span class="op">-</span><span class="dv">1</span><span class="op">&gt;::</span>value<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Factorial<span class="op">&lt;</span><span class="dv">0</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">int</span> value <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Haskell’de aynı fonksiyonu yazmak istesek şuna benzer bir şey olurdu:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode hs"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>factorial n <span class="ot">=</span> n <span class="op">*</span> factorial (n <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>factorial <span class="dv">0</span> <span class="ot">=</span> <span class="dv">1</span></span></code></pre></div>
+<p>Görebileceğiniz üzere çok daha kalabalık olması haricinde C++ şablonları ile Haskell büyük ölçüde eşleşiyorlar mantık olarak.</p>
+<h1 id="şablon-cehennemi">Şablon Cehennemi</h1>
+<p>Benim bu aralar cebelleştiğim şey ise bir tip listesi yaratmak. Bu tip listesi basitçe</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List <span class="op">{};</span></span></code></pre></div>
+<p>olarak tanımlanmış durumda. Bunun elbette çoğu işlevi için iki olasılık var: boş liste ve elemanlı liste.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{};</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;&gt;</span> <span class="op">{};</span></span></code></pre></div>
+<p>Gelin bu listenin birkaç özelliğini nasıl yaptığımı göstereyim.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">using</span> head <span class="op">=</span> T<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;&gt;</span> <span class="op">{};</span></span></code></pre></div>
+<p>Daha önce de bahsettiğim gibi, <code>head</code> işlevi boş listede tanımlı değil.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">using</span> tail <span class="op">=</span> List<span class="op">&lt;</span>Ts<span class="op">...&gt;;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;&gt;</span> <span class="op">{</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">using</span> tail <span class="op">=</span> List<span class="op">&lt;&gt;;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Boş listenin <code>tail</code>’ı da boş liste. Bunu hata olarak da belirtebilirdik tabii.</p>
+<p><code>at</code> işlevini oluşturmak biraz daha sıkıntılı. Ayrı bir “işlev şablonu” oluşturmak gerekiyor <code>using</code> ile tanımlanmış şablonları özelleştiremediğimiz için.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> index<span class="op">,</span> <span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> At <span class="op">{};</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> At<span class="op">&lt;</span><span class="dv">0</span><span class="op">,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> type <span class="op">=</span> T<span class="op">;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> index<span class="op">,</span> <span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> At<span class="op">&lt;</span>index<span class="op">,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> type <span class="op">=</span> At<span class="op">&lt;</span>index <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> List<span class="op">&lt;</span>Ts<span class="op">...&gt;&gt;::</span>type<span class="op">;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> index<span class="op">&gt;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> at <span class="op">=</span> At<span class="op">&lt;</span>index<span class="op">,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;::</span>type<span class="op">;</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;&gt;</span> <span class="op">{};</span></span></code></pre></div>
+<p>Bu örnek çok kalabalık görünüyor olabilir -ki öyle- ama parça parça gidersek daha anlaşılır olacağını düşünüyorum.</p>
+<p>İlk başta <code>At</code> diye bir şablon tanımladık, bir tamsayı ve bir tip alıyor ve hiçbir şey içermiyor. Sonrasında ise eleman içeren bir listede <code>index</code>’in 0 olduğu durumu özelleştirdik. Bu durumda baş eleman sonucumuz olduğu için <code>type</code> tipini başa (<code>T</code>’ye) eşitledik. Sonrasında ise diğer olasılığa baktık yani listenin kalanında aramaya (elbette <code>index</code>’i 1 azaltarak). <code>List</code>’in kendisinde ise basitçe bu şablonu uygun parametrelerle “çağırdık”.</p>
+<p>Haskell’deki karşılığı şu şekilde olur (artık ayrı bir <code>List</code> olduğu için tuple değil Haskell listeleri ile fonksiyonu tanımlayabiliriz, çok da fark eden bir şey değil tabii).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode hs"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>at <span class="dv">0</span> [t<span class="op">:</span>ts] <span class="ot">=</span> t</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>at <span class="fu">index</span> [t<span class="op">:</span>ts] <span class="ot">=</span> at (<span class="fu">index</span> <span class="op">-</span> <span class="dv">1</span>) ts</span></code></pre></div>
+<p><code>find</code>, bir değer (tamsayı) döndüren bir işlev ama yapılma şekli çok da farklı değil diğerlerine kıyasla.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Q<span class="op">,</span> <span class="dt">int</span> index<span class="op">,</span> <span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> find <span class="op">{};</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Q<span class="op">,</span> <span class="dt">int</span> index<span class="op">&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> find<span class="op">&lt;</span>Q<span class="op">,</span> index<span class="op">,</span> List<span class="op">&lt;&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="kw">auto</span> value <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Q<span class="op">,</span> <span class="dt">int</span> index<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> find<span class="op">&lt;</span>Q<span class="op">,</span> index<span class="op">,</span> List<span class="op">&lt;</span>Q<span class="op">,</span> Ts<span class="op">...&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="kw">auto</span> value <span class="op">=</span> index<span class="op">;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Q<span class="op">,</span> <span class="dt">int</span> index<span class="op">,</span> <span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> find<span class="op">&lt;</span>Q<span class="op">,</span> index<span class="op">,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="kw">auto</span> value <span class="op">=</span> find<span class="op">&lt;</span>Q<span class="op">,</span> index <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> List<span class="op">&lt;</span>Ts<span class="op">...&gt;&gt;::</span>value<span class="op">;</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Q<span class="op">&gt;</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="kw">auto</span> find <span class="op">=</span> <span class="op">::</span>find<span class="op">&lt;</span>Q<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;::</span>value<span class="op">;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;&gt;</span> <span class="op">{</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>   <span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Q<span class="op">&gt;</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>   <span class="at">static</span> <span class="kw">constexpr</span> <span class="kw">auto</span> find <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Ancak burada “kuyruk özyinelemesi” (<em>tail recursion</em>) kavramını kullandım diğerlerinden farklı olarak. Eğer diğer türlü olsa idi indisin -1 olma durumunda (yani verilen tipin bulunamaması durumunda) sonucun -1 olarak kalması için başka uğraşmak zorunda kalacaktım. Haskell’de yazarsak da şu şekilde oluyor:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode hs"><code class="sourceCode haskell"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>find q <span class="fu">index</span> [] <span class="ot">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>find q <span class="fu">index</span> [q<span class="op">:</span>ts] <span class="ot">=</span> <span class="fu">index</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>find q <span class="fu">index</span> [t<span class="op">:</span>ts] <span class="ot">=</span> find q (<span class="fu">index</span> <span class="op">+</span> <span class="dv">1</span>) ts</span></code></pre></div>
+<p>Son olarak da fonksiyonel programlamanın en temel işlevlerinden olan <code>map</code>’i göstermek istiyorum.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Appended<span class="op">,</span> <span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Append <span class="op">{};</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Appended<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Append<span class="op">&lt;</span>Appended<span class="op">,</span> List<span class="op">&lt;</span>Ts<span class="op">...&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> type <span class="op">=</span> List<span class="op">&lt;</span>Ts<span class="op">...,</span> Appended<span class="op">&gt;;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">,</span> <span class="kw">typename</span><span class="op">...&gt;</span> <span class="kw">typename</span> F<span class="op">,</span> <span class="kw">typename</span> Ret<span class="op">,</span> <span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> map <span class="op">{};</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">,</span> <span class="kw">typename</span><span class="op">...&gt;</span> <span class="kw">typename</span> F<span class="op">,</span> <span class="kw">typename</span> Ret<span class="op">&gt;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> map<span class="op">&lt;</span>F<span class="op">,</span> Ret<span class="op">,</span> List<span class="op">&lt;&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> type <span class="op">=</span> Ret<span class="op">;</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">,</span> <span class="kw">typename</span><span class="op">...&gt;</span> <span class="kw">typename</span> F<span class="op">,</span> <span class="kw">typename</span> Ret<span class="op">,</span> <span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> map<span class="op">&lt;</span>F<span class="op">,</span> Ret<span class="op">,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;</span> <span class="op">{</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> type <span class="op">=</span> map<span class="op">&lt;</span>F<span class="op">,</span> Append<span class="op">&lt;</span>F<span class="op">&lt;</span>T<span class="op">&gt;,</span> Ret<span class="op">&gt;,</span> List<span class="op">&lt;</span>Ts<span class="op">...&gt;&gt;::</span>type<span class="op">;</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Ts<span class="op">&gt;</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;</span> <span class="op">{</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">template</span><span class="op">&lt;</span><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">,</span> <span class="kw">typename</span><span class="op">...&gt;</span> <span class="kw">typename</span> F<span class="op">&gt;</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> map <span class="op">=</span> <span class="kw">typename</span> <span class="op">::</span>map<span class="op">&lt;</span>F<span class="op">,</span> List<span class="op">&lt;&gt;,</span> List<span class="op">&lt;</span>T<span class="op">,</span> Ts<span class="op">...&gt;&gt;::</span>type<span class="op">;</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;&gt;</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> List<span class="op">&lt;&gt;</span> <span class="op">{</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>   <span class="kw">template</span><span class="op">&lt;</span><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span><span class="op">,</span> <span class="kw">typename</span><span class="op">...&gt;</span> <span class="kw">typename</span> F<span class="op">&gt;</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>   <span class="kw">using</span> map <span class="op">=</span> List<span class="op">&lt;&gt;;</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Aslında bu <code>map</code>’ten çok <code>wrap</code>’e denk geliyor. Bu işlev aslında benim bu şablon batağına düşmemin temel sebebiydi diyebilirim (bir tip listesinin her elemanı için ayrı birer <code>std::vector</code>). Buradaki en fantastik kısım ise muhtemelen <code>template&lt;typename, typename...&gt; typename F</code> kısmı. Bu, “<code>F</code> en az bir şablon parametresi alan bir şablondur” anlamına geliyor. Eğer şablonlar işlevler ise (ki bizim kullanımımızda öyle çalışıyorlar) bu kullanım sayesinde “yüksek dereceli çeşit”leri (<em>higher order kind</em>) göstermek mümkün hâle geliyor. Burada ufak bir <code>Append</code> tanımlamak zorunda kaldım çünkü aynı anda hem <code>Ret</code>’i hem <code>T</code>’yi (<code>List</code>’imiz) bölemiyoruz. Haskell’de bu <code>Append</code> önceden <code>++</code> işelci olarak tanımlı ama.</p>
+<p>Haskell’deki karşılığı da şu oluyor:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode hs"><code class="sourceCode haskell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span> f ret [] <span class="ot">=</span> []</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span> f ret [t<span class="op">:</span>ts] <span class="ot">=</span> <span class="fu">map</span> f (ret <span class="op">++</span> [(f t)]) [ts]</span></code></pre></div>
+<h1 id="kapanış">Kapanış</h1>
+<p>C++ şablonları bir bok deliğidir. Diğer dillerin çoğunda pek mümkün olmayan ya da derleme değil yürütme zamanında ancak mümkün olan şeyleri yapabilmemizi sağlaması ise oldukça güçlü bir nitelik kılar şablonları. Zig, Rust ve Nim gibi daha modern dillerde veya Lisp gibi başından beri üstprogramlama (<em>metaprogramming</em>) düşünülmüş diller dışındaki dillerde derleme zamanında işlem yapmak oldukça sıkıntılı iken C++’ta her ne kadar üstprogramlama sonradan eklenen bir özellik olsa da güçlü ve hünerli biçimde yer almakta. Bu bok deliğine düşmemek diğer insanlar için çok zor değil muhtemelen, insanlar her yere <code>virtual</code> koyup geçiyor çoğunlukla veya C++’ı “Sınıflı C” (<em>C with classes</em>) olarak kullanıyor. Fakat benim gibi birine bu şablon imkanlarını verirseniz (ki sayıca o kadar az değiliz) şablonları istismar etmekten kaçınmayacaktır.</p>
+<p>Şablonların oluşturduğu hiç de zarif olmayan fonksiyonel üstprogramlama dili için düşünmenin en kolay yolunun Haskell gibi bu amaç için tasarlanmış saf bir fonksiyonel programlama dili olduğu kanaatindeyim. Nitekim fark etmişsinizdir ki Haskell kodu ile C++ şablonu neredeyse birebir eşleşmekte ama C++ şablonunu görmek, algılamak, çözümlemek, yazmak ve okumak çok daha zor. Bunun bir “algoritma”sını (tırnak içinde çünkü muhtemelen katı bir algoritmadan ziyade insana yönelik bir tarif olacak) oluşturmayı düşünmüyor değilim açıkçası.</p>
+<p>Bir dahaki C++ gönderim muhtemelen CRTP (<em>Curiously Recurring Template Pattern</em>, İlginç Şekilde Tekrar Eden Şablon Deseni) üzerine olacaktır -ki kendisi apayrı bir bok çukurudur-. Çağdaş C++’ın birçok nimeti var ancak insanlar bunların pek farkında değiller ne yazık ki. Rust’tan pek farklı olmayan bir hafıza güvenliğine ve Lisp seviyesinde bir üstprogramlama kapasitesine sahip olmasına karşın insanlar C++’ı çoğunlukla bol sınıf işaretçili <code>new</code> ve <code>delete</code> çorbası olarak öğrendiğinden ötürü maalesef C++’ın kötü bir dil olduğunu düşünüyorlar.</p>
+	</article>
+
+	<div id="metadata">
+		<div id="navigation">
+			<h1>Site</h1>
+			<ul>
+				<li><a href="/">Ana Sayfa</a></li>
+				<li><a href="/about">Hakkımda</a></li>
+				<li><a href="/gönderiler">Gönderiler</a></li>
+				<li><a href="/etiketler">Etiketler</a></li>
+			</ul>
+		</div>
+
+				<hr/>
+		<div id="table-of-contents">
+			<h1>İçindekiler</h1>
+			<ul>
+<li><a href="#şablonlar" id="toc-şablonlar">Şablonlar</a></li>
+<li><a href="#turing-complete-şablonlar" id="toc-turing-complete-şablonlar">Turing-complete Şablonlar</a>
+<ul>
+<li><a href="#değişken-sayıda-argüman-variadic-arguments" id="toc-değişken-sayıda-argüman-variadic-arguments">Değişken Sayıda Argüman (<em>Variadic Arguments</em>)</a>
+<ul>
+<li><a href="#eksik-ve-tam-özelleştirmeler-partial-and-full-specializations" id="toc-eksik-ve-tam-özelleştirmeler-partial-and-full-specializations">Eksik ve Tam Özelleştirmeler (<em>Partial</em> and <em>Full Specializations</em>)</a></li>
+</ul></li>
+<li><a href="#tamsayı-argümanlar" id="toc-tamsayı-argümanlar">Tamsayı Argümanlar</a>
+<ul>
+<li><a href="#derlenme-zamanı-değişkenler" id="toc-derlenme-zamanı-değişkenler">Derlenme Zamanı Değişkenler</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#şablon-cehennemi" id="toc-şablon-cehennemi">Şablon Cehennemi</a></li>
+<li><a href="#kapanış" id="toc-kapanış">Kapanış</a></li>
+</ul>
+		</div>
+		
+				<hr/>
+		<div id="time">
+			<h1>Gönderilme Zamanı</h1>
+			<ul>
+				<li>
+					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/04">04</a>-23 13:25:04+03:00</time>
+				</li>
+			</ul>
+		</div>
+		
+				<hr/>
+		<div id="tags">
+			<h1>Etiketler</h1>
+			<ul>
+								<li><a href="/etiketler/C++">C++</a></li>
+								<li><a href="/etiketler/Programlama">Programlama</a></li>
+								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+								<li><a href="/etiketler/Üstprogramlama">Üstprogramlama</a></li>
+								<li><a href="/etiketler/Haskell">Haskell</a></li>
+							</ul>
+		</div>
+		
+	</div>
+
+</div>
+
+<footer>
+	<div id="copyup">© Erencan Ceyhan, 2025</div>
+	<div id="links">
+		<a href="https://github.com/erenjanje">GitHub</a>
+		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+	</div>
+</footer>
+</body>
+</html>
