@@ -191,16 +191,14 @@ I also think about the difference between the difficulties of the homeworks. The
 [^1]: While writing the post, I searched for the thread-safety of `rand`, and even though it is not thread-safe in the standard as I remember correctly, it seems like the Windows implementation is thread-safe.
 
 ---
-{
-  "author": "Erencan Ceyhan",
-  "lang": "en",
-  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author: Erencan Ceyhan
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2024](/gönderiler/2024)-[11](/gönderiler/2025/11)-29 18:09:52+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[11](/gönderiler/2025/11)-29 18:09:52+03:00"
-}
----
-

@@ -1,26 +1,74 @@
 <!DOCTYPE html>
 <html  lang="en" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme" />
 		<title>CENG795-HW4: Raytracing with Textures</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>CENG795-HW4: Raytracing with Textures</h1>
+		<div id="page-header">
+			<h1>CENG795-HW4: Raytracing with Textures</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#reimplementation-failure" id="toc-reimplementation-failure">Reimplementation (Failure)</a></li>
+<li><a href="#implementation" id="toc-implementation">Implementation</a>
+<ul>
+<li><a href="#diffuse-and-specular-textures" id="toc-diffuse-and-specular-textures">Diffuse and Specular Textures</a></li>
+<li><a href="#noise-and-checkerboard" id="toc-noise-and-checkerboard">Noise and Checkerboard</a></li>
+<li><a href="#normal-and-bump-mapping" id="toc-normal-and-bump-mapping">Normal and Bump Mapping</a></li>
+</ul></li>
+<li><a href="#results" id="toc-results">Results</a></li>
+<li><a href="#performance" id="toc-performance">Performance</a>
+<ul>
+<li><a href="#compiler-benchmark" id="toc-compiler-benchmark">Compiler Benchmark</a></li>
+<li><a href="#texture-benchmark" id="toc-texture-benchmark">Texture Benchmark</a></li>
+</ul></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/12">12</a>-14 23:34:28+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Ödev">Ödev</a></li>
+										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p>Welcome again to my blog post about yet another CENG795 homework, minasan! I think my recovery from my failure of the HW2 is pretty much done, now I implement the homeworks on time, and even, sometime before the deadline. Actually, in this homework, I managed to finish the homework about 3 days early except a small fix to sphere tangent/bitangent calculation, while using almost half of the time (about 1 week) to something I did in vain.</p>
+		<article class="card">
+			<p>Welcome again to my blog post about yet another CENG795 homework, minasan! I think my recovery from my failure of the HW2 is pretty much done, now I implement the homeworks on time, and even, sometime before the deadline. Actually, in this homework, I managed to finish the homework about 3 days early except a small fix to sphere tangent/bitangent calculation, while using almost half of the time (about 1 week) to something I did in vain.</p>
 <h1 id="reimplementation-failure">Reimplementation (Failure)</h1>
 <p>As I said in the previous paragraph, my first week was doing something that I did not use at all: reimplementing the whole raytracer from scratch. I had actually been thinking reimplementation since HW2; however, unfortunately, things did not go according to my plan and I had to postpone any consideration of reimplementation. Yet in the implementation of HW4, I actually had time to waste in reimplementation. There were two reasons of why I wanted reimplementation: using a nicer language (since C++ is pretty bad in terms of programming language design, and it also has abysmal compilation times) and fixing a few design choices I did that started to get in my way. Since performance is top priority in raytracing, any pure interpreted language like Python (which has JIT compiler PyPy but its performance is also not that bright) is out of question. Since Rust and Haskell had been used in this course before, I did not want to use them since I wanted to use a “new” language, a language that has not been used in this course. Losing Rust to this silly thought has been pretty bad for the choice of language. The language also should be something I am at least a bit familiar with. This also filtered Java and OcaML. The current languages were C, C#, Lua (with LuaJIT) and JS/TS (on browser). Since I would probably debug segfaults more than my raytracer, I eliminated C. All of these remaining languages are pretty nice ones, so I started the reimplementation. I also thought about the nice-to-haves in those languages, and Lua was better than C# due to having <a href="https://love2d.org">LÖVE</a>, which can be run on both desktop and mobile devices, and provides a nice layer on top of SDL, and OpenGL to some extent. It also comes with LuaJIT as default. However, JS/TS is even better since everybody and their brother/uncle/mother has a browser, which makes the distribution (not the HW3) much less of a hassle. So, I started to reimplement the raytracer in TS, but after implementing some parts, I failed to use the modules (since JS has the worst module system in the world, even worse than C). At that point, almost half of the first week had passed, so I panicked and dropped my first reimplementation reason: a nicer language.</p>
 <p>Afterwards, I dumped the TS implementation and started the reimplementation on C++. I did this so that I could share code with my existing implementation, I was pretty fine with the ray creation or ray-triangle intersection codes after all. However, as I rewrote the parser, I realized that in that pace, I would miss the deadline for HW4, since it took a whole day to reimplement the parser, <em>with a few features missing</em>. The code itself also became mostly non-interoperable with my previous ray-tracer since I changed most data structures. For example, the materials were classes with <code>virtual</code> methods instead of <code>std::variant</code>s since C++ has one of the worst sum-type support while the <code>virtual</code> is one of the best things in C++. Most of the data structures also held references to the data they need (e.g. meshes held references to the vertex array, since the mesh data is in indices instead of raw vectors). This made interoperation with my previous code pretty much impossible except rewriting a huge part of the older one, which just meant almost a total rewrite, for which I did not have time. At that point, the first week already passed and I was yet to start the HW4, while also being somewhat tired of the raytracer. Erencan is Done For!<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
@@ -927,79 +975,35 @@
 <li id="fn1"><p>Oh, I have been waiting to do this reference since the end of that week! This is a reference to <a href="https://anilist.co/manga/100080/Oniichan-wa-Oshimai"><ruby>お<rp>(</rp><rt>O</rt><rp>)</rp></ruby><ruby>兄<rp>(</rp><rt>nii</rt><rp>)</rp></ruby><ruby>ち<rp>(</rp><rt>ch</rt><rp>)</rp></ruby><ruby>ゃ<rp>(</rp><rt>a</rt><rp>)</rp></ruby></ruby><ruby>ん<rp>(</rp><rt>n</rt><rp>)</rp></ruby> <ruby>は<rp>(</rp><rt>wa</rt><rp>)</rp></ruby> <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>!</a> (read as written above the characters), a manga/anime whose name is usually translated as “Older Brother is Done For!” (the “<ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>” part is translated as “to be done for” but it actually has some sort of a hidden meaning due to how it is written, <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby> instead of <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>仕<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>舞<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>) and which is one of my favorites. The phrase “X is done for” is also used throughout different parts of the manga translation. The phrase itself is of course used generally in English, but the translation of the manga uses it so extensively that the phrase has somewhat become an inside joke of the fans.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#reimplementation-failure" id="toc-reimplementation-failure">Reimplementation (Failure)</a></li>
-<li><a href="#implementation" id="toc-implementation">Implementation</a>
-<ul>
-<li><a href="#diffuse-and-specular-textures" id="toc-diffuse-and-specular-textures">Diffuse and Specular Textures</a></li>
-<li><a href="#noise-and-checkerboard" id="toc-noise-and-checkerboard">Noise and Checkerboard</a></li>
-<li><a href="#normal-and-bump-mapping" id="toc-normal-and-bump-mapping">Normal and Bump Mapping</a></li>
-</ul></li>
-<li><a href="#results" id="toc-results">Results</a></li>
-<li><a href="#performance" id="toc-performance">Performance</a>
-<ul>
-<li><a href="#compiler-benchmark" id="toc-compiler-benchmark">Compiler Benchmark</a></li>
-<li><a href="#texture-benchmark" id="toc-texture-benchmark">Texture Benchmark</a></li>
-</ul></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/12">12</a>-14 23:34:28+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Ödev">Ödev</a></li>
-								<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

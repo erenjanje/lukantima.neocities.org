@@ -435,16 +435,16 @@ Speaking of engineering, these homeworks and projects have been pretty much the 
 [^3]: This explanation actually became much longer than I anticipated, so let's finish it. If you want to learn more, the wiki page is a very good source.
 
 ---
-{
-    "author": ["Erencan Ceyhan", "Alp Beysir"],
-    "lang": "en",
-    "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author:
+- Erencan Ceyhan
+- Alp Beysir
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2025](/gönderiler/2025)-[01](/gönderiler/2025/01)-23 22:59:53+03:00'
 ---
-
----
-{
-   "date": "[2025](/gönderiler/2025)-[01](/gönderiler/2025/01)-23 22:59:53+03:00"
-}
----
-

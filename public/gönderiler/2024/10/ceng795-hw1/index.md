@@ -251,16 +251,14 @@ I compared my result with the results in the blog posts of the other students an
 Even though this homework did not improve me that much, it is still an important one since all the other homeworks depend on this one. Having a clean and extendable codebase is a crucial skill transcending fields of computer science and our university has very few opportunities to hone those skills. Developing a non-toy system is a skill on its own, and making it performant is another kind of beast. This homework is the start of a journey where we will need to tackle that beast and I think this makes this homework chain one of the most important parts of our career, and even our hobby life if we want to.
 
 ---
-{
-  "author": "Erencan Ceyhan",
-  "lang": "en",
-  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author: Erencan Ceyhan
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2024](/gönderiler/2024)-[10](/gönderiler/2024/10)-25 23:27:09+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[10](/gönderiler/2024/10)-25 23:27:09+03:00"
-}
----
-

@@ -1,26 +1,75 @@
 <!DOCTYPE html>
 <html  lang="en" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme" />
 		<title>CENG795-HW1: Simple Recursive Raytracer</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>CENG795-HW1: Simple Recursive Raytracer</h1>
+		<div id="page-header">
+			<h1>CENG795-HW1: Simple Recursive Raytracer</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#implementation" id="toc-implementation">Implementation</a>
+<ul>
+<li><a href="#architecture" id="toc-architecture">Architecture</a></li>
+<li><a href="#shading" id="toc-shading">Shading</a>
+<ul>
+<li><a href="#simple" id="toc-simple">Simple</a></li>
+<li><a href="#mirror" id="toc-mirror">Mirror</a></li>
+<li><a href="#conductor" id="toc-conductor">Conductor</a></li>
+<li><a href="#dielectric" id="toc-dielectric">Dielectric</a></li>
+</ul></li>
+<li><a href="#ply-format" id="toc-ply-format">PLY Format</a></li>
+</ul></li>
+<li><a href="#other-scenes" id="toc-other-scenes">Other Scenes</a></li>
+<li><a href="#performance" id="toc-performance">Performance</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/10">10</a>-25 23:27:09+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Ödev">Ödev</a></li>
+										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p>Hello everybody. Welcome to my blog post about the first homework of the course CENG785, Advanced Ray Tracing.</p>
+		<article class="card">
+			<p>Hello everybody. Welcome to my blog post about the first homework of the course CENG785, Advanced Ray Tracing.</p>
 <p>Ray tracing is a fundemental approach to rendering in the computer graphics. Our homework was to implement a simple one have a base for more advanced concepts in the ray tracing.</p>
 <p>In CENG477, we had actually written a ray tracer that pretty much did what we need to do for this homework. However, our implementation was</p>
 <ol type="1">
@@ -292,80 +341,35 @@ F_r = \frac{1}{2}\left(R_s + R_p\right)
 <p>I compared my result with the results in the blog posts of the other students and my ray tracer is around 2-3x slower. However, these students actually implemented backface culling while I did not. In a normal mesh, around half of the triangles are backfacing; hence, I think this can explain the difference, their ray tracers skip about half of the triangles of a mesh while mine does not. Implementing it would be easy actually, I needed another ray casting function, which skips backface triangles depending on a boolean flag, which can be templated since it is known at compile time. Dielectric materials then would use the version that accepts backface triangles while the others would use the version that skips those triangles. However, I am too lazy to do this, even though I will probably do such an optimization in the next homework.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Even though this homework did not improve me that much, it is still an important one since all the other homeworks depend on this one. Having a clean and extendable codebase is a crucial skill transcending fields of computer science and our university has very few opportunities to hone those skills. Developing a non-toy system is a skill on its own, and making it performant is another kind of beast. This homework is the start of a journey where we will need to tackle that beast and I think this makes this homework chain one of the most important parts of our career, and even our hobby life if we want to.</p>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#implementation" id="toc-implementation">Implementation</a>
-<ul>
-<li><a href="#architecture" id="toc-architecture">Architecture</a></li>
-<li><a href="#shading" id="toc-shading">Shading</a>
-<ul>
-<li><a href="#simple" id="toc-simple">Simple</a></li>
-<li><a href="#mirror" id="toc-mirror">Mirror</a></li>
-<li><a href="#conductor" id="toc-conductor">Conductor</a></li>
-<li><a href="#dielectric" id="toc-dielectric">Dielectric</a></li>
-</ul></li>
-<li><a href="#ply-format" id="toc-ply-format">PLY Format</a></li>
-</ul></li>
-<li><a href="#other-scenes" id="toc-other-scenes">Other Scenes</a></li>
-<li><a href="#performance" id="toc-performance">Performance</a></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/10">10</a>-25 23:27:09+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Ödev">Ödev</a></li>
-								<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

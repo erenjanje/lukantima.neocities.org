@@ -1,8 +1,3 @@
-/*@import url('index/variables.css');*/
-/*@import url('index/structure.css');*/
-/*@import url('index/style.css');*/
-/*@import url('index/generic.css');*/
-/*@import url("https://unpkg.com/7.css");*/
 @import url('index/pandoc.css');
 
 @font-face {
@@ -15,47 +10,58 @@
     src: url("/CMU.ttf");
 }
 
+:root {
+    --page-color: #fff8e7;
+    --page-color-dimmer: #fff0cc;
+    --text-color: #040404;
+    --dimmed-text-color: #040404c0;
+    --inverse-text-color: #f4f4f4;
+    --code-color: #fbfbf1;
+    --item-border: #eaccea;
+}
+
 html {
     min-height: 100%;
 }
 
 body {
-    background-image: linear-gradient(
-            to bottom,
+    background-image: linear-gradient(to bottom,
             rgba(119, 119, 119, 1) 0px,
             rgba(97, 97, 97, 1) 100px,
             rgba(35, 35, 35, 1) 500px,
             rgba(32, 32, 32, 1) 510px,
-                /*rgba(0, 0, 0, 1) 600px,*/ rgba(19, 19, 19, 1) 100%
-    );
+            /*rgba(0, 0, 0, 1) 600px,*/
+            rgba(19, 19, 19, 1) 100%);
     margin: 0;
     width: 100%;
     font-family: sans-serif;
+    color: var(--text-color);
 
-    & > * {
+    &>* {
         margin: 16px;
     }
 }
 
 #site-header {
-    & > h1 {
+    &>h1 {
         font-size: xxx-large;
-        color: #f4f4f4;
+        color: var(--inverse-text-color);
         text-shadow: black 4px 4px 4px;
         font-family: "Dancing Script";
         user-select: none;
         padding: 0;
         margin: 0;
     }
+
     text-decoration: none;
 }
 
 #page-header {
     justify-content: center;
-    color: #f4f4f4;
+    color: var(--inverse-text-color);
     text-align: center;
 
-    & > h1 {
+    &>h1 {
         margin: 0;
         text-shadow: black 4px 4px 4px;
         font-size: xx-large;
@@ -63,7 +69,7 @@ body {
 }
 
 article {
-    background: #f4f4f4;
+    background: var(--page-color);
     border: 1px solid black;
     border-radius: 5px;
     width: 50vw;
@@ -73,18 +79,24 @@ article {
         text-align: justify;
     }
 
+    & blockquote {
+        color: var(--dimmed-text-color);
+        border-left: 2px solid var(--dimmed-text-color);
+        padding-left: 8px;
+    }
+
     & code {
         font-family: "Fantasque Sans Mono", "Consolas", monospace;
     }
 
     & code:not(.sourceCode) {
-        background-color: #f1f5fb;
+        background-color: var(--page-color);
         border-radius: 3px;
     }
 
     & pre.sourceCode {
-        background-color: #f1f5fb;
-        border: 1px solid #ccd9ea;
+        background-color: var(--code-color);
+        border: 1px solid var(--item-border);
         border-radius: 3px;
         padding: 5px 7px;
     }
@@ -92,38 +104,36 @@ article {
     & figure {
         text-align: center;
 
-        & > figcaption {
+        &>figcaption {
             text-align: center;
         }
 
-        & > img {
+        &>img {
             border-radius: 3px;
-            border: 1px solid black;
+            border: 1px solid var(--item-border);
             max-width: 100%;
         }
     }
 
     & table {
-        border: 1px solid black;
+        border: 1px solid var(--item-border);
         border-collapse: collapse;
 
-        & > thead {
-            background-image: linear-gradient(
-                    to bottom,
+        &>thead {
+            background-image: linear-gradient(to bottom,
                     #ffffff 0%,
                     #ffffff 48%,
                     #f7f8fa 52%,
-                    #f4f5f7 100%
-            );
+                    #f4f5f7 100%);
         }
 
         & td {
-            border: 1px solid black;
+            border: 1px solid var(--item-border);
         }
 
-        & > tbody {
-            & > :nth-child(even) {
-                background-color: #fcfcfc;
+        &>tbody {
+            &> :nth-child(even) {
+                background-color: var(--page-color-dimmer);
             }
         }
     }
@@ -141,17 +151,21 @@ article {
     display: flex;
     gap: 0;
 
-    & > * {
+    &>* {
         flex-basis: 0;
     }
 
-    & > #metadata {
+    &>.metadata {
         flex-grow: 1;
         padding-left: 8px;
         padding-right: 8px;
 
+        &>hr:last-child {
+            display: none;
+        }
+
         & h1 {
-            color: #f4f4f4;
+            color: var(--inverse-text-color);
             text-shadow: black 4px 4px 4px;
             padding: 5px 7px;
             margin: 0;
@@ -171,32 +185,31 @@ article {
             margin-top: 4px;
 
             &:hover {
-                background: linear-gradient(
-                        to bottom,
+                background: linear-gradient(to bottom,
                         #8d8f947f 0%,
                         #4c515a7f 48%,
                         #3b3c3c7f 52%,
-                        #787a7f7f 100%
-                );
+                        #787a7f7f 100%);
                 border: 1px solid black;
             }
 
-            & > a, & > time {
+            &>a,
+            &>time {
                 padding: 5px 7px;
                 text-decoration: none;
-                color: #f4f4f4;
+                color: var(--inverse-text-color);
                 display: inline-block;
                 width: 100%;
                 height: 100%;
 
-                & > a {
-                    color: #f4f4f4;
+                &>a {
+                    color: var(--inverse-text-color);
                 }
             }
         }
 
-        & > #guest-book {
-            & > iframe {
+        &>#guest-book {
+            &>iframe {
                 border-radius: 3px;
                 border: 1px solid transparent;
                 padding-left: 5px;
@@ -214,7 +227,7 @@ article {
         text-align: center;
     }
 
-    & > article {
+    &>article {
         flex-grow: 4;
     }
 }
@@ -223,7 +236,7 @@ footer {
     text-align: center;
 
     & * {
-        color: #f4f4f4;
+        color: var(--inverse-text-color);
     }
 }
 

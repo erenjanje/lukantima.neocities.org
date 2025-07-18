@@ -1,26 +1,71 @@
 <!DOCTYPE html>
 <html  lang="en" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme" />
 		<title>CENG795-HW3: Distributed Ray Tracing</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>CENG795-HW3: Distributed Ray Tracing</h1>
+		<div id="page-header">
+			<h1>CENG795-HW3: Distributed Ray Tracing</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#implementation" id="toc-implementation">Implementation</a>
+<ul>
+<li><a href="#multisampling" id="toc-multisampling">Multisampling</a></li>
+<li><a href="#roughness" id="toc-roughness">Roughness</a></li>
+<li><a href="#depth-of-field" id="toc-depth-of-field">Depth of Field</a></li>
+<li><a href="#area-light" id="toc-area-light">Area Light</a></li>
+<li><a href="#motion-blur" id="toc-motion-blur">Motion Blur</a></li>
+</ul></li>
+<li><a href="#results" id="toc-results">Results</a></li>
+<li><a href="#performance" id="toc-performance">Performance</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2025/11">11</a>-29 18:09:52+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Ödev">Ödev</a></li>
+										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p>Hello, minasan! Welcome to my blog post for the third assignment. The weather was somewhat clear in the previous homework, while I was gloomy. This homework, it seems like weather and I swapped roles. I managed to complete the homework while also finishing the remnants from the previous one. Meanwhile, we now have snow and a gloomy weather in Ankara.</p>
+		<article class="card">
+			<p>Hello, minasan! Welcome to my blog post for the third assignment. The weather was somewhat clear in the previous homework, while I was gloomy. This homework, it seems like weather and I swapped roles. I managed to complete the homework while also finishing the remnants from the previous one. Meanwhile, we now have snow and a gloomy weather in Ankara.</p>
 <p>The homework was suprisingly easy. I gave 3 full days to complete it, but I finished before the half of the second day. I could have finished even earlier but I tried to fix the intersection problem, which shows itself as gaps in some meshes, especially the Chinese dragon mesh, which has been used for at least one test case in each homework (<code>chinese_dragon</code>, <code>marching_dragons</code> and <code>focusing_dragons</code>). Unfortunately, I did not succeed to fix this bug. I however realized that those black points are not the background, but instead ambient light. For some reason, the ray correctly intersects with the mesh but the light ray intersects with something even though it should not. I will try to solve it again for the next homework, but it seems that I need some sort of revelation to do it, it should be an easy problem but all the fixes I thought failed.</p>
 <p>The other parts, the parts which we need to successfully finish the homework, are done correctly, with a small problem I just forgot to fix before submission.</p>
 <h1 id="implementation">Implementation</h1>
@@ -280,76 +325,35 @@
 <li id="fn1"><p>While writing the post, I searched for the thread-safety of <code>rand</code>, and even though it is not thread-safe in the standard as I remember correctly, it seems like the Windows implementation is thread-safe.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#implementation" id="toc-implementation">Implementation</a>
-<ul>
-<li><a href="#multisampling" id="toc-multisampling">Multisampling</a></li>
-<li><a href="#roughness" id="toc-roughness">Roughness</a></li>
-<li><a href="#depth-of-field" id="toc-depth-of-field">Depth of Field</a></li>
-<li><a href="#area-light" id="toc-area-light">Area Light</a></li>
-<li><a href="#motion-blur" id="toc-motion-blur">Motion Blur</a></li>
-</ul></li>
-<li><a href="#results" id="toc-results">Results</a></li>
-<li><a href="#performance" id="toc-performance">Performance</a></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2025/11">11</a>-29 18:09:52+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Ödev">Ödev</a></li>
-								<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

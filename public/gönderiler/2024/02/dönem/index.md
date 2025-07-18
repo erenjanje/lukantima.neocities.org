@@ -13,16 +13,14 @@ Linux Mint'te en beğendiğim özelliklerden biri de Cinnamon'daki applet'ler (u
 Şimdilik yazacaklarım bu kadar galiba. Bu sayfaya arada sırada gelip gönderi atmaya devam etmek istiyorum. Umarım da devam ederim. Ortaokuldan kalan üç beş videomun, geçmişteki bana şimdideki benden bir köprü oluşturması çok hoşuma giden bir şey. Düzenli bir şekilde aklımdan geçenleri bu siteye yazdıktan sonra, ilerde burada birikenlere baktığımda nelerin aklımdan geçeceğini pek hayâl bile edemiyorum açıkçası.
 
 ---
-{
-   "author": "Erencan Ceyhan",
-   "lang": "tr",
-   "tags": ["Ders", "Gönderi", "Linux", "Müzik", "Okul", "Türkü"]
-}
+author: Erencan Ceyhan
+lang: tr
+tags:
+- Ders
+- Gönderi
+- Linux
+- Müzik
+- Okul
+- Türkü
+date: '[2024](/gönderiler/2024)-[02](/gönderiler/2024/02)-21 10:38:03+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[02](/gönderiler/2024/02)-21 10:38:03+03:00"
-}
----
-

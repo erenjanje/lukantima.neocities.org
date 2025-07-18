@@ -377,16 +377,14 @@ Yet another homework, and again something easy while being definitely non-trivia
 [^1]: Yet another anime/manga/light novel reference! However, this time, it is from a less controversial one named [No Game No Life](https://anilist.co/manga/78399/No-Game-No-Life). The main characters (an elder brother named Sora and a little sister named Shiro) use the nickname 『　　』 in games, read as Kuuhaku. They both are pretty much geniuses in gaming, playing games almost the whole day without seeing a single ray of the Sun and having literally no single instance of defeat. They would then be summoned to another world where everything from thefts to wars between polities being done with games, ranging from backgammon to VR FPS games. The name is actually the combination of the characters' names, <ruby>空<rp>(</rp><rt>Sora</rt><rp>)</rp></ruby> and <ruby>白<rp>(</rp><rt>Shiro</rt><rp>)</rp></ruby>. When both of these Kanjis are concatenated, it becomes <ruby>空<rp>(</rp><rt>Kuu</rt><rp>)</rp></ruby><ruby>白<rp>(</rp><rt>haku</rt><rp>)</rp></ruby>, which means "blank" in Japanese. The brother's name means "empty, sky" and the sister's name means "white", so the name can roughly be translated as "whitespace", which is also another usage of this word, e.g. on keyboards.
 
 ---
-{
-  "author": "Erencan Ceyhan",
-  "lang": "en",
-  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author: Erencan Ceyhan
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2024](/gönderiler/2024)-[12](/gönderiler/2024/12)-29 23:39:24+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[12](/gönderiler/2024/12)-29 23:39:24+03:00"
-}
----
-

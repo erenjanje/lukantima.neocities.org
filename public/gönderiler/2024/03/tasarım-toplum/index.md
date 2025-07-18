@@ -33,16 +33,16 @@ Peki bu durumda ne yapılabilir? Açıkçası, çoğu meselede olduğu gibi bunu
 Fakat bu sadece yüzeysel bir çözüm. Her erkek bu tip topluluklara katılamaz. Toplumsal bir sorunu birey bazında çözmek de sorunu halı altına süpürmektir. Mevcut toplumun bu sorunu çözebilme isteği olduğunu düşünmüyorum; halk, sorun her belirtildiğinde “Güneydoğu'da namus için öldürülen X kadın” diyen feministler ile dişilere ferrelerde gördükleri sapkın ve hayvancıl hareketleri uygulamak için can atan gayrikastî bâkirler olarak bölünmüş durumda neredeyse. İki gruba da meselenin ciddiyetini anlatmanın oldukça sancılı olacağını tahmin ediyorum. Arada kalan ve bu sorunların üzerine ya düşünmemiş ya da gerçekten mantığını çalıştırarak düşünmüş insanlar ise tek başlarına yeterli değiller tahminimce. Dolayısıyla toplumsal olarak nasıl bu çukurdan çıkacağımızı bilemiyorum. Elbette benim sosyal becerisi çok yüksek olmayan bir insan olmamdan ve örgütlenme işlerinden uzaklığımdan dolayı bu çıkmazda olmam tuhaf olmayabilir.
 
 ---
-{
-   "author": "Erencan Ceyhan",
-   "lang": "tr",
-   "tags": ["Blog", "Cinsiyet Meseleleri", "Eski İnternet", "Gönderi", "Okul", "Tasarım", "Teknoloji", "Toplum"]
-}
+author: Erencan Ceyhan
+lang: tr
+tags:
+- Blog
+- Cinsiyet Meseleleri
+- Eski İnternet
+- Gönderi
+- Okul
+- Tasarım
+- Teknoloji
+- Toplum
+date: '[2024](/gönderiler/2024)-[03](/gönderiler/2024/03)-23 10:12:16+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[03](/gönderiler/2024/03)-23 10:12:16+03:00"
-}
----
-

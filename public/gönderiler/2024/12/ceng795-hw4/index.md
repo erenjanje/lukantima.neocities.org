@@ -526,16 +526,14 @@ As we get closer to the end of the semester, our outputs have been becoming bett
 [^1]: Oh, I have been waiting to do this reference since the end of that week! This is a reference to [<ruby>お<rp>(</rp><rt>O</rt><rp>)</rp></ruby><ruby>兄<rp>(</rp><rt>nii</rt><rp>)</rp></ruby><ruby>ち<rp>(</rp><rt>ch</rt><rp>)</rp></ruby><ruby>ゃ<rp>(</rp><rt>a</rt><rp>)</rp></ruby></ruby><ruby>ん<rp>(</rp><rt>n</rt><rp>)</rp></ruby> <ruby>は<rp>(</rp><rt>wa</rt><rp>)</rp></ruby> <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>!](https://anilist.co/manga/100080/Oniichan-wa-Oshimai) (read as written above the characters), a manga/anime whose name is usually translated as "Older Brother is Done For!" (the "<ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>" part is translated as "to be done for" but it actually has some sort of a hidden meaning due to how it is written, <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby> instead of <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>仕<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>舞<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>) and which is one of my favorites. The phrase "X is done for" is also used throughout different parts of the manga translation. The phrase itself is of course used generally in English, but the translation of the manga uses it so extensively that the phrase has somewhat become an inside joke of the fans.
 
 ---
-{
-  "author": "Erencan Ceyhan",
-  "lang": "en",
-  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author: Erencan Ceyhan
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2024](/gönderiler/2024)-[12](/gönderiler/2024/12)-14 23:34:28+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[12](/gönderiler/2024/12)-14 23:34:28+03:00"
-}
----
-

@@ -543,16 +543,14 @@ Between the messy codebase and non-exact requirements, I really felt that I am d
 [^1]: This time it is not an anime reference, but a history/Sabaton reference! Actually, the phrase "[the war to end war](https://en.wikipedia.org/wiki/The_war_to_end_war)" was used for the first world war (back then also known as the Great War) in the interwar period, since the sheer size of the war made many Westerners think that the taming or destroying the Germans in that war would bring a great peace. However, as we know now, not only that the WW1 was not the last war, but it even caused the even more devastating second world war. The phrase "the war to end all wars" is an alternative phrase with more-or-less the same meaning, while the phrase "the end of the war to end all wars" is the name of a [Sabaton song](https://www.youtube.com/watch?v=8um0s-h3_AM), referencing this phrase. The song is about the overall WW1, the armistice and of course the irreversible results of the war like the devastation or the fact that four biggest non-national empires (German, Austro-Hungarian, Ottoman and Russian) being dissolved. I also remember the song each time the Armistice of Versailles is mentioned, since the outro of the song starts with "November 11th settling the score", referencing the date of the armistice.
 
 ---
-{
-    "author": "Erencan Ceyhan",
-    "lang": "en",
-    "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author: Erencan Ceyhan
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2025](/gönderiler/2025)-[01](/gönderiler/2025/01)-21 21:50:15+03:00'
 ---
-
----
-{
-   "date": "[2025](/gönderiler/2025)-[01](/gönderiler/2025/01)-21 21:50:15+03:00"
-}
----
-

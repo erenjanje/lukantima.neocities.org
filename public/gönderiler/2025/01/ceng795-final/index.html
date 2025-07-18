@@ -1,26 +1,80 @@
 <!DOCTYPE html>
 <html  lang="en" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan, Alp Beysir"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan, Alp Beysir" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme" />
 		<title>CENG795-Final: Ghost in the Trace</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>CENG795-Final: Ghost in the Trace</h1>
+		<div id="page-header">
+			<h1>CENG795-Final: Ghost in the Trace</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#theory" id="toc-theory">Theory</a></li>
+<li><a href="#implementation" id="toc-implementation">Implementation</a>
+<ul>
+<li><a href="#sparse-voxel-octree" id="toc-sparse-voxel-octree">Sparse Voxel Octree</a>
+<ul>
+<li><a href="#types" id="toc-types">Types</a></li>
+<li><a href="#input-augmentation" id="toc-input-augmentation">Input Augmentation</a></li>
+<li><a href="#sparse-voxel-octree-creation" id="toc-sparse-voxel-octree-creation">Sparse Voxel Octree Creation</a></li>
+<li><a href="#sparse-voxel-octree-traversal" id="toc-sparse-voxel-octree-traversal">Sparse Voxel Octree Traversal</a></li>
+<li><a href="#texture-support" id="toc-texture-support">Texture Support</a></li>
+</ul></li>
+<li><a href="#minecraft-world" id="toc-minecraft-world">Minecraft World</a>
+<ul>
+<li><a href="#world-format" id="toc-world-format">World Format</a></li>
+<li><a href="#materials-textures" id="toc-materials-textures">Materials &amp; Textures</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#results" id="toc-results">Results</a></li>
+<li><a href="#performance" id="toc-performance">Performance</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/01">01</a>-23 22:59:53+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Ödev">Ödev</a></li>
+										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+		<article class="card">
+			<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <p>Kon’nichiwa and ciao everybody, welcome to our blog post about the final project of the course Advanced Ray Tracing. It has been a very interesting, challenging, educating and entertaining semester with ray tracing. After countless hours, we have managed to create (mostly) working ray tracers with a great set of features. As we have finished the homeworks, we decided our final projects, each of us choosing a different augment. Alp and me decided to implement Sparse Voxel Octree, which is a nice acceleration structure that can be used to represent huge amounts of blocks while taking small amount of space, and also have a fast intersection routine.</p>
 <p>I (Erencan) did the SVO part while Alp did the Minecraft importer part. The project is based on my ray tracer, so its rendering has all the quirks and errors that my HW6 ray tracer has.</p>
 <h1 id="theory">Theory</h1>
@@ -421,85 +475,35 @@ A keen observer will notice the <code>log8</code> scaling of the SVO functions.<
 <li id="fn3"><p>This explanation actually became much longer than I anticipated, so let’s finish it. If you want to learn more, the wiki page is a very good source.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#theory" id="toc-theory">Theory</a></li>
-<li><a href="#implementation" id="toc-implementation">Implementation</a>
-<ul>
-<li><a href="#sparse-voxel-octree" id="toc-sparse-voxel-octree">Sparse Voxel Octree</a>
-<ul>
-<li><a href="#types" id="toc-types">Types</a></li>
-<li><a href="#input-augmentation" id="toc-input-augmentation">Input Augmentation</a></li>
-<li><a href="#sparse-voxel-octree-creation" id="toc-sparse-voxel-octree-creation">Sparse Voxel Octree Creation</a></li>
-<li><a href="#sparse-voxel-octree-traversal" id="toc-sparse-voxel-octree-traversal">Sparse Voxel Octree Traversal</a></li>
-<li><a href="#texture-support" id="toc-texture-support">Texture Support</a></li>
-</ul></li>
-<li><a href="#minecraft-world" id="toc-minecraft-world">Minecraft World</a>
-<ul>
-<li><a href="#world-format" id="toc-world-format">World Format</a></li>
-<li><a href="#materials-textures" id="toc-materials-textures">Materials &amp; Textures</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#results" id="toc-results">Results</a></li>
-<li><a href="#performance" id="toc-performance">Performance</a></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/01">01</a>-23 22:59:53+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Ödev">Ödev</a></li>
-								<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

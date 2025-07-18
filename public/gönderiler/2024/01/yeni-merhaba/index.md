@@ -15,15 +15,10 @@ Ahval bu şekilde işte. Konular üzerinde kafa yorduğum gönderiler olsun, sad
 じゃぁね。
 
 ---
-{
-    "author": "Erencan Ceyhan",
-    "lang": "tr",
-    "tags": ["Giriş", "Karşılama"],
-}
----
-
----
-{
-    "date": "[2024](/gönderiler/2024)-[01](/gönderiler/2024/01)-10 11:18:57+03:00"
-}
+author: Erencan Ceyhan
+lang: tr
+tags:
+- Giriş
+- Karşılama
+date: '[2024](/gönderiler/2024)-[01](/gönderiler/2024/01)-10 11:18:57+03:00'
 ---

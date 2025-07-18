@@ -208,16 +208,14 @@ For visualization purposes, I also draw bar charts for the previous table. First
 The homework was, well, not a success. My half-baked submission is so bad that I have and will not try to render the video examples. However, I have at least some idea to fix these problems, and also an extra week. I also learnt once again that looking down to any kind of work is harmful. Having unrelated problems to the homeworks also does not help. Nevertheless, I am glad that I tried to do this homework, the insights of these homeworks are simply great.
 
 ---
-{
-  "author": "Erencan Ceyhan",
-  "lang": "en",
-  "tags": ["Cpp", "Programlama", "Teknoloji", "Gönderi", "Ödev", "Işın İzleme"]
-}
+author: Erencan Ceyhan
+lang: en
+tags:
+- C++
+- Programlama
+- Teknoloji
+- Gönderi
+- Ödev
+- Işın İzleme
+date: '[2024](/gönderiler/2024)-[11](/gönderiler/2024/11)-09 21:57:50+03:00'
 ---
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[11](/gönderiler/2024/11)-09 21:57:50+03:00"
-}
----
-

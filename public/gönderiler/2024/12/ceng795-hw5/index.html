@@ -1,26 +1,71 @@
 <!DOCTYPE html>
 <html  lang="en" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme" />
 		<title>CENG795-HW5: High Dynamic Raytracing</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>CENG795-HW5: High Dynamic Raytracing</h1>
+		<div id="page-header">
+			<h1>CENG795-HW5: High Dynamic Raytracing</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#implementation" id="toc-implementation">Implementation</a>
+<ul>
+<li><a href="#material-refactor" id="toc-material-refactor">Material Refactor</a></li>
+<li><a href="#directional-lights" id="toc-directional-lights">Directional Lights</a></li>
+<li><a href="#spot-light" id="toc-spot-light">Spot Light</a></li>
+<li><a href="#tonemapping" id="toc-tonemapping">Tonemapping</a></li>
+<li><a href="#hdr-environment-map" id="toc-hdr-environment-map">HDR Environment Map</a></li>
+</ul></li>
+<li><a href="#results" id="toc-results">Results</a></li>
+<li><a href="#performance" id="toc-performance">Performance</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/12">12</a>-29 23:39:24+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Ödev">Ödev</a></li>
+										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p>Hello again minasan! Welcome again to yet another CENG795 homework post. Unfortunately, this post will not be that nice compared to the previous ones. HW3, HW4 and HW5 have been all pretty easy to do. In this one however, unlike the others, I have not done any “adventurous” thing in this one unfortunately; nevertheless, I will try to do my best to make this post interesting.</p>
+		<article class="card">
+			<p>Hello again minasan! Welcome again to yet another CENG795 homework post. Unfortunately, this post will not be that nice compared to the previous ones. HW3, HW4 and HW5 have been all pretty easy to do. In this one however, unlike the others, I have not done any “adventurous” thing in this one unfortunately; nevertheless, I will try to do my best to make this post interesting.</p>
 <h1 id="implementation">Implementation</h1>
 <h2 id="material-refactor">Material Refactor</h2>
 <p>I have started doing some refactoring since the previous homework, as I had written in the blog post of the previous homework. In this homework, I have pretty much completed the refactoring by migrating material system from <code>std::variant</code> to virtual methods. In the <a href="#performance">performance</a> section, you can see a comparison between the two implementations, a benchmark I did before implementing HDR support.</p>
@@ -726,76 +771,35 @@
 <li id="fn1"><p>Yet another anime/manga/light novel reference! However, this time, it is from a less controversial one named <a href="https://anilist.co/manga/78399/No-Game-No-Life">No Game No Life</a>. The main characters (an elder brother named Sora and a little sister named Shiro) use the nickname 『　　』 in games, read as Kuuhaku. They both are pretty much geniuses in gaming, playing games almost the whole day without seeing a single ray of the Sun and having literally no single instance of defeat. They would then be summoned to another world where everything from thefts to wars between polities being done with games, ranging from backgammon to VR FPS games. The name is actually the combination of the characters’ names, <ruby>空<rp>(</rp><rt>Sora</rt><rp>)</rp></ruby> and <ruby>白<rp>(</rp><rt>Shiro</rt><rp>)</rp></ruby>. When both of these Kanjis are concatenated, it becomes <ruby>空<rp>(</rp><rt>Kuu</rt><rp>)</rp></ruby><ruby>白<rp>(</rp><rt>haku</rt><rp>)</rp></ruby>, which means “blank” in Japanese. The brother’s name means “empty, sky” and the sister’s name means “white”, so the name can roughly be translated as “whitespace”, which is also another usage of this word, e.g. on keyboards.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#implementation" id="toc-implementation">Implementation</a>
-<ul>
-<li><a href="#material-refactor" id="toc-material-refactor">Material Refactor</a></li>
-<li><a href="#directional-lights" id="toc-directional-lights">Directional Lights</a></li>
-<li><a href="#spot-light" id="toc-spot-light">Spot Light</a></li>
-<li><a href="#tonemapping" id="toc-tonemapping">Tonemapping</a></li>
-<li><a href="#hdr-environment-map" id="toc-hdr-environment-map">HDR Environment Map</a></li>
-</ul></li>
-<li><a href="#results" id="toc-results">Results</a></li>
-<li><a href="#performance" id="toc-performance">Performance</a></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/12">12</a>-29 23:39:24+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Ödev">Ödev</a></li>
-								<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

@@ -1,26 +1,76 @@
 <!DOCTYPE html>
 <html  lang="en" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme" />
 		<title>CENG795-HW6: The End of the Homework to End All Homeworks</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>CENG795-HW6: The End of the Homework to End All Homeworks</h1>
+		<div id="page-header">
+			<h1>CENG795-HW6: The End of the Homework to End All Homeworks</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#implementation" id="toc-implementation">Implementation</a>
+<ul>
+<li><a href="#brdf" id="toc-brdf">BRDF</a></li>
+<li><a href="#path-tracing" id="toc-path-tracing">Path Tracing</a>
+<ul>
+<li><a href="#monte-carlo-path-tracing" id="toc-monte-carlo-path-tracing">Monte Carlo Path Tracing</a></li>
+<li><a href="#object-lights" id="toc-object-lights">Object Lights</a></li>
+<li><a href="#importance-sampling" id="toc-importance-sampling">Importance Sampling</a></li>
+<li><a href="#russian-roulette" id="toc-russian-roulette">Russian Roulette</a></li>
+<li><a href="#next-event-estimation" id="toc-next-event-estimation">Next Event Estimation</a></li>
+<li><a href="#splitting" id="toc-splitting">Splitting</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#results" id="toc-results">Results</a></li>
+<li><a href="#performance" id="toc-performance">Performance</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/01">01</a>-21 21:50:15+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Ödev">Ödev</a></li>
+										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+		<article class="card">
+			<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Kon’nichiwa everybody! Finally, the semester is finished, with only this homework and the final project remaining. Unfortunately, the future seems a bit bleak for me. Even though not as bad as <a href="/posts/2024/11/ceng795-hw2">HW2</a> was, path tracing is unfortunately not correct in its current form. It becomes even worse when I consider that the instructor extended the deadline by more than one week to let us concentrate on the homework after our final exams. It is a great shame on my part! I guess that the main reason of my failure was pretty much the same with the HW2’s failure, my over-confidence to do the homeworks. It seems like managing to do three consecutive homeworks correctly, each in one or two days, inflated my ego, resulting in this mess.</p>
 <h1 id="implementation">Implementation</h1>
 <h2 id="brdf">BRDF</h2>
@@ -792,81 +842,35 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <li id="fn1"><p>This time it is not an anime reference, but a history/Sabaton reference! Actually, the phrase “<a href="https://en.wikipedia.org/wiki/The_war_to_end_war">the war to end war</a>” was used for the first world war (back then also known as the Great War) in the interwar period, since the sheer size of the war made many Westerners think that the taming or destroying the Germans in that war would bring a great peace. However, as we know now, not only that the WW1 was not the last war, but it even caused the even more devastating second world war. The phrase “the war to end all wars” is an alternative phrase with more-or-less the same meaning, while the phrase “the end of the war to end all wars” is the name of a <a href="https://www.youtube.com/watch?v=8um0s-h3_AM">Sabaton song</a>, referencing this phrase. The song is about the overall WW1, the armistice and of course the irreversible results of the war like the devastation or the fact that four biggest non-national empires (German, Austro-Hungarian, Ottoman and Russian) being dissolved. I also remember the song each time the Armistice of Versailles is mentioned, since the outro of the song starts with “November 11th settling the score”, referencing the date of the armistice.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#implementation" id="toc-implementation">Implementation</a>
-<ul>
-<li><a href="#brdf" id="toc-brdf">BRDF</a></li>
-<li><a href="#path-tracing" id="toc-path-tracing">Path Tracing</a>
-<ul>
-<li><a href="#monte-carlo-path-tracing" id="toc-monte-carlo-path-tracing">Monte Carlo Path Tracing</a></li>
-<li><a href="#object-lights" id="toc-object-lights">Object Lights</a></li>
-<li><a href="#importance-sampling" id="toc-importance-sampling">Importance Sampling</a></li>
-<li><a href="#russian-roulette" id="toc-russian-roulette">Russian Roulette</a></li>
-<li><a href="#next-event-estimation" id="toc-next-event-estimation">Next Event Estimation</a></li>
-<li><a href="#splitting" id="toc-splitting">Splitting</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#results" id="toc-results">Results</a></li>
-<li><a href="#performance" id="toc-performance">Performance</a></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/01">01</a>-21 21:50:15+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Ödev">Ödev</a></li>
-								<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

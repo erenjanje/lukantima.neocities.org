@@ -1,26 +1,74 @@
 <!DOCTYPE html>
 <html  lang="tr" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Cpp, Programlama, Teknoloji, Gönderi, Üstprogramlama, Haskell"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Üstprogramlama, Haskell" />
 		<title>C++ Şablon Bok Çukuru</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>C++ Şablon Bok Çukuru</h1>
+		<div id="page-header">
+			<h1>C++ Şablon Bok Çukuru</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#şablonlar" id="toc-şablonlar">Şablonlar</a></li>
+<li><a href="#turing-complete-şablonlar" id="toc-turing-complete-şablonlar">Turing-complete Şablonlar</a>
+<ul>
+<li><a href="#değişken-sayıda-argüman-variadic-arguments" id="toc-değişken-sayıda-argüman-variadic-arguments">Değişken Sayıda Argüman (<em>Variadic Arguments</em>)</a>
+<ul>
+<li><a href="#eksik-ve-tam-özelleştirmeler-partial-and-full-specializations" id="toc-eksik-ve-tam-özelleştirmeler-partial-and-full-specializations">Eksik ve Tam Özelleştirmeler (<em>Partial</em> and <em>Full Specializations</em>)</a></li>
+</ul></li>
+<li><a href="#tamsayı-argümanlar" id="toc-tamsayı-argümanlar">Tamsayı Argümanlar</a>
+<ul>
+<li><a href="#derlenme-zamanı-değişkenler" id="toc-derlenme-zamanı-değişkenler">Derlenme Zamanı Değişkenler</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#şablon-cehennemi" id="toc-şablon-cehennemi">Şablon Cehennemi</a></li>
+<li><a href="#kapanış" id="toc-kapanış">Kapanış</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/04">04</a>-23 13:25:04+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Üstprogramlama">Üstprogramlama</a></li>
+										<li><a href="/etiketler/Haskell">Haskell</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p>Şu aralar C++ ile bir Entity Component System sistemi yapmakla uğraşmaktayım. Entity Component System’i (kısaca ECS) açıklamam gerekirse, genellikle oyunlarda kullanılan bir sistemdir ve temel amacı, oyundaki her bir varlığı (<em>Entity</em>) sadece veri içeren birden fazla bileşenden (<em>Component</em>) oluşturmak ve bu bileşenler üzerinde dönen sistemler (<em>System</em>) ile oyunu ayağa kaldırmaktır. Ana iki faydası ise sistemlerin, ardışık bileşenler üzerinde dönmesinden kaynaklı olarak işlemcinin önbelleğini oldukça verimli bir şekilde kullanması ile oyundaki birçok kavramın birbirinden bağımsız hâle gelmesidir -ki bu da oyunun kodunun anlaşılabilirliği için oldukça faydalıdır-. Bu konu üzerine konuşabileceğim şeyler var ama bu gönderinin konusu bu değil. Bu sistemin işinin çoğunu (mesela bileşen listeleri gibi) yürütme değil derleme zamanında gerçekleştirmek istemem sonucu olarak düştüğüm -affedersiniz- bok çukurunu anlatmak istiyorum bugün.</p>
+		<article class="card">
+			<p>Şu aralar C++ ile bir Entity Component System sistemi yapmakla uğraşmaktayım. Entity Component System’i (kısaca ECS) açıklamam gerekirse, genellikle oyunlarda kullanılan bir sistemdir ve temel amacı, oyundaki her bir varlığı (<em>Entity</em>) sadece veri içeren birden fazla bileşenden (<em>Component</em>) oluşturmak ve bu bileşenler üzerinde dönen sistemler (<em>System</em>) ile oyunu ayağa kaldırmaktır. Ana iki faydası ise sistemlerin, ardışık bileşenler üzerinde dönmesinden kaynaklı olarak işlemcinin önbelleğini oldukça verimli bir şekilde kullanması ile oyundaki birçok kavramın birbirinden bağımsız hâle gelmesidir -ki bu da oyunun kodunun anlaşılabilirliği için oldukça faydalıdır-. Bu konu üzerine konuşabileceğim şeyler var ama bu gönderinin konusu bu değil. Bu sistemin işinin çoğunu (mesela bileşen listeleri gibi) yürütme değil derleme zamanında gerçekleştirmek istemem sonucu olarak düştüğüm -affedersiniz- bok çukurunu anlatmak istiyorum bugün.</p>
 <p>C++ şablonlarından (<code>template</code>) bahsetmem gerekiyor ilk olarak. C++ kullanmış aşağı yukarı herkes ama az ama çok şablonları görmüş olsa gerekir. İlk başta dile eklenme amacı, farklı türler üzerinde çalışması gereken ve bu türlerin hepsine aynı davranan bilimum veri yapıları ve algoritmaları yazarken kolaylık sağlamaktır. Klasik örneği vermek gerekirse:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{};</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>v<span class="op">.</span>push_back<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
@@ -204,79 +252,35 @@
 <p>C++ şablonları bir bok deliğidir. Diğer dillerin çoğunda pek mümkün olmayan ya da derleme değil yürütme zamanında ancak mümkün olan şeyleri yapabilmemizi sağlaması ise oldukça güçlü bir nitelik kılar şablonları. Zig, Rust ve Nim gibi daha modern dillerde veya Lisp gibi başından beri üstprogramlama (<em>metaprogramming</em>) düşünülmüş diller dışındaki dillerde derleme zamanında işlem yapmak oldukça sıkıntılı iken C++’ta her ne kadar üstprogramlama sonradan eklenen bir özellik olsa da güçlü ve hünerli biçimde yer almakta. Bu bok deliğine düşmemek diğer insanlar için çok zor değil muhtemelen, insanlar her yere <code>virtual</code> koyup geçiyor çoğunlukla veya C++’ı “Sınıflı C” (<em>C with classes</em>) olarak kullanıyor. Fakat benim gibi birine bu şablon imkanlarını verirseniz (ki sayıca o kadar az değiliz) şablonları istismar etmekten kaçınmayacaktır.</p>
 <p>Şablonların oluşturduğu hiç de zarif olmayan fonksiyonel üstprogramlama dili için düşünmenin en kolay yolunun Haskell gibi bu amaç için tasarlanmış saf bir fonksiyonel programlama dili olduğu kanaatindeyim. Nitekim fark etmişsinizdir ki Haskell kodu ile C++ şablonu neredeyse birebir eşleşmekte ama C++ şablonunu görmek, algılamak, çözümlemek, yazmak ve okumak çok daha zor. Bunun bir “algoritma”sını (tırnak içinde çünkü muhtemelen katı bir algoritmadan ziyade insana yönelik bir tarif olacak) oluşturmayı düşünmüyor değilim açıkçası.</p>
 <p>Bir dahaki C++ gönderim muhtemelen CRTP (<em>Curiously Recurring Template Pattern</em>, İlginç Şekilde Tekrar Eden Şablon Deseni) üzerine olacaktır -ki kendisi apayrı bir bok çukurudur-. Çağdaş C++’ın birçok nimeti var ancak insanlar bunların pek farkında değiller ne yazık ki. Rust’tan pek farklı olmayan bir hafıza güvenliğine ve Lisp seviyesinde bir üstprogramlama kapasitesine sahip olmasına karşın insanlar C++’ı çoğunlukla bol sınıf işaretçili <code>new</code> ve <code>delete</code> çorbası olarak öğrendiğinden ötürü maalesef C++’ın kötü bir dil olduğunu düşünüyorlar.</p>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-				<hr/>
-		<div id="table-of-contents">
-			<h1>İçindekiler</h1>
-			<ul>
-<li><a href="#şablonlar" id="toc-şablonlar">Şablonlar</a></li>
-<li><a href="#turing-complete-şablonlar" id="toc-turing-complete-şablonlar">Turing-complete Şablonlar</a>
-<ul>
-<li><a href="#değişken-sayıda-argüman-variadic-arguments" id="toc-değişken-sayıda-argüman-variadic-arguments">Değişken Sayıda Argüman (<em>Variadic Arguments</em>)</a>
-<ul>
-<li><a href="#eksik-ve-tam-özelleştirmeler-partial-and-full-specializations" id="toc-eksik-ve-tam-özelleştirmeler-partial-and-full-specializations">Eksik ve Tam Özelleştirmeler (<em>Partial</em> and <em>Full Specializations</em>)</a></li>
-</ul></li>
-<li><a href="#tamsayı-argümanlar" id="toc-tamsayı-argümanlar">Tamsayı Argümanlar</a>
-<ul>
-<li><a href="#derlenme-zamanı-değişkenler" id="toc-derlenme-zamanı-değişkenler">Derlenme Zamanı Değişkenler</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#şablon-cehennemi" id="toc-şablon-cehennemi">Şablon Cehennemi</a></li>
-<li><a href="#kapanış" id="toc-kapanış">Kapanış</a></li>
-</ul>
-		</div>
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/04">04</a>-23 13:25:04+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Cpp">Cpp</a></li>
-								<li><a href="/etiketler/Programlama">Programlama</a></li>
-								<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-								<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-								<li><a href="/etiketler/Üstprogramlama">Üstprogramlama</a></li>
-								<li><a href="/etiketler/Haskell">Haskell</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>

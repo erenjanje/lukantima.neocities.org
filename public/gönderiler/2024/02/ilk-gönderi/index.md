@@ -15,16 +15,15 @@ Bu kadar derin bir sorunun yüzeye yansımalarından birisi de işi eve getirmek
 Sonuç olarak ödevlerden kurtuldum, tatilim öldü ve uygulamak için fazla tembel olduğum birkaç fikir ile kaldım. Hoş gerçi, tatilim ölmese bile muhtemelen pek zevki olmayacaktı. İnsanın büyüdükçe hayattan aldığı zevkin azalması da başka yazının konusu olsun artık.
 
 ---
-{
-   "author": "Erencan Ceyhan",
-   "lang": "tr",
-   "tags": ["Gönderi", "Kapitalizm", "Okul", "Teknoloji", "İletişim", "İnternet", "İş"]
-}
----
-
----
-{
-   "date": "[2024](/gönderiler/2024)-[02](/gönderiler/2024/02)-05 17:20:06+03:00"
-}
+author: Erencan Ceyhan
+lang: tr
+tags:
+- Gönderi
+- Kapitalizm
+- Okul
+- Teknoloji
+- Iletişim
+- Internet
+date: '[2024](/gönderiler/2024)-[02](/gönderiler/2024/02)-05 17:20:06+03:00'
 ---
 

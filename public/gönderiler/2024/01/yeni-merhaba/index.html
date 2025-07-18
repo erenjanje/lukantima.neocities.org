@@ -1,81 +1,85 @@
 <!DOCTYPE html>
 <html  lang="tr" >
+
 <head>
-	<meta charset="UTF-8"/>
-		<meta name="author" content="Erencan Ceyhan"/>
-			<meta name="keywords" content="Giriş, Karşılama"/>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="Giriş, Karşılama" />
 		<title>Merhaba</title>
-	<link href="/style/index.css" rel="stylesheet"/>
+	<link href="/style/index.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<div id="header">
-	<a id="site-header" href="/"><h1>Erencan'ın Köşesi</h1></a>
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
 
-	<div id="page-header">
-		<h1>Merhaba</h1>
+		<div id="page-header">
+			<h1>Merhaba</h1>
+		</div>
 	</div>
-</div>
 
-<div id="content">
+	<div id="content">
+		<div class="metadata">
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/01">01</a>-10 11:18:57+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/Giriş">Giriş</a></li>
+										<li><a href="/etiketler/Karşılama">Karşılama</a></li>
+									</ul>
+			</div>
+					</div>
 
-	<article class="card">
-		<p>Merhaba!</p>
+		<article class="card">
+			<p>Merhaba!</p>
 <p>Etiket sistemimi bitirmiş olmanın verdiği dayanılmaz rahatlamanın ve hoş olmayan finallerin arasında bu gönderiyi, Blogspot’tan düz statik ağ sayfası evsahipliği/hosting yapan bir sisteme -şimdilik Cloudflare Pages’e ama sistemimi oturtursam Neocities’e- blogu geçirdiğimden beri olan ilk gönderiyi, paylaşmak istiyorum. Aslında temel sistem Blogspot ile bir nebze benzer çalışıyor. Gönderinin yıl ve ay bilgisini doğrudan klasör ismi kullanıp, altında gönderinin kendine ait klasörünün içindekileri kullanıyor site genel olarak. Ay dizininin altındaki gönderi klasörünün içine doğrudan index.html dosyasını yerleştirdiğim için klasörü doğrudan adreste kullanabiliyoruz, böylece herhangi bir gönderinin adresi dosyaymış gibi durmuyor. Nitekim her ne kadar Blogspot gibi servislerde bu düşünme şekli ön plana çıksa da kendi sistemimde böyle olmamasını istiyorum. Gönderiler -özellikle de saf yazı olmayanlar- sonuçta ayrı parçalara sahip ve bu parçaların hepsi aslında gönderiyi oluşturan şey oluyor. Bir gönderinin içine gömdüğüm bir fotoğraf/resim de o gönderinin bir parçası, dolayısıyla aynı klasörde olması çok daha mantıklı geliyor bana.</p>
 <p>İşin teknik detaylarını bir nebze bırakacak olursak, site oluşturucumun (ki şu anda 4 adet Python betiğinden fazlası değil) düzgün çalıştığını düşünüyorum. Sitenin ağacını (mevcutta sayfanın sağ tarafında görülebilen şey) bütün sayfalara gömmesi her ne kadar sayfaların boyutlarını büyütse de sorun çıkaracak bir boyuta erişeceğini zannetmiyorum. Elbette artı olarak da sayfa yüklendiği gibi ağaç üzerinde gezinme yapabilmek geliyor yanında ve benim çok istediğim bir özellik bu, öteki türlü JavaScript ile bir şekilde gönderi dizinini çekmek gerekecekti ki elimden geldiğince, gerekmediği sürece JavaScript’ten uzak durmak istediğim için bu durum hoş olmazdı. Site bir kez yüklenince, her şey kullanıcının elinin altında olmalı bana kalırsa.</p>
 <p>Bunların dışında, final dönemi pek hoş değil. Aslında siteyi geliştirmem büyük ölçüde finallere çalışma zamanımla çakıştı fakat sonucunda performansımın ne kadar düştüğünü yorumlayamıyorum. Yine de bol koşuşturma ve çalışma düzeninde insan ruhunu sömüren bu dönemden hoşnut olduğumu söyleyemem kesinlikle. Özellikle de ilk girdiğim sınavın oldukça kötü olması -hem benden hem de sınavın kendisinden kaynaklanan sebeplerden ötürü- daha ilk sınavdan ruhsal durumumda kötüleşmeye yol açtı. Yine de bir şekilde atlatabileceğimi düşünüyorum, bir yanlışın bir doğruyu götürdüğü bir sınavı ilk kez yaşamış olsam da.</p>
 <p>Hayat akıp gidiyor işte. Bu blogu oluşturmamın sebebi de (ve öncesinde de çok kez benzeri bir işe girişmiş olmamın sebebi de) bu akış içinde kendi düşüncelerimi dökebileceğim bir oluşumu var etmek. Günlük yazmak belki çok daha doğru bir seçenek olurdu bu vaziyette ama kâğıtta günlük tutmaya -aslında kâğıtta herhangi bir şey tutmaya- <em>şu anda</em> çok sıcak bakmadığım gibi elektronik ortamda günlük tutmak yerine (verilerimin dümdüz toplanmasından ötürü) doğrudan bu düşüncelerimi genel ağda paylaşmak daha mantıklı geliyor bana. Belki doğru belki yanlış bir tercih, onu da zaman gösterecektir elbet. En azından içimi bir nebze dökebileceğim bir ortama sahip olmanın, kendi ruh sağlığım açısından oldukça işlevsel olacağına inanıyorum. Aklıma gelen her konuda bir şeyler paylaşınca bir bakıma kendime ait, kendimin yansıması sayılabilecek, bir köşem olmuş oluyor. Her geçen gün daha da merkezîleşen ama bir o kadar da yatay olarak büyüyen, insanlığın en büyük ölçekli icadı olan derya deniz internette ufak bir köşeye sahip olmak; bir ev, bir tarla sahibi olmak gibi. Uçsuz bucaksız bir gezegen ve akılalmaz ölçekte bir evrende ufak ama sıcak, yüz insanın ya bildiği ya bilmediği, ancak kendini huzurlu ve güvenli hissedebileceğin bir alana sahip olmak gibi ve bence internetin amacı da (akademik, askerî, bürokratik gibi daha kurumsal kullanımı çıkarırsak yani sadece bireylerin kullanması gereken seviyeye bakacak olursak) buna benzer bir şey olmalı. Herkesin 10 dakikalığına ünlü olduğu ve insan <em>ben</em>’i üzerinden dönen, bunun üzerinden de para kaldıran şirketlerin ele geçirdiği bir internet daha çok distopya oluyor sanki. Bu konunun detaylarına da artık başka bir gönderide girerim muhtemelen.</p>
 <p>Ahval bu şekilde işte. Konular üzerinde kafa yorduğum gönderiler olsun, sadece canım sıkıldığı için içimi döktüğüm gönderiler olsun koyarım buraya herhalde. Nasıl olsa kurduğum sistem de artık mevcut başka sistemlerden kabataslak bağımsız hâle geldi, yani bu siteyi bir yerden başka yere taşımam oldukça kolay oldu. Dolayısıyla buradan devam etmek mümkün gibi.</p>
 <p>じゃぁね。</p>
-	</article>
+		</article>
 
-	<div id="metadata">
-		<div id="navigation">
-			<h1>Site</h1>
-			<ul>
-				<li><a href="/about">Hakkımda</a></li>
-				<li><a href="/gönderiler">Gönderiler</a></li>
-				<li><a href="/etiketler">Etiketler</a></li>
-			</ul>
-		</div>
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
 
-		
-				<hr/>
-		<div id="time">
-			<h1>Gönderilme Zamanı</h1>
-			<ul>
-				<li>
-					<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/01">01</a>-10 11:18:57+03:00</time>
-				</li>
-			</ul>
-		</div>
-		
-				<hr/>
-		<div id="tags">
-			<h1>Etiketler</h1>
-			<ul>
-								<li><a href="/etiketler/Giriş">Giriş</a></li>
-								<li><a href="/etiketler/Karşılama">Karşılama</a></li>
-							</ul>
-		</div>
-		
-		<hr/>
-		<div id="guest-book">
-			<h1>Ziyaretçi Defteri</h1>
-			<iframe src="https://lukantima.atabook.org/"></iframe>
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
 		</div>
 
 	</div>
 
-</div>
-
-<footer>
-	<div id="copyup">© Erencan Ceyhan, 2025</div>
-	<div id="links">
-		<a href="https://github.com/erenjanje">GitHub</a>
-		<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-		<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-	</div>
-</footer>
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
 </body>
+
 </html>
