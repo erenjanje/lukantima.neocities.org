@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html  lang="tr" >
+
+<head>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C++, Programlama, Teknoloji, Gönderi, Üstprogramlama" />
+		<title>C++ Şablon Bok Çukuru 2: <del>Elektrik Bugalu</del> CRTP</title>
+	<link href="/style/index.css" rel="stylesheet" />
+</head>
+
+<body>
+
+	<div id="header">
+		<a id="site-header" href="/">
+			<h1>Erencan'ın Köşesi</h1>
+		</a>
+
+		<div id="page-header">
+			<h1>C++ Şablon Bok Çukuru 2: <del>Elektrik Bugalu</del> CRTP</h1>
+		</div>
+	</div>
+
+	<div id="content">
+		<div class="metadata">
+						<div id="table-of-contents">
+				<h1>İçindekiler</h1>
+				<ul>
+<li><a href="#tekrar" id="toc-tekrar">Tekrar</a></li>
+<li><a href="#çokbiçimlilik" id="toc-çokbiçimlilik">Çokbiçimlilik</a></li>
+<li><a href="#derleme-zamanı-çokbiçimliliği" id="toc-derleme-zamanı-çokbiçimliliği">Derleme Zamanı Çokbiçimliliği</a>
+<ul>
+<li><a href="#mixinler" id="toc-mixinler">Mixinler</a></li>
+<li><a href="#akışkan-arayüz-fluent-interface" id="toc-akışkan-arayüz-fluent-interface">Akışkan Arayüz (<em>Fluent Interface</em>)</a></li>
+</ul></li>
+<li><a href="#kapanış" id="toc-kapanış">Kapanış</a></li>
+</ul>
+			</div>
+			<hr />
+			
+						<div id="time">
+				<h1>Gönderim Zamanı</h1>
+				<ul>
+					<li>
+						<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/07">07</a>-19 18:27:52+03:00</time>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			
+						<div id="tags">
+				<h1>Etiketler</h1>
+				<ul>
+										<li><a href="/etiketler/C++">C++</a></li>
+										<li><a href="/etiketler/Programlama">Programlama</a></li>
+										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
+										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
+										<li><a href="/etiketler/Üstprogramlama">Üstprogramlama</a></li>
+									</ul>
+			</div>
+					</div>
+
+		<article class="card">
+			<p>Uzun bir aradan (ödev gönderileri olarak 6 ay, normal gönderi olarak 1,5 yıl!) sonra tekrardan merhabalar. <a href="/gönderiler/2024/04/şablon-cehennemi">Önceki gönderide</a> bahsettiğim gibi bu gönderide biraz CRTP, yani “İlginç Şekilde Mükerrer Şablon Kalıbı” (<em>Curiously Recurring Template Pattern</em>) konsepti üzerine yazmayı düşünüyorum. Her ne kadar “C++ Şablon Bok Çukuru”nu bir seri olarak yapmayı düşünmemiş olsam da benzer bir başlığı hak ettiğini düşünüyorum, çünkü gerçekten <em>tuhaf</em> bir kalıp bu CRTP denen meret.</p>
+<h1 id="tekrar">Tekrar</h1>
+<p>Şablonları ufaktan tekrar hatırlatarak başlayayım öncelikle. Şablonlar, çıkış amacı gereği aslında aynı şablonun farklı türlere uygulanması üzerine kurulu bir konsept. Birçok dilde -Go’da bile- benzeri konseptler var fakat şablon ismi kullanılmıyor, sanırım çok C++ çağrıştırıyor ve diğer dillerdeki araçlar C++ şablonlarının çoğu özelliğine sahip olmuyor. Mesela derlenme zamanı istediğimiz bir ifadenin cevabını elde edebilmemizi sağlıyor şablonlar doğru kullanıldığında. Detaylar için önceki gönderiye bakabilirsiniz.</p>
+<p>Şimdi elimizde bir şablon sınıf olsun (ben <code>public</code> yazmak zorunda kalmamak için genelde <code>struct</code> kullanıyorum ama sınıf/<em>class</em> olarak kabul edebilirsiniz):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Snf <span class="op">{};</span></span></code></pre></div>
+<p>Bu tip şu anki hâliyle herhangi bir tipi şablon argümanı olarak alabilir, çünkü şablon parametresi <code>T</code> ile hiçbir şey yapmıyor.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Snf <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    T data<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Bu sefer şablonumuz aldığı türden bir veriyi kendi içinde depoluyor. Hâlâ her türlü tipi alabilir gibi gözüküyor olabilir, ama artık gerçekleştirilemeyen tipleri ne yazık ki alamıyor. Bu tarz tiplerin en bilindik örneği <code>void</code> olsa gerek. Sonuçta <code>void</code> türünden veri depolamak tamamen anlamsız.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Snf <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    T data<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    T plus<span class="op">(</span>T <span class="at">const</span><span class="op">&amp;</span> other<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> data <span class="op">+</span> other<span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Gittikçe daha spesifik tipleri almaya doğru gidiyoruz. Burada sadece <code>T</code> türünden başka bir değer ile toplanabilip sonuç olarak <code>T</code> türünden (veya <code>T</code>’ye çevrilebilen bir türden) değer dönen tipleri alabilir oluyor <code>Snf</code>. Buna <code>int</code> gibi aritmetik türlerin yanında <code>std::string</code> gibi türler de dâhil.</p>
+<p>Bütün bunlar aslında aldığımız <code>T</code> türünün “arayüzünü” (<em>interface</em>) tanımlıyor. C++ şablonları -C++20’deki konseptlere kadar- ördekleme (<em>duck typing</em>) tabanlı olduğu için bu kısıtları tip sisteminde göstermiyoruz.</p>
+<p>Bu arayüzler sayesinde derlenme zamanında çokbiçimlilik (<em>compile time polymorphism</em>) yapabiliyoruz. <code>plus</code> metodu verilen türe göre bir <code>add</code> yönergesine (<em>instruction</em>) derlenebildiği gibi (mesela <code>T</code> <code>int</code> olursa) herhangi bir aşırıyüklenmiş (<em>overloaded</em>) toplama operatörünü de kullanabilir, <code>T</code> <code>std::string</code> olursa olacağı gibi.</p>
+<p>İşte CRTP de bunun bir formu denebilir.</p>
+<h1 id="çokbiçimlilik">Çokbiçimlilik</h1>
+<p>C++’ta çokbiçimlilik genelde sanal (<code>virtual</code>) metotlar aracılığıyla gerçekleştirilir. Ders kitabımsı bir örnek vermek gerekirse:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Animal <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">virtual</span> <span class="dt">void</span> move<span class="op">(</span>vec3 towards<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Dog <span class="op">:</span> Animal <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> move<span class="op">(</span>vec3 towards<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span><span class="op">(</span>towards<span class="op">.</span>y <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">throw</span> <span class="bu">std::</span>runtime_error<span class="op">(</span><span class="st">&quot;Dogs cannot fly!&quot;</span><span class="op">);</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// run the dog</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Bird <span class="op">:</span> Animal <span class="op">{</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> move<span class="op">(</span>vec3 towards<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// fly the bird</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Burada <code>Animal</code> sınıfı içinde <code>move</code> sanal metodunu “saf sanal” (<em>pure virtual</em>) olarak tanımladık ki bütün altsınıflar (<em>subclasses</em>) bu metodun üzerine yazmak zorunda kalsın. Bir hayvanın nasıl hareket edeceğini hayvanın kendisi bilir sonuçta sadece. Bu durum aslında bize bir arayüz oluşturuyor. Bütün hayvanların, yani <code>Animal</code> sınıfının bütün altsınıflarının sahip olmak <em>zorunda</em> olduğu bazı metotlar var olmuş oluyor. Dinamik çokbiçimlilik (<em>dynamic polymorphism</em>) veya çalışma zamanı çokbiçimliliği (<em>runtime polymorphism</em>) oldukça güzel, fakat bunun bir bedeli de oluyor. Bu sınıfların hepsi birer sanal metot tablosuna (<em>virtual method table</em>) sahip olmak zorunda kalıyor. Ayrıca her <code>move</code> çağrısı (derleyici optimizasyonları bazen elimine edebilse de genel olarak) bu tabloya bakıp dolaylı çağrı (<em>indirect call</em>) yapmak zorunda. Her ne kadar günümüzdeki bilgisayarlarda bunun maliyeti <em>çoğunlukla</em> (ama her zaman değil) ihmal edilebilir olsa da yine de bir maliyet. Peki bu maliyetinin karşılığında bize ne sağlıyor?</p>
+<ul>
+<li>Bütün hayvanlar hareket etme metodunu tanımlamak zorunda kaldığı için bir arayüz oluşturuyor.</li>
+<li>Bu arayüz üzerinden taban sınıfta (<em>base class</em>) yani <code>Animal</code>’da ekstra özellikler ekleyebiliriz. Mesela “A’dan B’ye git” metodu Dijkstra algoritması çalıştırarak o hayvanın A’dan B’ye en kolay nasıl gideceğini hesaplayabilir ve hayvanı uygun şekilde hareket ettirebilir. Bu kavrama <em>mixin</em> (Türkçeye çeviremedim) deniyor genelde.</li>
+<li>Farklı türden hayvanlar aynı <code>Animal</code> işaretçi/referansları tarafından depolanabilir oluyor (doğrudan <code>Animal</code> olarak depolanırsa nesne kesimi [<em>object slicing</em>] olur).</li>
+</ul>
+<p>Aslında bu faydaların sadece üçüncüsü çalışma zamanı gerektiriyor. İlkini C++20’deki konseptler (<code>concept</code>) sağlıyor, veya önceki sürümlerde SFINAE (şu ikisinden de beter ayrı bir bok çukuru) veya <code>static_assert</code> kullanarak oluşturabiliyoruz. Benim şu an odaklanmak istediğim kısım ise ikincisi. Eğer ihtiyacımız olan temel kabiliyet mixinler ise sanal metot bedelini ödememizin pek bir anlamı yok. Peki bunu nasıl yapabiliriz? Sanal metotlar olmadan bir sınıf kendi altsınıflarının metotlarını çağıramaz, değil mi?</p>
+<h1 id="derleme-zamanı-çokbiçimliliği">Derleme Zamanı Çokbiçimliliği</h1>
+<h2 id="mixinler">Mixinler</h2>
+<p>Sanal metotların aksine deleme zamanı çokbiçimliliği tam olarak C++ dilinin bir parçası değil. Nitekim bu nedenle adı <em>İlginç Şekilde Mükerrer Şablon Kalıbı</em>. Dilin bir özelliği olmamasına rağmen sıkça karşılaşılan bir sorunu çözdüğü için birbiriyle ilişkisiz insanların farklı şartlarda kendi kendilerine icat edip kullandığı bir tür “tasarım kalıbı” (<em>design pattern</em>) olarak karşımıza çıkıyor. Peki ne bu CRTP? Bir kod bin resme değer:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Child<span class="op">&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Parent <span class="op">{};</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Child <span class="op">:</span> Parent<span class="op">&lt;</span>Child<span class="op">&gt;</span> <span class="op">{};</span></span></code></pre></div>
+<p>Bi’ dakka bi’ dakka bi’ dakka. Altsınıf üstsınıfa şablon argümanı olarak <em>kendisini</em> veriyor? Görünüşe bakılırsa dilin tasarımcılarının pek de isteyerek yapmadığı şekilde bir sınıf kendi üstsınıflarını belirtirken aslında sınıfın kendisi de tanımlı. Bunu mümkün kılan şey ise şablon gerçekleşmesinin (<em>instantiation</em>) tembel (<em>lazy</em>) olması. Yukarıdaki örnekte zaten çok sıkıntı yok, sonuçta şu hâliyle <code>Parent</code> her türlü tipi (<code>void</code> gibi gerçekleştirilemeyenler de dâhil) şablon argümanı olarak alabiliyor. Nitekim <code>Parent</code>’ın içerisinde <code>Child</code> gerçekleştirilebilir bir tip değil. Fakat şablon metotlarının derlenmesi, bu metotlar çağrıldığında oluyor ve bu metotların çağrılması neredeyse her zaman başka dış bir kod tarafından çok daha sonra gerçekleştiriliyor, dolayısıyla <code>Parent</code>, <code>Child</code>’ın metotlarını kullanabiliyor!</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Child<span class="op">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Parent <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> foo<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">static_cast</span><span class="op">&lt;</span>Child<span class="op">*&gt;(</span><span class="kw">this</span><span class="op">)-&gt;</span>bar<span class="op">();</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Child <span class="op">:</span> Parent<span class="op">&lt;</span>Child<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> bar<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">&quot;zartzurt&quot;</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p><code>Parent</code>’ın <code>bar</code> diye bir metodu yok, fakat bizzat <em>kendisini</em> kendi altsınıfı olarak yorumlayıp (<code>static_cast</code>’in yaptığı) altsınıfının metodunu çağırabiliyor. Bu elbette bir arayüz oluşturuyor, artık <code>Parent</code>’tan kalıtan (<em>inherit</em>) bütün sınıflar <code>bar</code> metodunu oluşturmak zorunda. Yani üstte sanal metotlar ile yaptığımız arayüz kavramına benzer bir şeyi burada da yapmış oluyoruz. Fakat sanal metotların aksine burada herhangi bir dolaylı çağrı yok. Kod derlenirken derleyici hangi <code>bar</code>’ın çağrılacağını biliyor: <code>Child::bar</code>. Dolayısıyla <code>foo</code> fonksiyonu sadece tek bir doğrudan çağırmadan ibaret bu durumda ki bu da fazlasıyla ucuz bir işlem dolaylı çağrıya kıyasla.</p>
+<p>Buradaki asıl güç ise mixinlerde aslında. Çok saçma bir kod olacak ama şu şekilde bir sınıf grubu düşünebiliriz denemek için:</p>
+<ul>
+<li>Elimizde kütük yazan (<em>log</em>) bir ana sınıf olmalı. Bu ana sınıf aldığı mesajı altsınıfa iletmeli ve onun ürettiği yazının başına <code>"[LOG]: "</code> eklemeli.</li>
+<li>Bilgi (<code>Info</code>) ve Hata (<code>Error</code>) diye iki altsınıf mesajın başına sırayla <code>"[INFO]: "</code> ve <code>"[ERR]: "</code> yazılarını eklemeli.</li>
+</ul>
+<p>Önce bunu sanal metotlar ile yapalım isterseniz:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Logger <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> log<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">&quot;[LOG]: &quot;</span> <span class="op">&lt;&lt;</span> <span class="kw">this</span><span class="op">-&gt;</span>getLogString<span class="op">(</span>message<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string getLogString<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Info <span class="op">:</span> Logger <span class="op">{</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string getLogString<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;[INFO]: &quot;</span> <span class="op">+</span> message<span class="op">;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Error <span class="op">:</span> Logger <span class="op">{</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string getLogString<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;[ERR]: &quot;</span> <span class="op">+</span> message<span class="op">;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Artık <code>Info</code> ile de <code>Error</code> ile de <code>log</code> metodunu çağırdığımızda bize uygun şekilde başına LOG diye etiketlenmiş şekilde yazı yazacaktır. Fakat bu işlem sanal metotlar üzerinden döndüğü için çalışma zamanında bir maliyeti var. Dediğim gibi bu maliyeti optimizasyonlar elimine edebilir, ama optimizasyonlara güvenmek çok da akıl kârı bir iş değil. Nitekim her şekilde o sanal tablo bedelini ödemek zorundayız. Nesnelerimiz küçükse (ki burada başka elemanları olmadığı için fazlasıyla geçerli) bu nesne başına 4 (32-bit sistemlerde) veya 8 (64-bit sistemlerde) byte kadar bir fazlalık demek. İsterseniz şimdi de CRTP uygulayalım:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Child<span class="op">&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Logger <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> log<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">&quot;[LOG]: &quot;</span> <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span>Child<span class="op">*&gt;(</span><span class="kw">this</span><span class="op">)-&gt;</span>getLogString<span class="op">(</span>message<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Info <span class="op">:</span> Logger<span class="op">&lt;</span>Info<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string getLogString<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;[INFO]: &quot;</span> <span class="op">+</span> message<span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Error <span class="op">:</span> Logger<span class="op">&lt;</span>Error<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string getLogString<span class="op">(</span><span class="bu">std::</span>string <span class="at">const</span><span class="op">&amp;</span> message<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;[ERR]: &quot;</span> <span class="op">+</span> message<span class="op">;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Bu kodda herhangi bir dolaylı çağrı olmadığı gibi, sanal tablo bedeli de mevcut değil ve yine aynı şeyi yapıyor aslında: ana sınıf altsınıflarının yazacaklarının başına LOG etiketini yazıyor. Elbette bununla yapamayacağımız şeyler var, mesela <code>Logger</code> artık tek başına kullanılabilir bir sınıf değil. Çözüm olarak genelde <code>Logger</code>’a da bir üstsınıf koyulur ve <code>log</code>’un kendisi sanal metot hâline getirilir. Elbette bu kazancımızı yok etmiş olur fakat bazı durumlarda (mesela <code>log</code>’un <code>getLogString</code>’i tekrar tekrar çağırması) işimize yarayabilir. Ama günün sonunda yaptığımız şey aslında mixin olmuş oluyor, artık <code>Info</code> da <code>Error</code> da <code>log</code> metotlarını doğru çalıştırıyor ve <code>Logger</code>’ın eklemeleri tamamen statik, derleme zamanında gerçekleşiyor.</p>
+<h2 id="akışkan-arayüz-fluent-interface">Akışkan Arayüz (<em>Fluent Interface</em>)</h2>
+<p>Akışkan arayüz, sınıf metotlarının genel olarak kendini dönmesi oluyor. Özellikle sınıfların atayıcıları (<em>setters</em>) bunu kullanmaya müsait olur. Mesela</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> a <span class="op">=</span> MessageBox<span class="op">();</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>a<span class="op">.</span>set_title<span class="op">(</span><span class="st">&quot;zort&quot;</span><span class="op">);</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>a<span class="op">.</span>set_message<span class="op">(</span><span class="st">&quot;zurt&quot;</span><span class="op">);</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>a<span class="op">.</span>show<span class="op">();</span></span></code></pre></div>
+<p>kodunda görebileceğiniz üzere <code>a</code>’yı sürekli tekrarladık. Oysa aynı sınıf üzerinde bütün bu işlemleri yapıyoruz, ama bütün bu metotlar <code>void</code> dönüyor, yani dönüş değerleri boşta bekliyor! Akışkan arayüz olduğu takdirde şöyle bir kod mümkün oluyor:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MessageBox<span class="op">()</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>set_title<span class="op">(</span><span class="st">&quot;zort&quot;</span><span class="op">)</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>set_message<span class="op">(</span><span class="st">&quot;zurt&quot;</span><span class="op">)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>show<span class="op">();</span></span></code></pre></div>
+<p>Eğer daha sonra kullanmayacaksak değişken tanımlamaya bile gerek kalmıyor!</p>
+<p>Gelin <a href="https://www.tecgraf.puc-rio.br/iup">IUP</a> grafik arayüz kütüphanesinin <code>VBox</code> sınıfı için bir C++ kaplayıcısı (<em>wrapper</em>) yazalım. Normalde bu kütüphane C’de yazılmış ve C üzerinden iletişim kuruyor, ama C++ kaplayıcısı yazmak zor değil. Ayrıca elementlerin nitelikleri (başlık, yazı, boyut vb.) metin olarak yazıldığı için fonksiyon yelpazesi de oldukça ufak, sadece “IupSetAttribute” ile aşağı yukarı her türlü nitelik uygun şekilde değiştirilebiliyor. Bir de sadece kaplar (<em>containers</em>) için geçerli olan bir <code>IupAppend</code> fonksiyonu var, kabın içine yeni bir element yerleştiriyor. Basit bir şekilde düzenlemek gerekirse şu şekilde bir sınıf hiyerarşisi oluşuyor:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Element <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    Element<span class="op">(</span>Ihandle<span class="op">*</span> handle<span class="op">)</span> <span class="op">:</span> handle<span class="op">(</span>handle<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> set_attribute<span class="op">(</span><span class="dt">char</span> <span class="at">const</span><span class="op">*</span> name<span class="op">,</span> <span class="dt">char</span> <span class="at">const</span><span class="op">*</span> value<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        IupSetAttribute<span class="op">(</span>handle<span class="op">,</span> name<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    Ihandle<span class="op">*</span> handle<span class="op">;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Container <span class="op">:</span> Element <span class="op">{</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> Element<span class="op">::</span>Element<span class="op">;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> append<span class="op">(</span>Element <span class="at">const</span><span class="op">&amp;</span> elem<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        IupAppend<span class="op">(</span>handle<span class="op">,</span> elem<span class="op">.</span>handle<span class="op">);</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> VBox <span class="op">:</span> Container <span class="op">{</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    VBox<span class="op">()</span> <span class="op">:</span> Container<span class="op">(</span>IupVbox<span class="op">(</span><span class="kw">nullptr</span><span class="op">))</span> <span class="op">{}</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Burada <code>using Element::Element</code> ile <code>Element</code>’in oluşturucusunu (<em>constructor</em>) <code>Container</code>’a da eklemiş olduk. Artık şu şekilde kullanabiliriz VBox’ımızı:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> v <span class="op">=</span> VBox<span class="op">();</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>v<span class="op">.</span>set_attribute<span class="op">(</span><span class="st">&quot;GAP&quot;</span><span class="op">,</span> <span class="st">&quot;4&quot;</span><span class="op">);</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>v<span class="op">.</span>append<span class="op">(</span>VBox<span class="op">());</span></span></code></pre></div>
+<p>Şimdi bunu akışkan arayüze çevirmeyi deneyelim isterseniz:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Element <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    Element<span class="op">(</span>Ihandle<span class="op">*</span> handle<span class="op">)</span> <span class="op">:</span> handle<span class="op">(</span>handle<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    Element <span class="at">const</span><span class="op">&amp;</span> set_attribute<span class="op">(</span><span class="dt">char</span> <span class="at">const</span><span class="op">*</span> name<span class="op">,</span> <span class="dt">char</span> <span class="at">const</span><span class="op">*</span> value<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        IupSetAttribute<span class="op">(</span>handle<span class="op">,</span> name<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    Ihandle<span class="op">*</span> handle<span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Container <span class="op">:</span> Element <span class="op">{</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> Element<span class="op">::</span>Element<span class="op">;</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    Container <span class="at">const</span><span class="op">&amp;</span> append<span class="op">(</span>Element <span class="at">const</span><span class="op">&amp;</span> elem<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        IupAppend<span class="op">(</span>handle<span class="op">,</span> elem<span class="op">.</span>handle<span class="op">);</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> VBox <span class="op">:</span> Container <span class="op">{</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    VBox<span class="op">()</span> <span class="op">:</span> Container<span class="op">(</span>IupVbox<span class="op">(</span><span class="kw">nullptr</span><span class="op">))</span> <span class="op">{}</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Ama şu şekilde kullanamayız:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>VBox<span class="op">()</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>set_attribute<span class="op">(</span><span class="st">&quot;GAP&quot;</span><span class="op">,</span> <span class="st">&quot;4&quot;</span><span class="op">)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>append<span class="op">(</span>VBox<span class="op">());</span></span></code></pre></div>
+<p>çünkü <code>set_attribute</code> bir <code>Element</code> dönüyor ve <code>Element</code>’lere <code>append</code> edilemiyor! Eğer <code>set_attribute</code> bir <code>Container</code> dönerse bu sefer de <code>Container</code> olmayan elementleri tanımlarken <code>Element</code>’i kullanamayız. Ayrı bir <code>Element</code> oluşturmamız gerekir. İşte bunu derleyicinin bizim için yapmasını CRTP ile sağlayabiliriz!</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Child<span class="op">&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Element <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    Element<span class="op">(</span>Ihandle<span class="op">*</span> handle<span class="op">)</span> <span class="op">:</span> handle<span class="op">(</span>handle<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    Child <span class="at">const</span><span class="op">&amp;</span> set_attribute<span class="op">(</span><span class="dt">char</span> <span class="at">const</span><span class="op">*</span> name<span class="op">,</span> <span class="dt">char</span> <span class="at">const</span><span class="op">*</span> value<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        IupSetAttribute<span class="op">(</span><span class="kw">this</span><span class="op">-&gt;</span>handle<span class="op">,</span> name<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">static_cast</span><span class="op">&lt;</span>Child <span class="at">const</span><span class="op">*&gt;(</span><span class="kw">this</span><span class="op">);</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    Ihandle<span class="op">*</span> handle<span class="op">;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> Child<span class="op">&gt;</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Container <span class="op">:</span> Element<span class="op">&lt;</span>Child<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">using</span> Element<span class="op">&lt;</span>Child<span class="op">&gt;::</span>Element<span class="op">;</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> OtherChild<span class="op">&gt;</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    Child <span class="at">const</span><span class="op">&amp;</span> append<span class="op">(</span>Element<span class="op">&lt;</span>OtherChild<span class="op">&gt;</span> <span class="at">const</span><span class="op">&amp;</span> elem<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        IupAppend<span class="op">(</span><span class="kw">this</span><span class="op">-&gt;</span>handle<span class="op">,</span> elem<span class="op">.</span>handle<span class="op">);</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">static_cast</span><span class="op">&lt;</span>Child <span class="at">const</span><span class="op">*&gt;(</span><span class="kw">this</span><span class="op">);</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> VBox <span class="op">:</span> Container<span class="op">&lt;</span>VBox<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    VBox<span class="op">()</span> <span class="op">:</span> Container<span class="op">(</span>IupVbox<span class="op">(</span><span class="kw">nullptr</span><span class="op">))</span> <span class="op">{}</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Bir iki <code>this</code> ekledim derleyici <code>handle</code>’ı doğrudan bulamadığı için, ayrıca <code>append</code> de artık ayrı bir şablon sınıf oldu (çünkü elementlerin ana sınıfı artık farklı olabilir). Bunun çözümü olarak yukarıda bahsettiğim gibi <code>Element</code>’in de üstsınıfı olabilir. Bu sefer sanal tabloya vs. de ihtiyacımız yok, en üst ana sınıf sadece <code>handle</code>’ı tutabilir. Diğer sınıflar da sadece metotları eklemiş olur.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> v <span class="op">=</span> VBox<span class="op">();</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>v</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>set_attribute<span class="op">(</span><span class="st">&quot;GAP&quot;</span><span class="op">,</span> <span class="st">&quot;5&quot;</span><span class="op">);</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>append<span class="op">(</span>VBox<span class="op">());</span></span></code></pre></div>
+<p>Evet artık bu yukarıdaki kod çalışıyor!</p>
+<h1 id="kapanış">Kapanış</h1>
+<p>Bu sefer, önceki kadar derin bir bok çukuru olmasa da yine de tuhaf bir şeylerden bahsettim. Bir seneden daha fazla zaman geçmesine rağmen dediğimi yaptım sanırım. Bu arada yaşadıklarım da artık başka gönderinin konusu olsa gerek.</p>
+		</article>
+
+		<div class="metadata">
+			<div id="navigation">
+				<h1>Site</h1>
+				<ul>
+					<li><a href="/about">Hakkımda</a></li>
+					<li><a href="/gönderiler">Gönderiler</a></li>
+					<li><a href="/etiketler">Etiketler</a></li>
+				</ul>
+			</div>
+
+			<hr />
+			<div id="guest-book">
+				<h1>Ziyaretçi Defteri</h1>
+				<iframe src="https://lukantima.atabook.org/"></iframe>
+			</div>
+		</div>
+
+	</div>
+
+	<footer>
+		<div id="copyup">© Erencan Ceyhan, 2025</div>
+		<div id="links">
+			<a href="https://github.com/erenjanje">GitHub</a>
+			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+		</div>
+	</footer>
+</body>
+
+</html>
