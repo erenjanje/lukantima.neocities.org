@@ -18,7 +18,7 @@ Herkese merhabalar! YouTube'da tuhaf tuhaf oyun videoları çekmekten biraz sık
     + `!T` eklenirse `T` ile sonuç (_result_) (burada `T` bir tip belirteci değilse paranteze alınmak zorunda)
     + `(...)` eklenirse daha önceki verilen tipi dönen ve `...` içerisindeki parametre türlerine sahip bir fonksiyon
 olmasını istiyorum açıkçası. Kısacası yukarıdaki tip `void()()[] f` olmalı.
-* Klasik operatörler olmalı, farklı olarak `xor`, `lsh`, `rsh` anahtar kelime şeklinde olmalı. XOR'u şapka ile göstermek oldum olası saçma gelmiştir, bir kaydırmaları da genel tip ve fonksiyonlarla çakışabileceğinden dolayı anahtar kelime oluyorlar.
+* Klasik operatörler olmalı, farklı olarak `xor`, `lsh`, `rsh` anahtar kelime şeklinde olmalı. XOR'u şapka ile göstermek oldum olası saçma gelmiştir, bit kaydırmaları da genel tip ve fonksiyonlarla çakışabileceğinden dolayı anahtar kelime oluyorlar.
 * Dile `let` ve `var` anahtar kelimelerini sokmamak adına `=` ile atamayı değişmez, `<-` ile atamayı değişir atama olarak kullanmayı ve bu ikisinin karıştırılmasının yasak olmasını düşündüm.
 * `arena` ve `thread_scope` gibi birkaç fazladan anahtar kelime güzel olur gibi.
 * Önişlemci (_preprocessor_) yok, üstprogramlama (_metaprogramming_) şimdilik düşünmediğim bir kısım. Genel olarak tip sistemi ile sorunu çözmeyi planlıyorum. Önişlemci olmadığı için boşluk karakterleri (_whitespace_) tokenlerin sonunu belirtmek dışında hiçbir işe yaramamış oluyor.
