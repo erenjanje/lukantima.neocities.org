@@ -44,6 +44,10 @@
 
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
 
+### [Eylül](/gönderiler/2025/09)
+
+- [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
+
 ---
 lang: tr
 ---

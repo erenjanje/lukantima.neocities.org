@@ -49,13 +49,13 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: var(--text-color);
 
-    &>* {
+    & > * {
         margin: 16px;
     }
 }
 
 #site-header {
-    &>h1 {
+    & > h1 {
         font-size: xxx-large;
         color: var(--inverse-text-color);
         text-shadow: var(--text-shadow);
@@ -73,7 +73,7 @@ body {
     color: var(--inverse-text-color);
     text-align: center;
 
-    &>h1 {
+    & > h1 {
         margin: 0;
         text-shadow: var(--text-shadow);
         font-size: xx-large;
@@ -163,11 +163,11 @@ article {
     display: flex;
     gap: 0;
 
-    &>* {
+    & > * {
         flex-basis: 0;
     }
 
-    &>.metadata {
+    & > .metadata {
         flex-grow: 1;
         padding-left: 8px;
         padding-right: 8px;
@@ -205,8 +205,8 @@ article {
                 border: 1px solid black;
             }
 
-            &>a,
-            &>time {
+            & > a,
+            & > time {
                 padding: 5px 7px;
                 text-decoration: none;
                 color: var(--inverse-text-color);
@@ -221,8 +221,8 @@ article {
             }
         }
 
-        &>#guest-book {
-            &>iframe {
+        & > #guest-book {
+            & > iframe {
                 border-radius: 4px;
                 border: 1px solid black;
                 margin-left: 5px;
@@ -240,7 +240,7 @@ article {
         text-align: center;
     }
 
-    &>article {
+    & > article {
         flex-grow: 4;
     }
 }

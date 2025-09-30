@@ -20,6 +20,10 @@
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
 
+## [Derleyiciler](/etiketler/Derleyiciler)
+
+- [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
+
 ## [Ders](/etiketler/Ders)
 
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
@@ -46,6 +50,7 @@
 - [CENG795-HW6: The End of the Homework to End All Homeworks](/gönderiler/2025/01/ceng795-hw6)
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
+- [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
 
 ## [Haskell](/etiketler/Haskell)
 
@@ -116,6 +121,11 @@
 - [CENG795-HW6: The End of the Homework to End All Homeworks](/gönderiler/2025/01/ceng795-hw6)
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
+- [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
+
+## [Rust](/etiketler/Rust)
+
+- [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
 
 ## [Tasarım](/etiketler/Tasarım)
 
@@ -134,6 +144,7 @@
 - [CENG795-HW6: The End of the Homework to End All Homeworks](/gönderiler/2025/01/ceng795-hw6)
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
+- [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
 
 ## [Toplum](/etiketler/Toplum)
 
