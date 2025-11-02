@@ -1,14 +1,18 @@
 # Etiketler
 
-## [Blog](/etiketler/Blog)
+## Blog
 
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [Cinsiyet Meseleleri](/etiketler/Cinsiyet Meseleleri)
+## C
+
+- [C Bok Çukuru: `malloc`suz Dinamik Hafıza](/gönderiler/2025/11/özyineleme)
+
+## Cinsiyet Meseleleri
 
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [C++](/etiketler/C++)
+## C++
 
 - [C++ Şablon Bok Çukuru](/gönderiler/2024/04/şablon-cehennemi)
 - [CENG795-HW1: Simple Recursive Raytracer](/gönderiler/2024/10/ceng795-hw1)
@@ -20,23 +24,23 @@
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
 
-## [Derleyiciler](/etiketler/Derleyiciler)
+## Derleyiciler
 
 - [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
 
-## [Ders](/etiketler/Ders)
+## Ders
 
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
 
-## [Eski İnternet](/etiketler/Eski İnternet)
+## Eski İnternet
 
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [Giriş](/etiketler/Giriş)
+## Giriş
 
 - [Merhaba](/gönderiler/2024/01/yeni-merhaba)
 
-## [Gönderi](/etiketler/Gönderi)
+## Gönderi
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
@@ -51,24 +55,25 @@
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
 - [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
+- [C Bok Çukuru: `malloc`suz Dinamik Hafıza](/gönderiler/2025/11/özyineleme)
 
-## [Haskell](/etiketler/Haskell)
+## Haskell
 
 - [C++ Şablon Bok Çukuru](/gönderiler/2024/04/şablon-cehennemi)
 
-## [İletişim](/etiketler/İletişim)
+## İletişim
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 
-## [İnternet](/etiketler/İnternet)
+## İnternet
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 
-## [İş](/etiketler/İş)
+## İş
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 
-## [Işın İzleme](/etiketler/Işın İzleme)
+## Işın İzleme
 
 - [CENG795-HW1: Simple Recursive Raytracer](/gönderiler/2024/10/ceng795-hw1)
 - [CENG795-HW2: Raytracing with BVH and Transformations](/gönderiler/2024/11/ceng795-hw2)
@@ -78,29 +83,29 @@
 - [CENG795-HW6: The End of the Homework to End All Homeworks](/gönderiler/2025/01/ceng795-hw6)
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 
-## [Kapitalizm](/etiketler/Kapitalizm)
+## Kapitalizm
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 
-## [Karşılama](/etiketler/Karşılama)
+## Karşılama
 
 - [Merhaba](/gönderiler/2024/01/yeni-merhaba)
 
-## [Linux](/etiketler/Linux)
+## Linux
 
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
 
-## [Müzik](/etiketler/Müzik)
+## Müzik
 
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
 
-## [Okul](/etiketler/Okul)
+## Okul
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [Ödev](/etiketler/Ödev)
+## Ödev
 
 - [CENG795-HW1: Simple Recursive Raytracer](/gönderiler/2024/10/ceng795-hw1)
 - [CENG795-HW2: Raytracing with BVH and Transformations](/gönderiler/2024/11/ceng795-hw2)
@@ -110,7 +115,7 @@
 - [CENG795-HW6: The End of the Homework to End All Homeworks](/gönderiler/2025/01/ceng795-hw6)
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 
-## [Programlama](/etiketler/Programlama)
+## Programlama
 
 - [C++ Şablon Bok Çukuru](/gönderiler/2024/04/şablon-cehennemi)
 - [CENG795-HW1: Simple Recursive Raytracer](/gönderiler/2024/10/ceng795-hw1)
@@ -122,16 +127,17 @@
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
 - [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
+- [C Bok Çukuru: `malloc`suz Dinamik Hafıza](/gönderiler/2025/11/özyineleme)
 
-## [Rust](/etiketler/Rust)
+## Rust
 
 - [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
 
-## [Tasarım](/etiketler/Tasarım)
+## Tasarım
 
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [Teknoloji](/etiketler/Teknoloji)
+## Teknoloji
 
 - [İlk Düzgün Gönderi](/gönderiler/2024/02/ilk-gönderi)
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
@@ -145,16 +151,17 @@
 - [CENG795-Final: Ghost in the Trace](/gönderiler/2025/01/ceng795-final)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)
 - [Sıfırdan Derleyici 01: Lexer](/gönderiler/2025/09/lexer)
+- [C Bok Çukuru: `malloc`suz Dinamik Hafıza](/gönderiler/2025/11/özyineleme)
 
-## [Toplum](/etiketler/Toplum)
+## Toplum
 
 - [Sitenin Yeni Tasarımı ve Toplum Üzerine](/gönderiler/2024/03/tasarım-toplum)
 
-## [Türkü](/etiketler/Türkü)
+## Türkü
 
 - [Yeni Dönem Yeni Gönderi](/gönderiler/2024/02/dönem)
 
-## [Üstprogramlama](/etiketler/Üstprogramlama)
+## Üstprogramlama
 
 - [C++ Şablon Bok Çukuru](/gönderiler/2024/04/şablon-cehennemi)
 - [C++ Şablon Bok Çukuru 2: ~~Elektrik Bugalu~~ CRTP](/gönderiler/2025/07/crtp)

@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">CENG795-HW6: The End of the Homework to End All Homeworks</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>CENG795-HW6: The End of the Homework to End All Homeworks</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
 <ul>
@@ -43,34 +42,9 @@
 <li><a href="#performance" id="toc-performance">Performance</a></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/01">01</a>-21 21:50:15+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Ödev">Ödev</a></li>
-										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+		<hr/>
+		
+		<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Kon’nichiwa everybody! Finally, the semester is finished, with only this homework and the final project remaining. Unfortunately, the future seems a bit bleak for me. Even though not as bad as <a href="/posts/2024/11/ceng795-hw2">HW2</a> was, path tracing is unfortunately not correct in its current form. It becomes even worse when I consider that the instructor extended the deadline by more than one week to let us concentrate on the homework after our final exams. It is a great shame on my part! I guess that the main reason of my failure was pretty much the same with the HW2’s failure, my over-confidence to do the homeworks. It seems like managing to do three consecutive homeworks correctly, each in one or two days, inflated my ego, resulting in this mess.</p>
 <h1 id="implementation">Implementation</h1>
 <h2 id="brdf">BRDF</h2>
@@ -91,11 +65,11 @@
     specular_color := specular_reflectance * specular(light, w_i, w_o)
     result += diffuse_color + specular_color</code></pre>
 <p>This actually somewhat hides the rendering equation</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>k</mi><mi>e</mi></msub><mo>+</mo><mo>∫</mo><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub><mi>d</mi><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>k</mi><mi>e</mi></msub><mo>+</mo><mo>∫</mo><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub><mi>d</mi><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">
 L(w_o) = k_e + \int L(w_i) f(w_i, w_o) \cos\theta_i dw_i
 </annotation></semantics></math></p>
-<p>Here <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>e</mi></msub><annotation encoding="application/x-tex">k_e</annotation></semantics></math> is the emission (denoted by radiance in the homework) and the integral is the same as the one we know from the lectures. However, my previous approach calculates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> twice, first in <code>diffuse</code> and again in <code>specular</code>. It also separates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math> to both of them and calculates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> in <code>diffuse</code>, whereas in the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math>, diffuse actually does not depend on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math>, while <code>specular</code> reflectance actually needs to use it but does not here since in actual <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> becomes part of denominator, eliminating the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> in the integral.</p>
-<p>BRDFs on the other hand define <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math>, yet as I said in the previous paragraph, I cannot take out <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math> from the current calculation, it is pretty much integrated in the calculations. Hence, I refactored the whole shading calculations, which actually made my mode more modularized compared to the previous one. Currently, the calculations look like this:</p>
+<p>Here <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>e</mi></msub><annotation encoding="application/x-tex">k_e</annotation></semantics></math> is the emission (denoted by radiance in the homework) and the integral is the same as the one we know from the lectures. However, my previous approach calculates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> twice, first in <code>diffuse</code> and again in <code>specular</code>. It also separates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math> to both of them and calculates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> in <code>diffuse</code>, whereas in the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math>, diffuse actually does not depend on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math>, while <code>specular</code> reflectance actually needs to use it but does not here since in actual <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> becomes part of denominator, eliminating the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> in the integral.</p>
+<p>BRDFs on the other hand define <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math>, yet as I said in the previous paragraph, I cannot take out <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math> from the current calculation, it is pretty much integrated in the calculations. Hence, I refactored the whole shading calculations, which actually made my mode more modularized compared to the previous one. Currently, the calculations look like this:</p>
 <pre><code>foreach light in lights:
     w_i := Ray::from_to(hit_point, light.point())
     if ray.is_in_shadow():
@@ -106,8 +80,8 @@ L(w_o) = k_e + \int L(w_i) f(w_i, w_o) \cos\theta_i dw_i
     result += L * f * cos_theta</code></pre>
 <p>This actually needed two different refactors on my part: the BRDF and the lights. The <code>light.point()</code> in the loops were implemented in the shading function, which made the code more complex since the shading code was littered with light sampling code, especially for area and environment lights. I fixed this by making methods in the lights, which were previously POD structs, that returns a sample point on the light. For point or spot lights, this point is always the position of the light. For directional lights, this is the hit point offset by the negative of the direction of the light (for more information about this approach, see the <a href="/posts/2024/12/ceng795-hw5/#directional-lights">relevant section</a> in the HW5), environment lights are similar but the positive of the direction instead of negative and the direction is randomly sampled from the upper hemisphere. Area lights also use the usual jittered random sampling that I have been using so far, only relocated to a different function.</p>
 <p>Since I started the relocation of light sample point calculations, I also relocated the light irradiance calculations to the same place. Different lights have different irradiance characteristics, point and area lights are attenuated using the inverse square law, environment and directional lights do not attenuate at all and spot lights use falloff angles. All of these differences are abstracted in <code>light.getIrradiance()</code> call, which simplified the code greatly.</p>
-<p>With this, the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> of the rendering equation was done. However, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math> remained. For that, I needed to parse BRDFs, which I did. First and only time in this homework chain, I used <code>shared_ptr</code> since BRDFs can be shared by multiple materials. Usually, I use plain references for this purpose, which I did to share <code>Image</code>s between <code>TextureMap</code>s; however, this time there is a difference that materials can create new BRDFs if they don’t define their BRDF. By default, a material without defined BRDF must use an <code>OriginalBlinnPhong</code> BRDF with exponent equal to the <code>PhongExponent</code> of the material. The last thing I want to add is that I put the BRDFs in an <code>std::vector</code>. Did you see the problem? If I add a new BRDF while parsing a material, the references of the BRDFs of all the previous materials would be invalidated if that vector reallocates! Yikes! I came across this problem in my compilers course in the previous term while storing references to variable declarations while doing variable resolution, but if a declaration defined a new variable, it would push to the variable declarations of the current scope, invalidating every reference used previously. This caused a great deal of headache, so I have been more cautious about this since then. Interestingly, Rust would catch this error at compile time, since the BRDF references in the materials borrow the vector immutably, while pushing to the vector borrows the vector mutably, and by the main rules of Rust’s borrow checker, it is illegal to hold both mutable and immutable references to the same value. There are actually two other ways to solve this: by using indices and pre-allocating the vector. I actually used former for various things, but I am tired of passing the needed arrays to functions, since indices by themselves are useless. Latter is pretty hard since counting the number of BRDFs in the scene needs a loop over all BRDFs. This is not a big problem, but slapping <code>std::shared_ptr</code> was much easier, so I went with that route.</p>
-<p>After rambling about my <code>shared_ptr</code> choice, let’s continue with BRDFs. Implementing the virtual method <code>f</code> was somewhat easy, since the formulas have been given to us in the <code>brdf.pdf</code> in Odtuclass. The formula of <code>OriginalBlinnPhong</code> is actually not given there but it can easily be found from the given formula of <code>OriginalPhong</code>, where we just replace <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>p</mi></msup><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mi>r</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\cos^p(\alpha_r)</annotation></semantics></math> with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>p</mi></msup><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><msup><mi>r</mi><mo>′</mo></msup></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\cos^p(\alpha_r&#39;)</annotation></semantics></math>, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><msup><mi>r</mi><mo>′</mo></msup></msub><annotation encoding="application/x-tex">\alpha_r&#39;</annotation></semantics></math> is the angle between the normal and the half vector, instead of the angle between the normal and the perfect reflection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math>. Hence, the formula of <code>OriginalBlinnPhong</code> is as follows:</p>
+<p>With this, the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> of the rendering equation was done. However, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_i, w_o)</annotation></semantics></math> remained. For that, I needed to parse BRDFs, which I did. First and only time in this homework chain, I used <code>shared_ptr</code> since BRDFs can be shared by multiple materials. Usually, I use plain references for this purpose, which I did to share <code>Image</code>s between <code>TextureMap</code>s; however, this time there is a difference that materials can create new BRDFs if they don’t define their BRDF. By default, a material without defined BRDF must use an <code>OriginalBlinnPhong</code> BRDF with exponent equal to the <code>PhongExponent</code> of the material. The last thing I want to add is that I put the BRDFs in an <code>std::vector</code>. Did you see the problem? If I add a new BRDF while parsing a material, the references of the BRDFs of all the previous materials would be invalidated if that vector reallocates! Yikes! I came across this problem in my compilers course in the previous term while storing references to variable declarations while doing variable resolution, but if a declaration defined a new variable, it would push to the variable declarations of the current scope, invalidating every reference used previously. This caused a great deal of headache, so I have been more cautious about this since then. Interestingly, Rust would catch this error at compile time, since the BRDF references in the materials borrow the vector immutably, while pushing to the vector borrows the vector mutably, and by the main rules of Rust’s borrow checker, it is illegal to hold both mutable and immutable references to the same value. There are actually two other ways to solve this: by using indices and pre-allocating the vector. I actually used former for various things, but I am tired of passing the needed arrays to functions, since indices by themselves are useless. Latter is pretty hard since counting the number of BRDFs in the scene needs a loop over all BRDFs. This is not a big problem, but slapping <code>std::shared_ptr</code> was much easier, so I went with that route.</p>
+<p>After rambling about my <code>shared_ptr</code> choice, let’s continue with BRDFs. Implementing the virtual method <code>f</code> was somewhat easy, since the formulas have been given to us in the <code>brdf.pdf</code> in Odtuclass. The formula of <code>OriginalBlinnPhong</code> is actually not given there but it can easily be found from the given formula of <code>OriginalPhong</code>, where we just replace <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mo>cos</mo><mi>p</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos^p(\alpha_r)</annotation></semantics></math> with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mo>cos</mo><mi>p</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>r</mi></msub><mi>′</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos^p(\alpha_r&#39;)</annotation></semantics></math>, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>r</mi></msub><mi>′</mi></mrow><annotation encoding="application/x-tex">\alpha_r&#39;</annotation></semantics></math> is the angle between the normal and the half vector, instead of the angle between the normal and the perfect reflection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math>. Hence, the formula of <code>OriginalBlinnPhong</code> is as follows:</p>
 <p><span class="math display">$$
 \begin{cases}
     k_d + k_s \frac{\cos^p(\alpha_r')}{\cos\theta_i} &amp;\quad \theta_i &lt; 90\degree\\
@@ -163,7 +137,7 @@ $$</span></p>
 <img src="./results/brdf_blinnphong_modified_normalized.png" alt="ModifiedBlinnPhong Normalized" />
 <figcaption aria-hidden="true">ModifiedBlinnPhong Normalized</figcaption>
 </figure>
-<p>After reading the Torrance-Sparrow part in the <code>brdf.pdf</code>, I realized that the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>ϕ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\cos(\phi)</annotation></semantics></math> was not explained in the PDF, which prevented me from implementing it. I asked the instructor about this and waited. However, curiosity got better of me and I skimmed the PBR book. After struggling with the interface (really, just trying to read the PBR book’s code is too much for me for some reason), I finally found out that <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>ϕ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\cos(\phi)</annotation></semantics></math> was the angle between the normal and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>o</mi></msub><annotation encoding="application/x-tex">w_o</annotation></semantics></math>. A couple of days after I asked, the instructor also replied and my guess was verified, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>ϕ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\cos(\phi)</annotation></semantics></math> is indeed <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mi>w</mi><mi>o</mi></msub></mrow><annotation encoding="application/x-tex">n \cdot w_o</annotation></semantics></math>. After learning this, I implemented Torrance-Sparrow.</p>
+<p>After reading the Torrance-Sparrow part in the <code>brdf.pdf</code>, I realized that the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>ϕ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos(\phi)</annotation></semantics></math> was not explained in the PDF, which prevented me from implementing it. I asked the instructor about this and waited. However, curiosity got better of me and I skimmed the PBR book. After struggling with the interface (really, just trying to read the PBR book’s code is too much for me for some reason), I finally found out that <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>ϕ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos(\phi)</annotation></semantics></math> was the angle between the normal and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>o</mi></msub><annotation encoding="application/x-tex">w_o</annotation></semantics></math>. A couple of days after I asked, the instructor also replied and my guess was verified, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>ϕ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos(\phi)</annotation></semantics></math> is indeed <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mi>w</mi><mi>o</mi></msub></mrow><annotation encoding="application/x-tex">n \cdot w_o</annotation></semantics></math>. After learning this, I implemented Torrance-Sparrow.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> cos_theta <span class="op">=</span> <span class="bu">std::</span>max<span class="op">(</span><span class="fl">0.0</span><span class="bu">f</span><span class="op">,</span> glm<span class="op">::</span>dot<span class="op">(</span>w_i<span class="op">,</span> n<span class="op">));</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>cos_theta <span class="op">&lt;=</span> <span class="fl">0.0</span><span class="bu">f</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> glm<span class="op">::</span>vec3<span class="op">(</span><span class="fl">0.0</span><span class="bu">f</span><span class="op">);</span></span>
@@ -218,15 +192,15 @@ $$</span></p>
 <p>Honestly, after hours and hours of debugging, I have not been able to find the issue. The other parts (like tonemapping) should not be issues since they are exactly the same with the Blinn-Phong one. I debugged the <code>TorranceSparrow::f</code> for tens of times, but I could not find the issue, probably since I don’t have the correct intermediate values, so I cannot compare them with my intermediate results. I actually realized that the Schlick approximation produced values too low in the sphere example before changing it to the Fresnel one, but I could not find such a thing this time. Lucky for me, the other parts of the homework actually do not require Torrance-Sparrow, they use Blinn/Phong BRDFs.</p>
 <h2 id="path-tracing">Path Tracing</h2>
 <h3 id="monte-carlo-path-tracing">Monte Carlo Path Tracing</h3>
-<p>The <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> in the rendering equation is easy to calculate, it is just <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">n \cdot w_i</annotation></semantics></math>. With BRDFs, we also solved the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>o</mi></msub><mo>,</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(w_o, w_i)</annotation></semantics></math> term inside the integral. The only remaining term is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>. The integral is also a bit wrong, it is biased in this current form. Enter Monte Carlo integration. The backbone of the Monte Carlo integration is the equation</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>x</mi><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>F</mi><mi>N</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p>The <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> in the rendering equation is easy to calculate, it is just <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>⋅</mo><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">n \cdot w_i</annotation></semantics></math>. With BRDFs, we also solved the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>o</mi></msub><mo>,</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(w_o, w_i)</annotation></semantics></math> term inside the integral. The only remaining term is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>. The integral is also a bit wrong, it is biased in this current form. Enter Monte Carlo integration. The backbone of the Monte Carlo integration is the equation</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mi>x</mi><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mfrac><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>F</mi><mi>N</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 \int f(x)dx = E\left[\frac{1}{N}\sum_{i=1}^N\frac{f(x_i)}{p(x_i)}\right] = E\left[F_N\right]
 </annotation></semantics></math></p>
 <p>So we calculate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>N</mi></msub><annotation encoding="application/x-tex">F_N</annotation></semantics></math>, and it will converge to the real value of the integration as we increase the number of samples. For our case, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>N</mi></msub><annotation encoding="application/x-tex">F_N</annotation></semantics></math> becomes</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>N</mi></msub><mo>=</mo><mfrac><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>N</mi></msub><mo>=</mo><mfrac><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 </annotation></semantics></math></p>
-<p>This <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> is actually not correct in the previous calculations. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math> s were not traced but instead only shadow rays were sent. If something occludes a light source from a point, it actually means that the incoming ray carries the light from that occluded object, unlike our current assumption that a shadowed light contributing zero. Actually, not only the light rays, but any ray in the upper hemisphere of the object (or the full sphere in case of dielectric materials) contributes to the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_o)</annotation></semantics></math>. Monte Carlo path tracing is pretty much the implementation of this, we can send random rays and trace them to simulate the integration. Unlike lights, each of which has some unique calculation for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>, these rays get their <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> directly as the result of recursive ray trace. In order to do this, we send additional rays when doing the usual shading (which I have been doing in <code>IMaterial::simpleShade</code>) instead of shadow rays to the lights.</p>
+<p>This <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> is actually not correct in the previous calculations. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math> s were not traced but instead only shadow rays were sent. If something occludes a light source from a point, it actually means that the incoming ray carries the light from that occluded object, unlike our current assumption that a shadowed light contributing zero. Actually, not only the light rays, but any ray in the upper hemisphere of the object (or the full sphere in case of dielectric materials) contributes to the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_o)</annotation></semantics></math>. Monte Carlo path tracing is pretty much the implementation of this, we can send random rays and trace them to simulate the integration. Unlike lights, each of which has some unique calculation for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>, these rays get their <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math> directly as the result of recursive ray trace. In order to do this, we send additional rays when doing the usual shading (which I have been doing in <code>IMaterial::simpleShade</code>) instead of shadow rays to the lights.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> dir <span class="op">=</span> getRandomDirection<span class="op">(</span>args<span class="op">.</span>n<span class="op">);</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> w_i <span class="op">=</span> dir<span class="op">;</span></span>
@@ -245,7 +219,7 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <p>If path tracing is enabled (sent through <code>args</code>), the function returns this result, if not (so that we only do normal ray tracing as usual), it does not enter here at all, and skip to the usual light calculation part. This branch is actually pretty much free since the branch is either taken by <em>all</em> rays or not taken by <em>any</em> ray, so the branch predictor can predict the result very easily. With this, the path tracing is actually done!</p>
 <p>However, since the current lights are not intersectable (actually area and environment lights are intersectable but we can ignore them), nothing can be seen without object lights. Then, let’s implement the object lights!</p>
 <h3 id="object-lights">Object Lights</h3>
-<p>Object lights are pretty simple; however, I cheated a bit and instead of parsing <code>LightMesh</code> and <code>LightSphere</code>s, I changed (by hand) all of them to normal <code>Mesh</code> and <code>Spheres</code>. An object light is detected whenever I come across <code>Radiance</code> field in a mesh or sphere, otherwise the emission value of the mesh/sphere is assigned <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mn>0</mn><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0 0 0)</annotation></semantics></math>. This way, I can still detect object lights in the scene (the object lights with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mn>0</mn><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0 0 0)</annotation></semantics></math> radiance actually breaks this, but can we really consider them as lights if they do not emit at all?) while not changing the parser too much. The parser is a giant function of 500 lines, even after modularization, and mesh parsing code is another beast, so copy-pasting it was not feasible for me unfortunately. Instead, I can just change the test cases, since what I do is simple changes to the names of the tags (and a less-simple change to indices, since <code>LightMesh</code>/<code>LightSphere</code> elements use a different index scope, so blindly changing the tag usually causes the first meshes in the scene to be overwritten, i.e. deleting some meshes!). And when I did this, the results were, well, let’s see:</p>
+<p>Object lights are pretty simple; however, I cheated a bit and instead of parsing <code>LightMesh</code> and <code>LightSphere</code>s, I changed (by hand) all of them to normal <code>Mesh</code> and <code>Spheres</code>. An object light is detected whenever I come across <code>Radiance</code> field in a mesh or sphere, otherwise the emission value of the mesh/sphere is assigned <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mn>0</mn><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0 0 0)</annotation></semantics></math>. This way, I can still detect object lights in the scene (the object lights with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mn>0</mn><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0 0 0)</annotation></semantics></math> radiance actually breaks this, but can we really consider them as lights if they do not emit at all?) while not changing the parser too much. The parser is a giant function of 500 lines, even after modularization, and mesh parsing code is another beast, so copy-pasting it was not feasible for me unfortunately. Instead, I can just change the test cases, since what I do is simple changes to the names of the tags (and a less-simple change to indices, since <code>LightMesh</code>/<code>LightSphere</code> elements use a different index scope, so blindly changing the tag usually causes the first meshes in the scene to be overwritten, i.e. deleting some meshes!). And when I did this, the results were, well, let’s see:</p>
 <figure>
 <img src="./results/diffuse_test_hard_shadow.png" alt="Cornellbox with prism light with path tracing and next event estimation without sampling the object light" />
 <figcaption aria-hidden="true">Cornellbox with prism light with path tracing and next event estimation without sampling the object light</figcaption>
@@ -286,7 +260,7 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 </figure>
 <p>You can see that it is <em>very</em> noisy, but you can also see the effects of the global illumination. The shadow of the left sphere for example has green parts. Success!</p>
 <h3 id="importance-sampling">Importance Sampling</h3>
-<p>We divide the result of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">L(w_i) f(w_i, w_o) \cos\theta_i</annotation></semantics></math> by the probability of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math> to be chosen as you know. For uniform sampling, since an upper unit hemisphere has area of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>, the probability is the reciprocal of this. However, to decrease the variance, as shown in the lectures, lecture slides and notes, there is a possibility to decrease the variance by converging the division’s result to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>, which has exactly <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math> variance since it is constant. There are various techniques to do that, some of them advanced and some of them simple. In this homework, we need to implement importance sampling and next event estimation. Since I guessed that the next event estimation implementation will be messy (spoiler: it was) I started with importance sampling. Importance sampling is actually very simple to do, we just change the <code>getRandomDirection</code> function to get a ray with probabilities based on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> instead of uniform probabilities. For this, inversion sampling must be used, but fortunately, the formulas are given to us in the lecture slides; hence, I just implemented them.</p>
+<p>We divide the result of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">L(w_i) f(w_i, w_o) \cos\theta_i</annotation></semantics></math> by the probability of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math> to be chosen as you know. For uniform sampling, since an upper unit hemisphere has area of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>, the probability is the reciprocal of this. However, to decrease the variance, as shown in the lectures, lecture slides and notes, there is a possibility to decrease the variance by converging the division’s result to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>, which has exactly <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math> variance since it is constant. There are various techniques to do that, some of them advanced and some of them simple. In this homework, we need to implement importance sampling and next event estimation. Since I guessed that the next event estimation implementation will be messy (spoiler: it was) I started with importance sampling. Importance sampling is actually very simple to do, we just change the <code>getRandomDirection</code> function to get a ray with probabilities based on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math> instead of uniform probabilities. For this, inversion sampling must be used, but fortunately, the formulas are given to us in the lecture slides; hence, I just implemented them.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">constexpr</span> <span class="kw">auto</span> PI <span class="op">=</span> <span class="dt">float</span><span class="op">(</span><span class="bu">std::</span>numbers::pi<span class="op">);</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>glm<span class="op">::</span>vec3 u<span class="op">,</span> v<span class="op">;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>get_uv<span class="op">(</span>n<span class="op">,</span> u<span class="op">,</span> v<span class="op">);</span></span>
@@ -297,12 +271,12 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> ret <span class="op">=</span> u <span class="op">*</span> sqrt_chi_2 <span class="op">*</span> <span class="bu">std::</span>cos<span class="op">(</span><span class="fl">2.0</span><span class="bu">f</span> <span class="op">*</span> PI <span class="op">*</span> chi<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">+</span> v <span class="op">*</span> sqrt_chi_2 <span class="op">*</span> <span class="bu">std::</span>sin<span class="op">(</span><span class="fl">2.0</span><span class="bu">f</span> <span class="op">*</span> PI <span class="op">*</span> chi<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">+</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            n <span class="op">*</span> sqrt_1_chi_2<span class="op">;</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> glm<span class="op">::</span>normalize<span class="op">(</span>ret<span class="op">);</span></span></code></pre></div>
-<p>This code returns a new sampled direction, with higher probabilities for rays around the normal and less for rays parallel to the surface. Then, the <code>probability</code> we need to multiply becomes different, it will be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><mi>π</mi></mfrac><annotation encoding="application/x-tex">\frac{\cos\theta_i}{\pi}</annotation></semantics></math>. This is a pretty nice improvement to the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>N</mi></msub><annotation encoding="application/x-tex">F_N</annotation></semantics></math>, since if we put this as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(w_i)</annotation></semantics></math>, we get <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mi>π</mi></mfrac><annotation encoding="application/x-tex">\frac{L(w_i) f(w_i, w_o)}{\pi}</annotation></semantics></math> as the inner term. We just removed the variance caused by the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math>! After doing this decision based on whether importance sampling is enabled or not, we can render the scene again after enabling it for the scene.</p>
+<p>This code returns a new sampled direction, with higher probabilities for rays around the normal and less for rays parallel to the surface. Then, the <code>probability</code> we need to multiply becomes different, it will be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><mi>π</mi></mfrac><annotation encoding="application/x-tex">\frac{\cos\theta_i}{\pi}</annotation></semantics></math>. This is a pretty nice improvement to the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>N</mi></msub><annotation encoding="application/x-tex">F_N</annotation></semantics></math>, since if we put this as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(w_i)</annotation></semantics></math>, we get <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>π</mi></mfrac><annotation encoding="application/x-tex">\frac{L(w_i) f(w_i, w_o)}{\pi}</annotation></semantics></math> as the inner term. We just removed the variance caused by the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math>! After doing this decision based on whether importance sampling is enabled or not, we can render the scene again after enabling it for the scene.</p>
 <figure>
 <img src="./results/prism_importance.png" alt="Cornellbox with prism light with importance sampled path tracing (100 samples)" />
 <figcaption aria-hidden="true">Cornellbox with prism light with importance sampled path tracing (100 samples)</figcaption>
 </figure>
-<p>The noise actually did not change that much, since the contribution of the geometry and light distribution of the scene to the variance is probably much higher compared to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math>, but there are a bit improvement. The running time also did not change in a statistically significant way, which is nice, since this means this improvement is free, and free vinegar is sweeter than honey.</p>
+<p>The noise actually did not change that much, since the contribution of the geometry and light distribution of the scene to the variance is probably much higher compared to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\cos\theta_i</annotation></semantics></math>, but there are a bit improvement. The running time also did not change in a statistically significant way, which is nice, since this means this improvement is free, and free vinegar is sweeter than honey.</p>
 <h3 id="russian-roulette">Russian Roulette</h3>
 <blockquote>
 <p>Russian roulette is a dangerous game for humans and rays alike.</p>
@@ -338,7 +312,7 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 </figure>
 <p>So, the only remaining feature is next event estimation! Ikimashou!</p>
 <h3 id="next-event-estimation">Next Event Estimation</h3>
-<p>Next event estimation is a way to reduce the noise of the path traced images by sampling the lights directly. I am not sure, but I think this reduces the variance by tying some of the probability to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>, since the rays directly coming from a light usually have higher <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>, and next event estimation directly samples these rays, pretty much giving <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> probability to those rays. The downside is probably that it is <em>very</em> easy to introduce bias, and I think I fell to this pitfall and do not know how exactly to get out of it.</p>
+<p>Next event estimation is a way to reduce the noise of the path traced images by sampling the lights directly. I am not sure, but I think this reduces the variance by tying some of the probability to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>, since the rays directly coming from a light usually have higher <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(w_i)</annotation></semantics></math>, and next event estimation directly samples these rays, pretty much giving <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> probability to those rays. The downside is probably that it is <em>very</em> easy to introduce bias, and I think I fell to this pitfall and do not know how exactly to get out of it.</p>
 <p>Next event estimation is pretty much the hardest part of the path tracing. Actually, it is still not that hard compared to others, since the actual skeleton of next event estimation has been written so far. It would actually be harder if we did not apply the <em>0/1 heuristic</em> and sent shadow rays to every light in the scene, since randomly choosing a light to sample would mean more code. Fortunately, <em>0/1 heuristic</em> saves the day and we can actually use the normal ray tracing code. The only modification I did for light loops was actually just increasing the <code>ray_counter</code> if the shadow ray hits the light. The other modification to the shading code was checking whether</p>
 <ol type="1">
 <li>The ray that intersected with this object was a global illumination ray (not a reflection or refraction ray) and</li>
@@ -475,29 +449,29 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time</th>
 <th>Render Time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>VeachAjar_path (16 samples)</td>
 <td>0.85864</td>
 <td>252.9 (~4.2min) (15.81 seconds/sample)</td>
 </tr>
-<tr>
+<tr class="even">
 <td>VeachAjar_path (100 samples)</td>
 <td>0.85864</td>
 <td>1416 (~23min) (14.16 seconds/sample)</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>VeachAjar_path (256 samples)</td>
 <td>0.85864</td>
 <td>4007 (~67min) (15.65 seconds/sample)</td>
 </tr>
-<tr>
+<tr class="even">
 <td>VeachAjar_path (1600 samples)</td>
 <td>0.85864</td>
 <td>22558 (~6.2h) (14.1 seconds/sample)</td>
@@ -522,19 +496,19 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <col style="width: 47%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time</th>
 <th>Render Time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>Sponza_path (1 sample)</td>
 <td>1.2111</td>
 <td>38.187 (38.187 seconds/sample)</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Sponza_path (16 samples)</td>
 <td>1.2111</td>
 <td>607.4 (37.9625 seconds/sample)</td>
@@ -544,29 +518,29 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <p>I also measured the performance impact of splitting. As you can see, it improves the performance, but the biggest change happens while going from 1 to 4 splits, so the performance improvement diminishes as we split more.</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time</th>
 <th>Render Time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>flat_importance_next (100x1)</td>
 <td>0.014106</td>
 <td>20.335</td>
 </tr>
-<tr>
+<tr class="even">
 <td>flat_importance_next (25x4)</td>
 <td>0.014106</td>
 <td>17.048</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>flat_importance_next (4x25)</td>
 <td>0.014106</td>
 <td>16.397</td>
 </tr>
-<tr>
+<tr class="even">
 <td>flat_importance_next (1x100)</td>
 <td>0.014106</td>
 <td>16.101</td>
@@ -582,64 +556,64 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <p>Here are the render times of BRDF testcases:</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time</th>
 <th>Render Time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>brdf_blinnphong_modified_normalized</td>
 <td>0.011135</td>
 <td>0.034885</td>
 </tr>
-<tr>
+<tr class="even">
 <td>brdf_blinnphong_modified</td>
 <td>0.010156</td>
 <td>0.033492</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>brdf_blinnphong_original</td>
 <td>0.0099911</td>
 <td>0.030343</td>
 </tr>
-<tr>
+<tr class="even">
 <td>brdf_phong_modified_normalized</td>
 <td>0.010251</td>
 <td>0.034505</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>brdf_phong_modified</td>
 <td>0.019106</td>
 <td>0.035593</td>
 </tr>
-<tr>
+<tr class="even">
 <td>brdf_phong_original</td>
 <td>0.010284</td>
 <td>0.030646</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>brdf_torrancesparrow</td>
 <td>0.011338</td>
 <td>0.037017</td>
 </tr>
-<tr>
+<tr class="even">
 <td>killeroo_blinnphong</td>
 <td>0.50651</td>
 <td>5.4679</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>killeroo_blinnphong_closeup</td>
 <td>0.50651</td>
 <td>7.6774</td>
 </tr>
-<tr>
+<tr class="even">
 <td>killeroo_torrancesparrow</td>
 <td>0.51657</td>
 <td>5.4071</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>killeroo_torrancesparrow_closeup</td>
 <td>0.51657</td>
 <td>7.8329</td>
@@ -664,7 +638,7 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <col style="width: 42%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time</th>
 <th>Render Time</th>
@@ -672,145 +646,145 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>cornellbox_jaroslav_diffuse</td>
 <td>0.0008561</td>
 <td>3.5037</td>
 <td>3.5037</td>
 </tr>
-<tr>
+<tr class="even">
 <td>cornellbox_jaroslav_diffuse_area</td>
 <td>0.0008162</td>
 <td>3.6002</td>
 <td>3.6002</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>cornellbox_jaroslav_glossy</td>
 <td>0.0008227</td>
 <td>3.3282</td>
 <td>3.3282</td>
 </tr>
-<tr>
+<tr class="even">
 <td>cornellbox_jaroslav_glossy_area</td>
 <td>0.011007</td>
 <td>3.5994</td>
 <td>3.5994</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>flat_importance (400 samples)</td>
 <td>0.012726</td>
 <td>41.97</td>
 <td>10.4925</td>
 </tr>
-<tr>
+<tr class="even">
 <td>flat_importance_next</td>
 <td>0.012726</td>
 <td>20.282</td>
 <td>20.282</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>flat_importance_next_russian</td>
 <td>0.012726</td>
 <td>14.98</td>
 <td>14.98</td>
 </tr>
-<tr>
+<tr class="even">
 <td>flat_next</td>
 <td>0.012726</td>
 <td>19.692</td>
 <td>19.692</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>glass (400 samples)</td>
 <td>0.012292</td>
 <td>208.52</td>
 <td>52.13</td>
 </tr>
-<tr>
+<tr class="even">
 <td>glass_importance (400 samples)</td>
 <td>0.012292</td>
 <td>149.63</td>
 <td>37.4075</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>glass_next</td>
 <td>0.012292</td>
 <td>51.278</td>
 <td>51.278</td>
 </tr>
-<tr>
+<tr class="even">
 <td>glass_next_importance</td>
 <td>0.012292</td>
 <td>57.509</td>
 <td>57.509</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>glass_next_importance_russian</td>
 <td>0.012292</td>
 <td>35.983</td>
 <td>35.983</td>
 </tr>
-<tr>
+<tr class="even">
 <td>prism</td>
 <td>0.0014494</td>
 <td>13.467</td>
 <td>13.467</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>prism_importance</td>
 <td>0.0014494</td>
 <td>13.466</td>
 <td>13.466</td>
 </tr>
-<tr>
+<tr class="even">
 <td>prism_next</td>
 <td>0.0014494</td>
 <td>28.38</td>
 <td>28.38</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>prism_next_importance</td>
 <td>0.0014494</td>
 <td>27.572</td>
 <td>27.572</td>
 </tr>
-<tr>
+<tr class="even">
 <td>prism_next_importance_russian</td>
 <td>0.0014494</td>
 <td>21.735</td>
 <td>21.735</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>prism_next_russian</td>
 <td>0.0014494</td>
 <td>19.506</td>
 <td>19.506</td>
 </tr>
-<tr>
+<tr class="even">
 <td>prism_russian</td>
 <td>0.0014494</td>
 <td>9.7997</td>
 <td>9.7997</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>sphere_importance (400 samples)</td>
 <td>0.012391</td>
 <td>41.66</td>
 <td>10.415</td>
 </tr>
-<tr>
+<tr class="even">
 <td>sphere_importance_next</td>
 <td>0.012391</td>
 <td>20.294</td>
 <td>20.294</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>sphere_importance_next_russian</td>
 <td>0.012391</td>
 <td>15.212</td>
 <td>15.212</td>
 </tr>
-<tr>
+<tr class="even">
 <td>sphere_next</td>
 <td>0.012391</td>
 <td>19.94</td>
@@ -836,41 +810,30 @@ F_N = \frac{L(w_i) f(w_i,w_o) \cos\theta_i}{p(w_i)}
 <p>Oh, I really said it! Sorry for venting about the homework, but I needed to say them. I would like to fix some of them, like the vertex format (merging XML, PLY and binary) if I can. I did not have time for implementing any format conversion in the term, but the semester holiday may be enough to make it happen.</p>
 <p>As I said in the introduction, I am sad and angry that I underestimated the homework, resulting in this mess. If only I worked on this one harder, maybe even a couple of days would remain that I could use for the final project, which neither I nor my teammate have started yet. The next two days will probably be pretty intense, I suppose.</p>
 <p>Between the messy codebase and non-exact requirements, I really felt that I am doing some software engineering work in this homework. I want to thank the instructor for this great chain of homeworks. See you in the blog post for the final project!</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1"><p>This time it is not an anime reference, but a history/Sabaton reference! Actually, the phrase “<a href="https://en.wikipedia.org/wiki/The_war_to_end_war">the war to end war</a>” was used for the first world war (back then also known as the Great War) in the interwar period, since the sheer size of the war made many Westerners think that the taming or destroying the Germans in that war would bring a great peace. However, as we know now, not only that the WW1 was not the last war, but it even caused the even more devastating second world war. The phrase “the war to end all wars” is an alternative phrase with more-or-less the same meaning, while the phrase “the end of the war to end all wars” is the name of a <a href="https://www.youtube.com/watch?v=8um0s-h3_AM">Sabaton song</a>, referencing this phrase. The song is about the overall WW1, the armistice and of course the irreversible results of the war like the devastation or the fact that four biggest non-national empires (German, Austro-Hungarian, Ottoman and Russian) being dissolved. I also remember the song each time the Armistice of Versailles is mentioned, since the outro of the song starts with “November 11th settling the score”, referencing the date of the armistice.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-		</article>
+</aside>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2025-01-21 21:50:15+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

@@ -305,5 +305,5 @@ tags:
 - Teknoloji
 - Gönderi
 - Üstprogramlama
-date: '[2025](/gönderiler/2025)-[07](/gönderiler/2025/07)-19 18:27:52+03:00'
+date: 2025-07-19 18:27:52+03:00
 ---

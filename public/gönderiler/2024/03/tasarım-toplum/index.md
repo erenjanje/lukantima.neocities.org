@@ -44,5 +44,5 @@ tags:
 - Tasarım
 - Teknoloji
 - Toplum
-date: '[2024](/gönderiler/2024)-[03](/gönderiler/2024/03)-23 10:12:16+03:00'
+date: 2024-03-23 10:12:16+03:00
 ---

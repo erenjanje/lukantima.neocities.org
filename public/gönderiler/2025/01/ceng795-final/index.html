@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">CENG795-Final: Ghost in the Trace</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>CENG795-Final: Ghost in the Trace</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#theory" id="toc-theory">Theory</a></li>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
@@ -47,51 +46,26 @@
 <li><a href="#performance" id="toc-performance">Performance</a></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/01">01</a>-23 22:59:53+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Ödev">Ödev</a></li>
-										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+		<hr/>
+		
+		<p><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <p>Kon’nichiwa and ciao everybody, welcome to our blog post about the final project of the course Advanced Ray Tracing. It has been a very interesting, challenging, educating and entertaining semester with ray tracing. After countless hours, we have managed to create (mostly) working ray tracers with a great set of features. As we have finished the homeworks, we decided our final projects, each of us choosing a different augment. Alp and me decided to implement Sparse Voxel Octree, which is a nice acceleration structure that can be used to represent huge amounts of blocks while taking small amount of space, and also have a fast intersection routine.</p>
 <p>I (Erencan) did the SVO part while Alp did the Minecraft importer part. The project is based on my ray tracer, so its rendering has all the quirks and errors that my HW6 ray tracer has.</p>
 <h1 id="theory">Theory</h1>
 <p>Voxel Trees work in a way pretty similar to Bounding Volume Hierarchies. Actually, if every block is defined as 12 triangles, which is pretty much the normal representation of a cube, and the coordinates of the vertices of these triangles are given correctly (without precision errors), a BVH pretty much converges to a voxel tree. If each BVH node has eight children, this BVH tree is pretty much a Dense Voxel Octree. I am not sure whether surface area heuristic can break this or not, but median division (which is what both of us used) converges to a DVO.</p>
 <p>DVOs are pretty bad that they need more memory compared to a plain block array. They have a nice property of that they can easily be represented using heaps, since each internal node has exactly 8 children. The memory usage can be calculated as a geometric series:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>1</mn><mo>+</mo><mn>8</mn><mo>+</mo><msup><mn>8</mn><mn>2</mn></msup><mo>+</mo><msup><mn>8</mn><mn>3</mn></msup><mo>+</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>+</mo><msup><mn>8</mn><mrow><msub><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mn>8</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></munderover><msup><mn>8</mn><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>1</mn><mo>+</mo><mn>8</mn><mo>+</mo><msup><mn>8</mn><mn>2</mn></msup><mo>+</mo><msup><mn>8</mn><mn>3</mn></msup><mo>+</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>+</mo><msup><mn>8</mn><mrow><msub><mo>log</mo><mn>8</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></munderover><msup><mn>8</mn><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">
 M = 1 + 8 + 8^2 + 8^3 + ... + 8^{\log_8\left(N\right)} = \sum_{i=0}^{\log\left(N\right)} 8^i
 </annotation></semantics></math></p>
 <p>where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> is the number of blocks. For a geometric series with base <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> (exponent of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>) to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>, the summation can be calculated using this formula:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msup><mi>α</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><mrow><mi>α</mi><mo>−</mo><mn>1</mn></mrow></mfrac><annotation encoding="application/x-tex">
 \frac{\alpha^{n+1}- 1}{\alpha - 1}
 </annotation></semantics></math></p>
-<p>Here, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mn>8</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">n = \log_8\left(N\right)</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">\alpha = 8</annotation></semantics></math> for our case. When we put them into their places in the summation formula, we get this:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msup><mn>8</mn><mrow><msub><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mn>8</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup><mo>−</mo><mn>1</mn></mrow><mn>7</mn></mfrac><annotation encoding="application/x-tex">
+<p>Here, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mo>log</mo><mn>8</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">n = \log_8\left(N\right)</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">\alpha = 8</annotation></semantics></math> for our case. When we put them into their places in the summation formula, we get this:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msup><mn>8</mn><mrow><msub><mo>log</mo><mn>8</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup><mo>−</mo><mn>1</mn></mrow><mn>7</mn></mfrac><annotation encoding="application/x-tex">
 \frac{8^{\log_8\left(N\right)} - 1}{7}
 </annotation></semantics></math></p>
-<p>The <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mn>8</mn></msub><annotation encoding="application/x-tex">\log_8</annotation></semantics></math> eliminates each other, resulting in</p>
+<p>The <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>8</mn><annotation encoding="application/x-tex">8</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mo>log</mo><mn>8</mn></msub><annotation encoding="application/x-tex">\log_8</annotation></semantics></math> eliminates each other, resulting in</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mn>8</mn><mi>N</mi><mo>−</mo><mn>1</mn></mrow><mn>7</mn></mfrac><annotation encoding="application/x-tex">
 \frac{8N - 1}{7}
 </annotation></semantics></math></p>
@@ -131,7 +105,7 @@ M = 1 + 8 + 8^2 + 8^3 + ... + 8^{\log_8\left(N\right)} = \sum_{i=0}^{\log\left(N
 </ol></li>
 </ol></li>
 <li>If neither of these conditions hold true, this node is an internal node.</li>
-<li>Partite the range so that it has 8 (possibly empty) partitions each representing an octant. This is done by comparing the coordinates of the block with the coordinates of the center of <em>node</em>. This center of node has a pretty simple calculation: each octant is offset by a quarter of the size of the node. For instance, if the node has size <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>256</mn><annotation encoding="application/x-tex">256</annotation></semantics></math> with center <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,0)</annotation></semantics></math>, the center of the first octant (all coordinates are non-negative) is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>64</mn><mo>,</mo><mn>64</mn><mo>,</mo><mn>64</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(64,64,64)</annotation></semantics></math>.</li>
+<li>Partite the range so that it has 8 (possibly empty) partitions each representing an octant. This is done by comparing the coordinates of the block with the coordinates of the center of <em>node</em>. This center of node has a pretty simple calculation: each octant is offset by a quarter of the size of the node. For instance, if the node has size <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>256</mn><annotation encoding="application/x-tex">256</annotation></semantics></math> with center <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,0)</annotation></semantics></math>, the center of the first octant (all coordinates are non-negative) is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>64</mn><mo>,</mo><mn>64</mn><mo>,</mo><mn>64</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(64,64,64)</annotation></semantics></math>.</li>
 <li>Recursively construct each child with their corresponding ranges while decreasing the size.</li>
 <li>If all children have the same material, then collapse them into the same node. Otherwise, add these children to the array.</li>
 </ol>
@@ -263,7 +237,7 @@ M = 1 + 8 + 8^2 + 8^3 + ... + 8^{\log_8\left(N\right)} = \sum_{i=0}^{\log\left(N
 <img src="./images/But_It&#39;s_Honest_Work.jpg" alt="Yep, a meme" />
 <figcaption aria-hidden="true">Yep, a meme</figcaption>
 </figure>
-<p>Of course, the project was not exactly done. Even though simple materials were supported, the UV coordinates were not. This was a serious problem since Minecraft blocks are not defined as colors, but textures. Furthermore, there is some noise in sides of the cube as you can see, the reason is that the normal is always returned as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,1,0)</annotation></semantics></math>! I implemented the normal and UV coordinate support at the same time, since they used pretty much the solution of the same problem: face detection.</p>
+<p>Of course, the project was not exactly done. Even though simple materials were supported, the UV coordinates were not. This was a serious problem since Minecraft blocks are not defined as colors, but textures. Furthermore, there is some noise in sides of the cube as you can see, the reason is that the normal is always returned as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,1,0)</annotation></semantics></math>! I implemented the normal and UV coordinate support at the same time, since they used pretty much the solution of the same problem: face detection.</p>
 <h3 id="texture-support">Texture Support</h3>
 <p>The first thing to add in order to support textures was UV support, since textures cannot be used without texture coordinates. In order to do this, I actually did a small hack. Since no matter the transform of the chunk, the hit points would be local, so the normals would <em>always</em> be parallel to the base axes. The <code>aabbIntersect</code> does not find the face, so I needed to find it. After some thinking, I realized that I could just check the sides of the bounding box with the local hit point. It would be pretty enough to find the face. First, I wrote this function:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">static</span> glm<span class="op">::</span>vec3 getBlockNormal<span class="op">(</span>glm<span class="op">::</span>vec3 hit_point<span class="op">,</span> BoundingBox aabb<span class="op">,</span> glm<span class="op">::</span>vec2<span class="op">&amp;</span> uv<span class="op">)</span> <span class="op">{</span></span>
@@ -296,7 +270,7 @@ M = 1 + 8 + 8^2 + 8^3 + ... + 8^{\log_8\left(N\right)} = \sum_{i=0}^{\log\left(N
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">};</span></span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>where <code>equalf</code> is just float equation but with an epsilon, and <code>modf</code> is <code>glm::modf</code> but done twice to remove the sign. <code>std::</code> and <code>glm::modf</code> both return negative numbers if the input is negative, which is not wanted, so I applied the <code>modf</code>, added <code>1.0f</code> and took <code>modf</code> again. This is pretty much the <code>MODULUS</code> macro I used in Perlin textures (defined as <code>#define MODULUS(a, b) (((a % b) + b) % b)</code>), but for floats.</p>
-<p>The signs in the UV were determined by hand. For sides, I tried to do it so that when looked directly, the top left is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0)</annotation></semantics></math>, the U component increases to the right and V component increases to the down, which is pretty much the same as how an image is read. For top and bottom, I was not sure, so it was pretty much random.</p>
+<p>The signs in the UV were determined by hand. For sides, I tried to do it so that when looked directly, the top left is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0)</annotation></semantics></math>, the U component increases to the right and V component increases to the down, which is pretty much the same as how an image is read. For top and bottom, I was not sure, so it was pretty much random.</p>
 <p>We can render the scene using only UV coordinates to see the result:</p>
 <figure>
 <img src="./images/simple_block_uv.png" alt="Simple block with UV" />
@@ -426,24 +400,24 @@ be assigned to the same material.</p>
 <h1 id="performance">Performance</h1>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Scene</th>
 <th>Init Time</th>
 <th>Render Time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>test.xml</td>
 <td>0.50s</td>
 <td>3.74s</td>
 </tr>
-<tr>
+<tr class="even">
 <td>big_dragon.xml</td>
 <td>23.08s</td>
 <td>32.98s</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>closeup.xml</td>
 <td>19.88s</td>
 <td>41.18s</td>
@@ -464,7 +438,7 @@ A keen observer will notice the <code>log8</code> scaling of the SVO functions.<
 <h1 id="conclusion">Conclusion</h1>
 <p>What a term! 6 big homeworks have been a very daunting yet rewarding task for all of us, and now we even used it to create something about our passion of Minecraft! Actually, even though SVO idea came from me, Alp was more motivated than me due to the possibility of importing Minecraft worlds and rendering a Minecraft world using an HW6 ray/path tracer, and we really managed to do it. Optimizing the tree further, especially the traversal optimization by iterating the rays instead of intersecting with every block (which eliminates bounding box intersection and is similar to signed distance field ray marching, but the steps of node size instead of a distance function), better block support (like water or torches) and transformation and instancing support to chunks would be very good, yet we had some time constraints due to the HW6 unfortunately, causing the project to be less polished than we expected. However, this was a great experience, since sometimes we engineers have to create our work in such tight time intervals.</p>
 <p>Speaking of engineering, these homeworks and projects have been pretty much the pinnacle of the knowledge we have gained in this degree program. From managing big codebases and maintaining to time constraints and sometimes-problematic-sometimes-not requirement specifications, this course has been pretty much <strong>the</strong> “Software Engineering” course. Thank you hocam for everything. This is a bit sad word to say since it has a meaning of not being able to meet again for some time, but farewell!</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1"><p>Final reference, for the final homework! Since the ultimate goal of our project was rendering Minecraft worlds, this time I (Erencan) wanted to add a reference about Minecraft. The title of the post is a reference to one of the first live “sighting”s of Herobrine in Minecraft. Herobrine is a mythical being (so not in the actual game, or is it?) that exists inside Minecraft worlds. It is supposed to be something like a creepy stalker, watching the player from the fog, manipulating the parts of the world the player is currently not in (such as long 2x2 tunnels or removing leaves from trees) and disappearing whenever the player notices him. You can read a much more detailed history <a href="https://minecraft.wiki/w/Herobrine#History">here</a>. The reference is from the part of Patmuss’ stream, where Copeland (the first person who “saw” him in a live stream) posted a <a href="http://web.archive.org/web/20130710001351/http://ghostinthestream.net/him.html">link</a> (unfortunately, the original is lost, but here is the archived one). The link’s name is “ghostinthestream.net”, which is probably another reference to a classic anime <a href="https://anilist.co/anime/43/GHOST-IN-THE-SHELL-Koukaku-Kidoutai/">Ghost in the Shell</a>. The link has an animated GIF of Minecraft Steve’s face, but the eyes are replaced with frantically rolling realistic ones, creating a pretty creepy look (I was actually scared from that GIF while reading the wiki page when I was a child). It also has a text mixed with question marks and non-Latin symbols. When you extract the Latin symbols, you get a modified version of another creepypasta:<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -474,36 +448,25 @@ A keen observer will notice the <code>log8</code> scaling of the SVO functions.<
 <a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></li>
 <li id="fn3"><p>This explanation actually became much longer than I anticipated, so let’s finish it. If you want to learn more, the wiki page is a very good source.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-		</article>
+</aside>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2025-01-23 22:59:53+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, Alp Beysir, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

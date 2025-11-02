@@ -14,82 +14,48 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">$title$</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>$title$</h1>
-		</div>
-	</div>
+		$if(toc)$
+		$toc$
+		<hr/>
+		$endif$
 
-	<div id="content">
-		<div class="metadata">
-			$if(toc)$
-			<div id="table-of-contents">
-				<h1>İçindekiler</h1>
-				$toc$
+		$body$
+
+		$if(date)$
+		<hr/>
+		<p>Gönderim Zamanı: $date$</p>
+		$endif$
+
+		$if(tags)$
+		<p>Etiketler: $for(tags)$$tags$$sep$, $endfor$</p>
+		$endif$
+
+		<footer>
+			<p class="footer-text">© $for(author)$$author$$sep$, $endfor$, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
-			<hr />
-			$endif$
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			$if(date)$
-			<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time>$date$</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			$endif$
-
-			$if(tags)$
-			<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-					$for(tags)$
-					<li><a href="/etiketler/$tags$">$tags$</a></li>
-					$endfor$
-				</ul>
-			</div>
-			$endif$
-		</div>
-
-		<article class="card">
-			$body$
-		</article>
-
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
-			</div>
-
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

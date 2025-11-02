@@ -24,6 +24,6 @@ tags:
 - Teknoloji
 - Iletişim
 - Internet
-date: '[2024](/gönderiler/2024)-[02](/gönderiler/2024/02)-05 17:20:06+03:00'
+date: 2024-02-05 17:20:06+03:00
 ---
 

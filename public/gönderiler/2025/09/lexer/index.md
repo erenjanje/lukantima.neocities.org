@@ -359,5 +359,5 @@ tags:
 - Teknoloji
 - Gönderi
 - Derleyiciler
-date: '[2025](/gönderiler/2025)-[09](/gönderiler/2025/09)-30 22:36:06'
+date: 2025-09-30 22:36:06+03:00
 ---

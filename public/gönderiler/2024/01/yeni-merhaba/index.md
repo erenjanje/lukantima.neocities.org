@@ -20,5 +20,5 @@ lang: tr
 tags:
 - Giriş
 - Karşılama
-date: '[2024](/gönderiler/2024)-[01](/gönderiler/2024/01)-10 11:18:57+03:00'
+date: 2024-01-10 11:18:57+03:00
 ---

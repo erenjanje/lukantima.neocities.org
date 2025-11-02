@@ -1,4 +1,4 @@
-@import url('index/pandoc.css');
+@import url('pandoc.css');
 
 @font-face {
     font-family: "Dancing Script";
@@ -13,21 +13,28 @@
 :root {
     --page-color: #fff8e7;
     --page-color-dimmer: #fff0cc;
-    --text-color: #040404;
+    --text-color: #202020;
     --dimmed-text-color: #040404c0;
     --inverse-text-color: #f4f4f4;
     --code-color: #fbfbf1;
-    --item-border: #eaccea;
+    --item-border: rgb(var(--color6));
     --header-shadow: black 4px 4px 2px;
     --text-shadow:
-        black 1px 1px 2px,
-        black -1px 1px 2px,
-        black -1px -1px 2px,
-        black 1px -1px 2px,
-        black 1px 1px 2px,
-        black 0px 1px 2px,
-        black 0px 0px 2px,
-        black 1px 0px 2px;
+        black 1px 1px 1px,
+        black -1px 1px 1px,
+        black -1px -1px 1px,
+        black 1px -1px 1px,
+        black 1px 1px 1px,
+        black 0px 1px 1px,
+        black 0px 0px 1px,
+        black 1px 0px 1px;
+    --page-width: 50vw;
+    --color1: 250, 128, 114;
+    --color2: 218, 109, 140;
+    --color3: 169, 102, 152;
+    --color4: 115, 97, 145;
+    --color5: 70, 87, 121;
+    --color6: 47, 72, 88;
 }
 
 html {
@@ -35,223 +42,182 @@ html {
 }
 
 body {
-    background-image: url("/nighty.png");
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+    background-image: url("/spaceship-pattern.png");
+    background-color: rgb(var(--color6));
     background-attachment: fixed;
-    --background-image: linear-gradient(to bottom,
-            rgba(119, 119, 119, 1) 0px,
-            rgba(97, 97, 97, 1) 100px,
-            rgba(35, 35, 35, 1) 500px,
-            rgba(32, 32, 32, 1) 510px,
-            /*rgba(0, 0, 0, 1) 600px,*/
-            rgba(19, 19, 19, 1) 100%);
     margin: 0;
     width: 100%;
     font-family: Arial, Helvetica, sans-serif;
+	font-size: 12pt;
     color: var(--text-color);
-
-    & > * {
-        margin: 16px;
-    }
 }
 
 #site-header {
-    & > h1 {
-        font-size: xxx-large;
-        color: var(--inverse-text-color);
-        text-shadow: var(--text-shadow);
-        font-family: "Dancing Script";
-        user-select: none;
-        padding: 0;
-        margin: 0;
-    }
+    justify-content: center;
+    text-align: center;
+
+	font-size: 5em;
+	color: var(--inverse-text-color);
+	text-shadow: var(--text-shadow);
+	font-family: "Dancing Script";
+	user-select: none;
+	padding: 0;
+	margin: 0;
 
     text-decoration: none;
 }
 
-#page-header {
-    justify-content: center;
+nav {
+    display: flex;
     color: var(--inverse-text-color);
+    margin: auto;
+    justify-content: center;
     text-align: center;
+    width: var(--page-width);
+    gap: 4px;
+    padding-bottom: 4px;
+}
 
-    & > h1 {
-        margin: 0;
-        text-shadow: var(--text-shadow);
-        font-size: xx-large;
-    }
+nav > a {
+	align-content: center;
+	width: 88px;
+	height: 31px;
+	text-align: center;
+	justify-content: center;
+	border-radius: 4px;
+	border: 1px solid rgb(var(--color5));
+	transition-property: all;
+	transition-duration: 250ms;
+	transition-timing-function: cubic-bezier();
+
+	background-color: rgb(var(--color1));
+	background-image: linear-gradient(300deg,
+			#00000020 0%,
+			#00000020 15%,
+			#FFFFFF20 30%,
+			#00000020 45%,
+			#00000020 100%);
+	text-decoration: none;
+	color: var(--inverse-text-color);
+	text-shadow: var(--text-shadow);
+
+	box-shadow: black 0px 0px 8px;
+}
+
+nav > a:hover {
+	background-color: rgb(var(--color2));
+}
+
+nav > a:active {
+	background-color: rgb(var(--color3));
+}
+
+#page-title {
+	text-align: center;
+	font-size: 3em;
 }
 
 article {
     background: var(--page-color);
     border: 1px solid black;
     border-radius: 5px;
-    width: 50vw;
+    width: var(--page-width);
     padding: 16px 32px;
-
-    & * {
-        text-align: justify;
-    }
-
-    & blockquote {
-        color: var(--dimmed-text-color);
-        border-left: 2px solid var(--dimmed-text-color);
-        padding-left: 8px;
-    }
-
-    & code {
-        font-family: "Fantasque Sans Mono", "Consolas", monospace;
-    }
-
-    & code:not(.sourceCode) {
-        background-color: var(--page-color);
-        border-radius: 3px;
-    }
-
-    & pre.sourceCode {
-        background-color: var(--code-color);
-        border: 1px solid var(--item-border);
-        border-radius: 3px;
-        padding: 5px 7px;
-    }
-
-    & figure {
-        text-align: center;
-
-        &>figcaption {
-            text-align: center;
-        }
-
-        &>img {
-            border-radius: 3px;
-            border: 1px solid var(--item-border);
-            max-width: 100%;
-        }
-    }
-
-    & table {
-        border: 1px solid var(--item-border);
-        border-collapse: collapse;
-
-        &>thead {
-            background-image: linear-gradient(to bottom,
-                    #ffffff 0%,
-                    #ffffff 48%,
-                    #f7f8fa 52%,
-                    #f4f5f7 100%);
-        }
-
-        & td {
-            border: 1px solid var(--item-border);
-        }
-
-        &>tbody {
-            &> :nth-child(even) {
-                background-color: var(--page-color-dimmer);
-            }
-        }
-    }
-
-    math {
-        font-family: "CMU";
-
-        &[display="block"] {
-            font-size: 1.2em;
-        }
-    }
+    box-shadow: black 0px 0px 8px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#content {
-    display: flex;
-    gap: 0;
-
-    & > * {
-        flex-basis: 0;
-    }
-
-    & > .metadata {
-        flex-grow: 1;
-        padding-left: 8px;
-        padding-right: 8px;
-
-        &>hr:last-child {
-            display: none;
-        }
-
-        & h1 {
-            color: var(--inverse-text-color);
-            text-shadow: var(--text-shadow);
-            padding: 5px 7px;
-            margin: 0;
-            user-select: none;
-        }
-
-        & ul {
-            padding-left: 0;
-            margin: 0;
-        }
-
-        & li {
-            list-style: none;
-            border: 1px solid transparent;
-            padding-left: 5px;
-            border-radius: 4px;
-            margin-top: 4px;
-
-            &:hover {
-                background: linear-gradient(to bottom,
-                        #8d8f947f 0%,
-                        #4c515a7f 48%,
-                        #3b3c3c7f 52%,
-                        #787a7f7f 100%);
-                border: 1px solid black;
-            }
-
-            & > a,
-            & > time {
-                padding: 5px 7px;
-                text-decoration: none;
-                color: var(--inverse-text-color);
-                text-shadow: var(--text-shadow);
-                display: inline-block;
-                width: 100%;
-                height: 100%;
-
-                &>a {
-                    color: var(--inverse-text-color);
-                }
-            }
-        }
-
-        & > #guest-book {
-            & > iframe {
-                border-radius: 4px;
-                border: 1px solid black;
-                margin-left: 5px;
-                margin-top: 4px;
-
-                width: 100%;
-                height: 600px;
-
-                overflow: hidden;
-            }
-        }
-    }
-
-    & math[display="block"] {
-        text-align: center;
-    }
-
-    & > article {
-        flex-grow: 4;
-    }
+article * {
+	text-align: justify;
 }
 
-footer {
-    text-align: center;
+article blockquote {
+	color: var(--dimmed-text-color);
+	border-left: 2px solid var(--dimmed-text-color);
+	padding-left: 8px;
+}
 
-    & * {
-        color: var(--inverse-text-color);
-        text-shadow: var(--text-shadow);
-    }
+article code {
+	font-family: "Fantasque Sans Mono", "Consolas", monospace;
+}
+
+article > code {
+	background-color: var(--page-color);
+	border-radius: 3px;
+}
+
+article pre {
+	background-color: var(--code-color);
+	border: 1px solid var(--item-border);
+	border-radius: 3px;
+	padding: 5px 7px;
+}
+
+article figure {
+	text-align: center;
+}
+
+article figure > figcaption {
+	text-align: center;
+}
+
+article figure > img {
+	border-radius: 3px;
+	border: 1px solid var(--item-border);
+	max-width: 100%;
+}
+
+article table {
+	border: 1px solid var(--item-border);
+	border-collapse: collapse;
+}
+
+article table > thead {
+	background-image: linear-gradient(to bottom,
+				#ffffff 0%,
+				#ffffff 48%,
+				#f7f8fa 52%,
+				#f4f5f7 100%);
+}
+
+article table td {
+	border: 1px solid var(--item-border);
+}
+
+article table > tbody > :nth-child(even) {
+	background-color: var(--page-color-dimmer);
+}
+
+article table > tbody > :hover {
+	background-image: linear-gradient(to bottom,
+				#ffffff 0%,
+				#ffffff 48%,
+				#f7f8fa 52%,
+				#f4f5f7 100%);
+}
+
+article math {
+	font-family: "CMU";
+}
+
+article math[display="block"] {
+	text-align: center;
+	font-size: 1.25em;
+}
+
+#guest-book {
+	margin-top: 8px;
+	width: 100%;
+	height: 480px;
+}
+
+footer > * {
+	margin: 0;
+	text-align: center;
 }
 
 * {

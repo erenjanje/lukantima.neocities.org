@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">CENG795-HW3: Distributed Ray Tracing</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>CENG795-HW3: Distributed Ray Tracing</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
 <ul>
@@ -38,34 +37,9 @@
 <li><a href="#performance" id="toc-performance">Performance</a></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2025/11">11</a>-29 18:09:52+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Ödev">Ödev</a></li>
-										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p>Hello, minasan! Welcome to my blog post for the third assignment. The weather was somewhat clear in the previous homework, while I was gloomy. This homework, it seems like weather and I swapped roles. I managed to complete the homework while also finishing the remnants from the previous one. Meanwhile, we now have snow and a gloomy weather in Ankara.</p>
+		<hr/>
+		
+		<p>Hello, minasan! Welcome to my blog post for the third assignment. The weather was somewhat clear in the previous homework, while I was gloomy. This homework, it seems like weather and I swapped roles. I managed to complete the homework while also finishing the remnants from the previous one. Meanwhile, we now have snow and a gloomy weather in Ankara.</p>
 <p>The homework was suprisingly easy. I gave 3 full days to complete it, but I finished before the half of the second day. I could have finished even earlier but I tried to fix the intersection problem, which shows itself as gaps in some meshes, especially the Chinese dragon mesh, which has been used for at least one test case in each homework (<code>chinese_dragon</code>, <code>marching_dragons</code> and <code>focusing_dragons</code>). Unfortunately, I did not succeed to fix this bug. I however realized that those black points are not the background, but instead ambient light. For some reason, the ray correctly intersects with the mesh but the light ray intersects with something even though it should not. I will try to solve it again for the next homework, but it seems that I need some sort of revelation to do it, it should be an easy problem but all the fixes I thought failed.</p>
 <p>The other parts, the parts which we need to successfully finish the homework, are done correctly, with a small problem I just forgot to fix before submission.</p>
 <h1 id="implementation">Implementation</h1>
@@ -227,7 +201,7 @@
 <col style="width: 27%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Initialization Time</th>
 <th>Rendering Time</th>
@@ -235,61 +209,61 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>other_dragon (1)</td>
 <td>1.9006</td>
 <td>0.3248</td>
 <td>0.3248</td>
 </tr>
-<tr>
+<tr class="even">
 <td>other_dragon (4)</td>
 <td>1.9</td>
 <td>1.1906</td>
 <td>0.2977</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>other_dragon (9)</td>
 <td>1.8981</td>
 <td>2.5243</td>
 <td>0.2805</td>
 </tr>
-<tr>
+<tr class="even">
 <td>other_dragon (16)</td>
 <td>1.8961</td>
 <td>4.3362</td>
 <td>0.2710</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>cornellbox_area (100)</td>
 <td>0.0009</td>
 <td>6.5293</td>
 <td>0.0653</td>
 </tr>
-<tr>
+<tr class="even">
 <td>cornellbox_brushed_metal (400)</td>
 <td>0.0008</td>
 <td>32.3397</td>
 <td>0.0808</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>dragon_dynamic (100) (1 run)</td>
 <td>1.9166</td>
 <td>283.14</td>
 <td>2.8314</td>
 </tr>
-<tr>
+<tr class="even">
 <td>focusing_dragons (100)</td>
 <td>0.7449</td>
 <td>49.2412</td>
 <td>0.4924</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>metal_glass_plates (36)</td>
 <td>0.0009</td>
 <td>16.0495</td>
 <td>0.4458</td>
 </tr>
-<tr>
+<tr class="even">
 <td>spheres_dof (100)</td>
 <td>0.0007</td>
 <td>3.7865</td>
@@ -319,41 +293,30 @@
 <h1 id="conclusion">Conclusion</h1>
 <p>If the previous homework had made me question my technical skills, this homework made me question my memory and attention. Apart from the small gloss problem and light intersection problem, every other problem that remained in my submission can be solved easily, but I just forgot to do them.</p>
 <p>I also think about the difference between the difficulties of the homeworks. The previous one was hard, this one was easy, and the next one will probably be also hard. It is pretty interesting, right?</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1"><p>While writing the post, I searched for the thread-safety of <code>rand</code>, and even though it is not thread-safe in the standard as I remember correctly, it seems like the Windows implementation is thread-safe.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-		</article>
+</aside>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2024-11-29 18:09:52+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

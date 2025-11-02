@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">CENG795-HW1: Simple Recursive Raytracer</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>CENG795-HW1: Simple Recursive Raytracer</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
 <ul>
@@ -42,34 +41,9 @@
 <li><a href="#performance" id="toc-performance">Performance</a></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/10">10</a>-25 23:27:09+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Ödev">Ödev</a></li>
-										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p>Hello everybody. Welcome to my blog post about the first homework of the course CENG785, Advanced Ray Tracing.</p>
+		<hr/>
+		
+		<p>Hello everybody. Welcome to my blog post about the first homework of the course CENG785, Advanced Ray Tracing.</p>
 <p>Ray tracing is a fundemental approach to rendering in the computer graphics. Our homework was to implement a simple one have a base for more advanced concepts in the ray tracing.</p>
 <p>In CENG477, we had actually written a ray tracer that pretty much did what we need to do for this homework. However, our implementation was</p>
 <ol type="1">
@@ -157,16 +131,16 @@
 </figure>
 <h3 id="conductor">Conductor</h3>
 <p>The next thing I needed to do was conductors. Since conductors do not have refraction, they were pretty easy. Actually, they are pretty much the same as mirrors with mirror reflectance depending on the viewing angle.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>s</mi></msub><mo>=</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>2</mn><mi>n</mi><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>+</mo><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>2</mn><mi>n</mi><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>+</mo><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>s</mi></msub><mo>=</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>2</mn><mi>n</mi><mo>cos</mo><mi>θ</mi><mo>+</mo><msup><mo>cos</mo><mn>2</mn></msup><mi>θ</mi></mrow><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>2</mn><mi>n</mi><mo>cos</mo><mi>θ</mi><mo>+</mo><msup><mo>cos</mo><mn>2</mn></msup><mi>θ</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 R_s = \frac{\left(n^2+k^2\right) - 2n\cos\theta + \cos^2\theta}{\left(n^2+k^2\right) + 2n\cos\theta + \cos^2\theta}
 </annotation></semantics></math></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>p</mi></msub><mo>=</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>2</mn><mi>n</mi><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>+</mo><mn>1</mn></mrow><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>n</mi><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>p</mi></msub><mo>=</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><msup><mo>cos</mo><mn>2</mn></msup><mi>θ</mi><mo>−</mo><mn>2</mn><mi>n</mi><mo>cos</mo><mi>θ</mi><mo>+</mo><mn>1</mn></mrow><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><msup><mo>cos</mo><mn>2</mn></msup><mi>θ</mi><mo>+</mo><mn>2</mn><mi>n</mi><mo>cos</mo><mi>θ</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 R_p = \frac{\left(n^2+k^2\right)\cos^2\theta - 2n\cos\theta + 1}{\left(n^2+k^2\right)\cos^2\theta + 2n\cos\theta + 1}
 </annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>r</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>R</mi><mi>s</mi></msub><mo>+</mo><msub><mi>R</mi><mi>p</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 F_r = \frac{1}{2}\left(R_s + R_p\right)
 </annotation></semantics></math></p>
-<p>Getting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> is easy, actually, since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mtext mathvariant="bold">𝐝</mtext><mo>⋅</mo><mtext mathvariant="bold">𝐧</mtext></mrow><annotation encoding="application/x-tex">-\textbf{d}\cdot\textbf{n}</annotation></semantics></math> gives the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> while being very easy to calculate. Afterwards, I separated the terms (e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left(n^2+k^2\right)</annotation></semantics></math> appears four times in the formula) as temporary variables and combined them to get <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>r</mi></msub><annotation encoding="application/x-tex">F_r</annotation></semantics></math>, which I then multiplied with the supplied <code>mirror_reflectance</code> in the material definition to get the final <code>reflectance</code>. Recursive ray tracing part of the code was exactly the same as <code>rt::mat::mirror</code> except using the calculated <code>reflectance</code> instead of <code>mirror_reflectance</code>. I then tried Cornellbox Recursive. The result was successful until I checked the output and saw that the conductor sphere was brighter by a small amount. I then tried to hunt down the error and finally found that I wrote the minus sign in the nominator of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>s</mi></msub><annotation encoding="application/x-tex">R_s</annotation></semantics></math> wrong and put plus sign, making <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>s</mi></msub><annotation encoding="application/x-tex">R_s</annotation></semantics></math> always <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>.</p>
+<p>Getting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> is easy, actually, since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mtext mathvariant="bold">𝐝</mtext><mo>⋅</mo><mtext mathvariant="bold">𝐧</mtext></mrow><annotation encoding="application/x-tex">-\textbf{d}\cdot\textbf{n}</annotation></semantics></math> gives the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> while being very easy to calculate. Afterwards, I separated the terms (e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><msup><mi>k</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left(n^2+k^2\right)</annotation></semantics></math> appears four times in the formula) as temporary variables and combined them to get <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>r</mi></msub><annotation encoding="application/x-tex">F_r</annotation></semantics></math>, which I then multiplied with the supplied <code>mirror_reflectance</code> in the material definition to get the final <code>reflectance</code>. Recursive ray tracing part of the code was exactly the same as <code>rt::mat::mirror</code> except using the calculated <code>reflectance</code> instead of <code>mirror_reflectance</code>. I then tried Cornellbox Recursive. The result was successful until I checked the output and saw that the conductor sphere was brighter by a small amount. I then tried to hunt down the error and finally found that I wrote the minus sign in the nominator of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>s</mi></msub><annotation encoding="application/x-tex">R_s</annotation></semantics></math> wrong and put plus sign, making <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>s</mi></msub><annotation encoding="application/x-tex">R_s</annotation></semantics></math> always <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>.</p>
 <figure>
 <img src="cornellbox_recursive_rs_no_dielectric.png" alt="Cornellbox Recursive with wrong R_s" />
 <figcaption aria-hidden="true">Cornellbox Recursive with wrong R_s</figcaption>
@@ -178,11 +152,11 @@ F_r = \frac{1}{2}\left(R_s + R_p\right)
 </figure>
 <h3 id="dielectric">Dielectric</h3>
 <p>And here comes the most difficult part of this homework. Calculating the Fresnel equations was easy, even easier than conductors. However, there were many edge cases about the rays.</p>
-<p>The first problem was with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math>. When exiting the material, the ray hits the backface of an object. This makes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> negative, which breaks the Fresnel equations. I discovered this after a couple of painful debug sessions and seeing that the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mrow><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">|</mo></mrow></msub><annotation encoding="application/x-tex">R_{||}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>⊥</mi></msub><annotation encoding="application/x-tex">R_{\bot}</annotation></semantics></math> values become negative. I solved the problem by taking the absolute value of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> after calculating a boolean <code>is_backface</code> to denote whether the hit was to a frontface or a backface. Since there is no intersecting object in any of the scenes, I assumed that any hit to a dielectric material either came from air/void or went to air/void. This made refraction index calculations a bit easier, but still, I somewhat supported such a case by having an <code>rt::shade</code> parameter named <code>n_incoming</code>. However, I did not use it and hard-coded <code>1.0</code> as one of the refraction indices. If the hit was backface, I swapped positions of the refraction indices. After calculating</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>n</mi><mn>1</mn></msub><msub><mi>n</mi><mn>2</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msup><mrow><mi>cos</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p>The first problem was with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math>. When exiting the material, the ray hits the backface of an object. This makes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> negative, which breaks the Fresnel equations. I discovered this after a couple of painful debug sessions and seeing that the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mrow><mo stretchy="true" form="prefix">|</mo><mo stretchy="true" form="postfix">|</mo></mrow></msub><annotation encoding="application/x-tex">R_{||}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>⊥</mi></msub><annotation encoding="application/x-tex">R_{\bot}</annotation></semantics></math> values become negative. I solved the problem by taking the absolute value of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>cos</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math> after calculating a boolean <code>is_backface</code> to denote whether the hit was to a frontface or a backface. Since there is no intersecting object in any of the scenes, I assumed that any hit to a dielectric material either came from air/void or went to air/void. This made refraction index calculations a bit easier, but still, I somewhat supported such a case by having an <code>rt::shade</code> parameter named <code>n_incoming</code>. However, I did not use it and hard-coded <code>1.0</code> as one of the refraction indices. If the hit was backface, I swapped positions of the refraction indices. After calculating</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>n</mi><mn>1</mn></msub><msub><mi>n</mi><mn>2</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msup><mo>cos</mo><mn>2</mn></msup><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 1 - \left(\frac{n_1}{n_2}\right)^2 \left(1 - \cos^2\theta\right)
 </annotation></semantics></math></p>
-<p>I decided whether a hit results in total internal reflection or not by checking its sign. Total internal reflection was pretty easy, it was just a reflection without any <code>mirror_reflectance</code>. The hardest part was refraction. I then calculated <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mrow><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">|</mo></mrow></msub><annotation encoding="application/x-tex">R_{||}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>⊥</mi></msub><annotation encoding="application/x-tex">R_{\bot}</annotation></semantics></math> to calculate the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>r</mi></msub><annotation encoding="application/x-tex">F_r</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>t</mi></msub><annotation encoding="application/x-tex">F_t</annotation></semantics></math>. I casted two rays and added their colors to the simple-shaded color of the material. I calculated the epsilon offsets based on the value of <code>is_backface</code> so that refractions started at the back of the surface and the reflections started at the front of the surface. Finally, I added Beer’s Law when the resulting ray was inside the object, i.e. refraction rays in frontface hits and reflection rays in backface hits. I assumed that no material would have refraction index smaller than <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>, so that the total internal reflection can only happen when exiting the object.</p>
+<p>I decided whether a hit results in total internal reflection or not by checking its sign. Total internal reflection was pretty easy, it was just a reflection without any <code>mirror_reflectance</code>. The hardest part was refraction. I then calculated <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mrow><mo stretchy="true" form="prefix">|</mo><mo stretchy="true" form="postfix">|</mo></mrow></msub><annotation encoding="application/x-tex">R_{||}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>⊥</mi></msub><annotation encoding="application/x-tex">R_{\bot}</annotation></semantics></math> to calculate the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>r</mi></msub><annotation encoding="application/x-tex">F_r</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>t</mi></msub><annotation encoding="application/x-tex">F_t</annotation></semantics></math>. I casted two rays and added their colors to the simple-shaded color of the material. I calculated the epsilon offsets based on the value of <code>is_backface</code> so that refractions started at the back of the surface and the reflections started at the front of the surface. Finally, I added Beer’s Law when the resulting ray was inside the object, i.e. refraction rays in frontface hits and reflection rays in backface hits. I assumed that no material would have refraction index smaller than <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>, so that the total internal reflection can only happen when exiting the object.</p>
 <p>For Cornellbox Recursive, the result was correct.</p>
 <figure>
 <img src="cornellbox_recursive.png" alt="Successful Cornellbox Recursive" />
@@ -274,65 +248,65 @@ F_r = \frac{1}{2}\left(R_s + R_p\right)
 <h1 id="performance">Performance</h1>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Test Case</th>
 <th>Time (seconds)</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>Berserker</td>
 <td>9.588</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Bunny</td>
 <td>3.66</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Car</td>
 <td>28.916</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Car Front</td>
 <td>30.306</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Cornellbox</td>
 <td>0.258</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Cornellbox Recursive</td>
 <td>0.237</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Low Poly</td>
 <td>29.442</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Other Dragon (on Inek)</td>
 <td>15122.9 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≈</mo><annotation encoding="application/x-tex">\approx</annotation></semantics></math> 4.2 hours)</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>ScienceTree Glass</td>
 <td>29.112</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Spheres</td>
 <td>0.215</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Spheres Mirror</td>
 <td>0.183</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Tower</td>
 <td>36.438</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Two Spheres</td>
 <td>0.173</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Windmill</td>
 <td>31.655</td>
 </tr>
@@ -341,35 +315,24 @@ F_r = \frac{1}{2}\left(R_s + R_p\right)
 <p>I compared my result with the results in the blog posts of the other students and my ray tracer is around 2-3x slower. However, these students actually implemented backface culling while I did not. In a normal mesh, around half of the triangles are backfacing; hence, I think this can explain the difference, their ray tracers skip about half of the triangles of a mesh while mine does not. Implementing it would be easy actually, I needed another ray casting function, which skips backface triangles depending on a boolean flag, which can be templated since it is known at compile time. Dielectric materials then would use the version that accepts backface triangles while the others would use the version that skips those triangles. However, I am too lazy to do this, even though I will probably do such an optimization in the next homework.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Even though this homework did not improve me that much, it is still an important one since all the other homeworks depend on this one. Having a clean and extendable codebase is a crucial skill transcending fields of computer science and our university has very few opportunities to hone those skills. Developing a non-toy system is a skill on its own, and making it performant is another kind of beast. This homework is the start of a journey where we will need to tackle that beast and I think this makes this homework chain one of the most important parts of our career, and even our hobby life if we want to.</p>
-		</article>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2024-10-25 23:27:09+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

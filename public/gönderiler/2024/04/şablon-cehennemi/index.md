@@ -299,5 +299,5 @@ tags:
 - Gönderi
 - Üstprogramlama
 - Haskell
-date: '[2024](/gönderiler/2024)-[04](/gönderiler/2024/04)-23 13:25:04+03:00'
+date: 2024-04-23 13:25:04+03:00
 ---

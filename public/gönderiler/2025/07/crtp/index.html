@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">C++ Şablon Bok Çukuru 2: <del>Elektrik Bugalu</del> CRTP</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>C++ Şablon Bok Çukuru 2: <del>Elektrik Bugalu</del> CRTP</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#tekrar" id="toc-tekrar">Tekrar</a></li>
 <li><a href="#çokbiçimlilik" id="toc-çokbiçimlilik">Çokbiçimlilik</a></li>
@@ -35,33 +34,9 @@
 </ul></li>
 <li><a href="#kapanış" id="toc-kapanış">Kapanış</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2025">2025</a>-<a href="/gönderiler/2025/07">07</a>-19 18:27:52+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Üstprogramlama">Üstprogramlama</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p>Uzun bir aradan (ödev gönderileri olarak 6 ay, normal gönderi olarak 1,5 yıl!) sonra tekrardan merhabalar. <a href="/gönderiler/2024/04/şablon-cehennemi">Önceki gönderide</a> bahsettiğim gibi bu gönderide biraz CRTP, yani “İlginç Şekilde Mükerrer Şablon Kalıbı” (<em>Curiously Recurring Template Pattern</em>) konsepti üzerine yazmayı düşünüyorum. Her ne kadar “C++ Şablon Bok Çukuru”nu bir seri olarak yapmayı düşünmemiş olsam da benzer bir başlığı hak ettiğini düşünüyorum, çünkü gerçekten <em>tuhaf</em> bir kalıp bu CRTP denen meret.</p>
+		<hr/>
+		
+		<p>Uzun bir aradan (ödev gönderileri olarak 6 ay, normal gönderi olarak 1,5 yıl!) sonra tekrardan merhabalar. <a href="/gönderiler/2024/04/şablon-cehennemi">Önceki gönderide</a> bahsettiğim gibi bu gönderide biraz CRTP, yani “İlginç Şekilde Mükerrer Şablon Kalıbı” (<em>Curiously Recurring Template Pattern</em>) konsepti üzerine yazmayı düşünüyorum. Her ne kadar “C++ Şablon Bok Çukuru”nu bir seri olarak yapmayı düşünmemiş olsam da benzer bir başlığı hak ettiğini düşünüyorum, çünkü gerçekten <em>tuhaf</em> bir kalıp bu CRTP denen meret.</p>
 <h1 id="tekrar">Tekrar</h1>
 <p>Şablonları ufaktan tekrar hatırlatarak başlayayım öncelikle. Şablonlar, çıkış amacı gereği aslında aynı şablonun farklı türlere uygulanması üzerine kurulu bir konsept. Birçok dilde -Go’da bile- benzeri konseptler var fakat şablon ismi kullanılmıyor, sanırım çok C++ çağrıştırıyor ve diğer dillerdeki araçlar C++ şablonlarının çoğu özelliğine sahip olmuyor. Mesela derlenme zamanı istediğimiz bir ifadenin cevabını elde edebilmemizi sağlıyor şablonlar doğru kullanıldığında. Detaylar için önceki gönderiye bakabilirsiniz.</p>
 <p>Şimdi elimizde bir şablon sınıf olsun (ben <code>public</code> yazmak zorunda kalmamak için genelde <code>struct</code> kullanıyorum ama sınıf/<em>class</em> olarak kabul edebilirsiniz):</p>
@@ -275,35 +250,24 @@
 <p>Evet artık bu yukarıdaki kod çalışıyor!</p>
 <h1 id="kapanış">Kapanış</h1>
 <p>Bu sefer, önceki kadar derin bir bok çukuru olmasa da yine de tuhaf bir şeylerden bahsettim. Bir seneden daha fazla zaman geçmesine rağmen dediğimi yaptım sanırım. Bu arada yaşadıklarım da artık başka gönderinin konusu olsa gerek.</p>
-		</article>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2025-07-19 18:27:52+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Üstprogramlama</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

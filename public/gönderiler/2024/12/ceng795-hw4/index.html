@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">CENG795-HW4: Raytracing with Textures</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>CENG795-HW4: Raytracing with Textures</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#reimplementation-failure" id="toc-reimplementation-failure">Reimplementation (Failure)</a></li>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
@@ -41,34 +40,9 @@
 </ul></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/12">12</a>-14 23:34:28+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Ödev">Ödev</a></li>
-										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p>Welcome again to my blog post about yet another CENG795 homework, minasan! I think my recovery from my failure of the HW2 is pretty much done, now I implement the homeworks on time, and even, sometime before the deadline. Actually, in this homework, I managed to finish the homework about 3 days early except a small fix to sphere tangent/bitangent calculation, while using almost half of the time (about 1 week) to something I did in vain.</p>
+		<hr/>
+		
+		<p>Welcome again to my blog post about yet another CENG795 homework, minasan! I think my recovery from my failure of the HW2 is pretty much done, now I implement the homeworks on time, and even, sometime before the deadline. Actually, in this homework, I managed to finish the homework about 3 days early except a small fix to sphere tangent/bitangent calculation, while using almost half of the time (about 1 week) to something I did in vain.</p>
 <h1 id="reimplementation-failure">Reimplementation (Failure)</h1>
 <p>As I said in the previous paragraph, my first week was doing something that I did not use at all: reimplementing the whole raytracer from scratch. I had actually been thinking reimplementation since HW2; however, unfortunately, things did not go according to my plan and I had to postpone any consideration of reimplementation. Yet in the implementation of HW4, I actually had time to waste in reimplementation. There were two reasons of why I wanted reimplementation: using a nicer language (since C++ is pretty bad in terms of programming language design, and it also has abysmal compilation times) and fixing a few design choices I did that started to get in my way. Since performance is top priority in raytracing, any pure interpreted language like Python (which has JIT compiler PyPy but its performance is also not that bright) is out of question. Since Rust and Haskell had been used in this course before, I did not want to use them since I wanted to use a “new” language, a language that has not been used in this course. Losing Rust to this silly thought has been pretty bad for the choice of language. The language also should be something I am at least a bit familiar with. This also filtered Java and OcaML. The current languages were C, C#, Lua (with LuaJIT) and JS/TS (on browser). Since I would probably debug segfaults more than my raytracer, I eliminated C. All of these remaining languages are pretty nice ones, so I started the reimplementation. I also thought about the nice-to-haves in those languages, and Lua was better than C# due to having <a href="https://love2d.org">LÖVE</a>, which can be run on both desktop and mobile devices, and provides a nice layer on top of SDL, and OpenGL to some extent. It also comes with LuaJIT as default. However, JS/TS is even better since everybody and their brother/uncle/mother has a browser, which makes the distribution (not the HW3) much less of a hassle. So, I started to reimplement the raytracer in TS, but after implementing some parts, I failed to use the modules (since JS has the worst module system in the world, even worse than C). At that point, almost half of the first week had passed, so I panicked and dropped my first reimplementation reason: a nicer language.</p>
 <p>Afterwards, I dumped the TS implementation and started the reimplementation on C++. I did this so that I could share code with my existing implementation, I was pretty fine with the ray creation or ray-triangle intersection codes after all. However, as I rewrote the parser, I realized that in that pace, I would miss the deadline for HW4, since it took a whole day to reimplement the parser, <em>with a few features missing</em>. The code itself also became mostly non-interoperable with my previous ray-tracer since I changed most data structures. For example, the materials were classes with <code>virtual</code> methods instead of <code>std::variant</code>s since C++ has one of the worst sum-type support while the <code>virtual</code> is one of the best things in C++. Most of the data structures also held references to the data they need (e.g. meshes held references to the vertex array, since the mesh data is in indices instead of raw vectors). This made interoperation with my previous code pretty much impossible except rewriting a huge part of the older one, which just meant almost a total rewrite, for which I did not have time. At that point, the first week already passed and I was yet to start the HW4, while also being somewhat tired of the raytracer. Erencan is Done For!<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
@@ -105,7 +79,7 @@
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ss<span class="op">.</span>clear<span class="op">();</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ret<span class="op">;</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>This returns the <code>default_value</code> instead of throwing an error when the element is not found, which is pretty useful for optional fields, such as <code>BackgroundColor</code>, which I assume to be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, 0, 0]</annotation></semantics></math> as default.</p>
+<p>This returns the <code>default_value</code> instead of throwing an error when the element is not found, which is pretty useful for optional fields, such as <code>BackgroundColor</code>, which I assume to be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, 0, 0]</annotation></semantics></math> as default.</p>
 <p>Rewriting most of the parser to use this was pretty easy, I just removed the old code (as in the example I gave for <code>ShadowRayEpsilon</code>) and replaced with a <code>get&lt;T&gt;</code> call with suitable type as the template parameter. However, there was a small problem, that some fields (like <code>ImageName</code> for <code>Camera</code> and <code>Transformations</code> for <code>Mesh</code>/<code>Triangle</code>/<code>Sphere</code>) needs the whole text of the element, and <code>stream &gt;&gt; str</code> where <code>str</code> is an <code>std::string</code> reads until the first whitespace, which is not usable since filenames may have spaces, and transformations definitely have spaces separating them. Hence, I created a small full template specialization:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span> <span class="op">&lt;&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">std::</span>string get<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">&gt;(</span><span class="at">const</span> tinyxml2<span class="op">::</span>XMLElement<span class="op">*</span> element<span class="op">,</span> <span class="bu">std::</span>stringstream<span class="op">&amp;)</span> <span class="op">{</span></span>
@@ -225,7 +199,7 @@
 </figure>
 <h2 id="noise-and-checkerboard">Noise and Checkerboard</h2>
 <p>Now, I had pretty much two routes, either first implementing the noise and checkerboard and then implementing normal and bump mapping or vice versa. I went with the former one since I thought it would be easier, and yep, it really was pretty easy.</p>
-<p>I searched for a nice Perlin noise implementation in C++ in the internet, since implementing it from scratch was too cumbersome and math-y for me. Unfortunately, I was unsuccessful in my searches; however, the hope was not lost. Two years before, I needed Perlin noise for volumetric clouds for HW3 of CENG469 and I found a nice GLSL implementation of Perlin noise. Due to the fact that GLSL is pretty much C on GPU, I managed to easily integrate the code to my C++ codebase. At first, I got segfaults, which suprised me but a quick debugging session (which is very easy thanks to CMake) revealed that negative inputs to the noise function resulted in negative index lookup in the permutation table. This suprised me since the indices were modulo’d by <code>256</code>, which means that they must be in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>255</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,255]</annotation></semantics></math> range, right? Well, this was a junior mistake but I really forgot that C’s modulo operator (and <code>div</code> instruction’s modulo result in x86-64) actually retains the sign of the number! This meant that <code>(-1) % 256</code> results in <code>-1</code>, not <code>255</code>. I thought about a fast and easy way to fix, but could not think a fast and dirty trick. However, since the right hand side of the modulo is a power of 2, that modulo operation most probably compiled to a bitwise and operation. Hence, I decided to use an easy trick. I took the modulo of the number, added <code>256</code> and took the modulo again. This must give the mathematically correct modulo, and it really did. I used a small macro to ease my development experience:</p>
+<p>I searched for a nice Perlin noise implementation in C++ in the internet, since implementing it from scratch was too cumbersome and math-y for me. Unfortunately, I was unsuccessful in my searches; however, the hope was not lost. Two years before, I needed Perlin noise for volumetric clouds for HW3 of CENG469 and I found a nice GLSL implementation of Perlin noise. Due to the fact that GLSL is pretty much C on GPU, I managed to easily integrate the code to my C++ codebase. At first, I got segfaults, which suprised me but a quick debugging session (which is very easy thanks to CMake) revealed that negative inputs to the noise function resulted in negative index lookup in the permutation table. This suprised me since the indices were modulo’d by <code>256</code>, which means that they must be in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>255</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,255]</annotation></semantics></math> range, right? Well, this was a junior mistake but I really forgot that C’s modulo operator (and <code>div</code> instruction’s modulo result in x86-64) actually retains the sign of the number! This meant that <code>(-1) % 256</code> results in <code>-1</code>, not <code>255</code>. I thought about a fast and easy way to fix, but could not think a fast and dirty trick. However, since the right hand side of the modulo is a power of 2, that modulo operation most probably compiled to a bitwise and operation. Hence, I decided to use an easy trick. I took the modulo of the number, added <code>256</code> and took the modulo again. This must give the mathematically correct modulo, and it really did. I used a small macro to ease my development experience:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MODULUS</span><span class="op">(</span>a<span class="op">,</span><span class="pp"> </span>b<span class="op">)</span><span class="pp"> </span><span class="op">(((</span>a<span class="pp"> </span><span class="op">%</span><span class="pp"> </span>b<span class="op">)</span><span class="pp"> </span><span class="op">+</span><span class="pp"> </span>b<span class="op">)</span><span class="pp"> </span><span class="op">%</span><span class="pp"> </span>b<span class="op">)</span></span></code></pre></div>
 <p>And this did the trick, I had working Perlin noise with only a couple of changes and minimal headache. Thank you two-years-younger-me! However, the result was a bit weird, the textures looked streched out compared to the reference images. Unfortunately, I cannot reproduce the exact bug at the moment and I do not have rendered images when that bug was there.</p>
 <p>After some deduction from the lecture slides, I realized that the coordinates given to the noise and checkerboard are world coordinates, not UV coordinates. This explained my experience, what I did was pretty much creating a 2D noise texture and wrapping it around a sphere. Giving the world coordinates however utilizes a 3D noise texture, which looks better in a 3D scene. The results look pretty nice:</p>
@@ -256,7 +230,7 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> sample <span class="op">=</span> <span class="op">(</span>textures<span class="op">-&gt;</span>normal<span class="op">-&gt;</span>sample<span class="op">(</span>GET_CORRECT_POS<span class="op">(</span>textures<span class="op">-&gt;</span>normal<span class="op">,</span> uv<span class="op">,</span> hit_point<span class="op">))</span> <span class="op">-</span> <span class="fl">0.5</span><span class="bu">f</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2.0</span><span class="bu">f</span><span class="op">;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> normalized_sample <span class="op">=</span> glm<span class="op">::</span>normalize<span class="op">(</span>sample<span class="op">);</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>local_n <span class="op">=</span> glm<span class="op">::</span>normalize<span class="op">(</span>glm<span class="op">::</span>mat3<span class="op">(</span>tangent<span class="op">,</span> bitangent<span class="op">,</span> local_n<span class="op">)</span> <span class="op">*</span> glm<span class="op">::</span>normalize<span class="op">(</span>sample<span class="op">));</span></span></code></pre></div>
-<p>The <code>GET_CORRECT_POS</code> macro chooses the correct coordinate depending on the texture type, images using UV and noise and checkerboard using world coordinates. I needed to change the range of the sample from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[0,1)</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[-1,1)</annotation></semantics></math>. At first, I did not, and the result was this:</p>
+<p>The <code>GET_CORRECT_POS</code> macro chooses the correct coordinate depending on the texture type, images using UV and noise and checkerboard using world coordinates. I needed to change the range of the sample from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[0,1)</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[-1,1)</annotation></semantics></math>. At first, I did not, and the result was this:</p>
 <figure>
 <img src="./assets/cube_waves_(0%201)%20instead%20of%20(-1%201).png" alt="Cube with Waves with Sample Range [0,1)" />
 <figcaption aria-hidden="true">Cube with Waves with Sample Range <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[0,1)</annotation></semantics></math></figcaption>
@@ -285,13 +259,13 @@
 <figcaption aria-hidden="true">Sphere with Earth Normalmap</figcaption>
 </figure>
 <p>Well, let’s do the last part, the bump mapping! The problem is, bump mapping is a bit harder. The formula for bump mapping is as follows:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐩</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>d</mi><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>y</mi></mrow></mfrac><mtext mathvariant="bold">𝐧</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐩</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>d</mi><mi>h</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>y</mi></mrow></mfrac><mtext mathvariant="bold">𝐧</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \frac{d\textbf{q}(u,v)}{du} = \frac{d\textbf{p}(u,v)}{du} + \frac{dh(u,v)}{dy}\textbf{n}(u,v)
 </annotation></semantics></math></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐩</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>d</mi><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>y</mi></mrow></mfrac><mtext mathvariant="bold">𝐧</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐩</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>d</mi><mi>h</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>y</mi></mrow></mfrac><mtext mathvariant="bold">𝐧</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \frac{d\textbf{q}(u,v)}{dv} = \frac{d\textbf{p}(u,v)}{dv} + \frac{dh(u,v)}{dy}\textbf{n}(u,v)
 </annotation></semantics></math></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext mathvariant="bold">𝐧</mtext><mo>′</mo></msup><mo>=</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><mo>×</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="bold">𝐧</mtext><mi>′</mi><mo>=</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><mo>×</mo><mfrac><mrow><mi>d</mi><mtext mathvariant="bold">𝐪</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 \textbf{n}&#39; = \frac{d\textbf{q}(u,v)}{du} \times \frac{d\textbf{q}(u,v)}{dv}
 </annotation></semantics></math></p>
 <p>I implemented this formula as this:</p>
@@ -310,7 +284,7 @@
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> dq_du <span class="op">=</span> tangent <span class="op">+</span> dh_du <span class="op">*</span> local_n<span class="op">;</span></span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> dq_dv <span class="op">=</span> bitangent <span class="op">+</span> dh_dv <span class="op">*</span> local_n<span class="op">;</span></span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> new_n <span class="op">=</span> glm<span class="op">::</span>normalize<span class="op">(</span>glm<span class="op">::</span>cross<span class="op">(</span>dq_dv<span class="op">,</span> dq_du<span class="op">));</span></span></code></pre></div>
-<p>Since we are using <del>finite state machines</del> computers with finite memory, precision and processing power, we need to do a numerical derivative with a reasonably small difference. The lecture slides recommended <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mi>w</mi></mfrac><annotation encoding="application/x-tex">\frac{1}{w}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mi>h</mi></mfrac><annotation encoding="application/x-tex">\frac{1}{h}</annotation></semantics></math> as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">du</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">dv</annotation></semantics></math>, respectively, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math> is the width of the image and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> is the height of it. The <code>get_derivative</code> virtual function is for this. However, for a correct derivative, we need to divide the difference between the samples by <code>du</code> and <code>dv</code>, which, as you can see, is not in the code. However, since <code>du</code> and <code>dv</code> become smaller and smaller as the image resolution increases while the difference between samples cannot be in the range <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mfrac><mn>1</mn><mrow><mn>3</mn><mo>*</mo><mn>255</mn></mrow></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0, \frac{1}{3*255})</annotation></semantics></math> due to the images having 3 8-bit channels, resolution increase results in bigger <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>d</mi><mi>h</mi></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><annotation encoding="application/x-tex">\frac{dh}{du}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>d</mi><mi>h</mi></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac><annotation encoding="application/x-tex">\frac{dh}{dv}</annotation></semantics></math>. This resulted in pretty interesting images like this:</p>
+<p>Since we are using <del>finite state machines</del> computers with finite memory, precision and processing power, we need to do a numerical derivative with a reasonably small difference. The lecture slides recommended <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mi>w</mi></mfrac><annotation encoding="application/x-tex">\frac{1}{w}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mi>h</mi></mfrac><annotation encoding="application/x-tex">\frac{1}{h}</annotation></semantics></math> as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">du</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">dv</annotation></semantics></math>, respectively, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math> is the width of the image and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> is the height of it. The <code>get_derivative</code> virtual function is for this. However, for a correct derivative, we need to divide the difference between the samples by <code>du</code> and <code>dv</code>, which, as you can see, is not in the code. However, since <code>du</code> and <code>dv</code> become smaller and smaller as the image resolution increases while the difference between samples cannot be in the range <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mfrac><mn>1</mn><mrow><mn>3</mn><mo>*</mo><mn>255</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0, \frac{1}{3*255})</annotation></semantics></math> due to the images having 3 8-bit channels, resolution increase results in bigger <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>d</mi><mi>h</mi></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac><annotation encoding="application/x-tex">\frac{dh}{du}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>d</mi><mi>h</mi></mrow><mrow><mi>d</mi><mi>v</mi></mrow></mfrac><annotation encoding="application/x-tex">\frac{dh}{dv}</annotation></semantics></math>. This resulted in pretty interesting images like this:</p>
 <figure>
 <img src="./assets/bump_mapping_transformed_derivative_division.png" alt="Bump Mapping Transformed with Derivative Division" />
 <figcaption aria-hidden="true">Bump Mapping Transformed with Derivative Division</figcaption>
@@ -346,7 +320,7 @@
 <img src="./assets/galactica_static_inverse_normals.png" alt="Galactica Static but Half" />
 <figcaption aria-hidden="true">Galactica Static but Half</figcaption>
 </figure>
-<p>The right side of the spaceship is black! After the last debugging session, I found out that the normals on the right side of the spaceship are the inverse of the correct normals after bump mapping! Well, the bump mapping does not affect the new normal that much in this image, so I tested the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="bold">𝐁</mtext><mo>×</mo><mtext mathvariant="bold">𝐓</mtext></mrow><annotation encoding="application/x-tex">\textbf{B} \times \textbf{T}</annotation></semantics></math> in my calculator and found out that <em>they</em> were the culprit. I fixed this by multiplying the tangent by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math> in the tangent and bitangent pre-calculation part if <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="bold">𝐁</mtext><mo>×</mo><mtext mathvariant="bold">𝐓</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mtext mathvariant="bold">𝐧</mtext></mrow><annotation encoding="application/x-tex">\left(\textbf{B} \times \textbf{T}\right) \cdot \textbf{n}</annotation></semantics></math> is negative (which means that the calculated normal and real normal are in opposite directions). When I fixed this, the image became pretty much the same as the reference one:</p>
+<p>The right side of the spaceship is black! After the last debugging session, I found out that the normals on the right side of the spaceship are the inverse of the correct normals after bump mapping! Well, the bump mapping does not affect the new normal that much in this image, so I tested the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="bold">𝐁</mtext><mo>×</mo><mtext mathvariant="bold">𝐓</mtext></mrow><annotation encoding="application/x-tex">\textbf{B} \times \textbf{T}</annotation></semantics></math> in my calculator and found out that <em>they</em> were the culprit. I fixed this by multiplying the tangent by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math> in the tangent and bitangent pre-calculation part if <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="bold">𝐁</mtext><mo>×</mo><mtext mathvariant="bold">𝐓</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mtext mathvariant="bold">𝐧</mtext></mrow><annotation encoding="application/x-tex">\left(\textbf{B} \times \textbf{T}\right) \cdot \textbf{n}</annotation></semantics></math> is negative (which means that the calculated normal and real normal are in opposite directions). When I fixed this, the image became pretty much the same as the reference one:</p>
 <figure>
 <img src="./assets/galactica_static_correct.png" alt="Mostly Correct Galactica Static" />
 <figcaption aria-hidden="true">Mostly Correct Galactica Static</figcaption>
@@ -458,7 +432,7 @@
 <col style="width: 19%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time (GCC)</th>
 <th>Init Time (MSVC)</th>
@@ -467,49 +441,49 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>simple.xml</td>
 <td>0.000738117</td>
 <td>0.000329238</td>
 <td>0.165579</td>
 <td>0.296524</td>
 </tr>
-<tr>
+<tr class="even">
 <td>two_spheres.xml</td>
 <td>0.000684635</td>
 <td>0.000298101</td>
 <td>0.14317</td>
 <td>0.198186</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>instance/ellipsoids.xml</td>
 <td>0.00118608</td>
 <td>0.000405583</td>
 <td>0.629211</td>
 <td>0.929079</td>
 </tr>
-<tr>
+<tr class="even">
 <td>instance/spheres.xml</td>
 <td>0.000853679</td>
 <td>0.000357677</td>
 <td>0.443273</td>
 <td>0.676024</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/sphere_perlin.xml</td>
 <td>0.000778413</td>
 <td>0.000330491</td>
 <td>0.799263</td>
 <td>0.695065</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/wood_box.xml</td>
 <td>0.0137741</td>
 <td>0.0152521</td>
 <td>0.662815</td>
 <td>1.24051</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/cube_cushion.xml</td>
 <td>0.0109649</td>
 <td>0.00916525</td>
@@ -536,7 +510,7 @@
 <col style="width: 18%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time (GCC)</th>
 <th>Init Time (MSVC)</th>
@@ -545,91 +519,91 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>bunny.xml</td>
 <td>0.0259272</td>
 <td>0.0137872</td>
 <td>0.0252325</td>
 <td>0.0422266</td>
 </tr>
-<tr>
+<tr class="even">
 <td>cornellbox_recursive.xml</td>
 <td>0.000824259</td>
 <td>0.000408424</td>
 <td>0.161469</td>
 <td>0.338575</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>other_dragon.xml</td>
 <td>1.90039</td>
 <td>3.12535</td>
 <td>0.325022</td>
 <td>0.492461</td>
 </tr>
-<tr>
+<tr class="even">
 <td>scienceTree_glass.xml</td>
 <td>0.0120762</td>
 <td>0.00569955</td>
 <td>0.428713</td>
 <td>0.804977</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>simple.xml</td>
 <td>0.00057505</td>
 <td>0.000328117</td>
 <td>0.0189683</td>
 <td>0.035272</td>
 </tr>
-<tr>
+<tr class="even">
 <td>two_spheres.xml</td>
 <td>0.000516159</td>
 <td>0.000309414</td>
 <td>0.0140184</td>
 <td>0.023998</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>instance/ellipsoids.xml</td>
 <td>0.000937798</td>
 <td>0.000409021</td>
 <td>0.0525233</td>
 <td>0.111615</td>
 </tr>
-<tr>
+<tr class="even">
 <td>instance/metal_glass_plates.xml</td>
 <td>0.000948858</td>
 <td>0.000450717</td>
 <td>0.546101</td>
 <td>1.08937</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>instance/spheres.xml</td>
 <td>0.000665289</td>
 <td>0.000358539</td>
 <td>0.0419996</td>
 <td>0.0840711</td>
 </tr>
-<tr>
+<tr class="even">
 <td>dist/cornellbox_area.xml</td>
 <td>0.00105392</td>
 <td>0.000420615</td>
 <td>6.8415</td>
 <td>14.0883</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>dist/focusing_dragons.xml</td>
 <td>0.750828</td>
 <td>1.12671</td>
 <td>42.3022</td>
 <td>79.6751</td>
 </tr>
-<tr>
+<tr class="even">
 <td>dist/metal_glass_plates.xml</td>
 <td>0.0013245</td>
 <td>0.000455512</td>
 <td>16.7168</td>
 <td>29.4731</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>dist/spheres_dof.xml</td>
 <td>0.000672332</td>
 <td>0.000361171</td>
@@ -666,7 +640,7 @@
 <col style="width: 17%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Init Time (GCC)</th>
 <th>Init Time (MSVC)</th>
@@ -675,273 +649,273 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>bunny.xml</td>
 <td>0.0263316</td>
 <td>0.0136175</td>
 <td>0.0287202</td>
 <td>0.0468452</td>
 </tr>
-<tr>
+<tr class="even">
 <td>cornellbox_recursive.xml</td>
 <td>0.00104192</td>
 <td>0.000428546</td>
 <td>0.238443</td>
 <td>0.371436</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>other_dragon.xml</td>
 <td>2.00303</td>
 <td>3.22427</td>
 <td>0.361571</td>
 <td>0.525055</td>
 </tr>
-<tr>
+<tr class="even">
 <td>scienceTree_glass.xml</td>
 <td>0.0132723</td>
 <td>0.0058431</td>
 <td>0.478199</td>
 <td>0.870111</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>simple.xml</td>
 <td>0.000747665</td>
 <td>0.000364378</td>
 <td>0.0220329</td>
 <td>0.0400985</td>
 </tr>
-<tr>
+<tr class="even">
 <td>two_spheres.xml</td>
 <td>0.000703956</td>
 <td>0.00033162</td>
 <td>0.0223661</td>
 <td>0.0281506</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>instance/ellipsoids.xml</td>
 <td>0.00115964</td>
 <td>0.000440787</td>
 <td>0.0824988</td>
 <td>0.122891</td>
 </tr>
-<tr>
+<tr class="even">
 <td>instance/ellipsoids.xml</td>
 <td>0.000908217</td>
 <td>0.000434246</td>
 <td>0.081917</td>
 <td>0.122259</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>instance/metal_glass_plates.xml</td>
 <td>0.00118432</td>
 <td>0.000474137</td>
 <td>0.677238</td>
 <td>1.15823</td>
 </tr>
-<tr>
+<tr class="even">
 <td>instance/spheres.xml</td>
 <td>0.000847961</td>
 <td>0.000384326</td>
 <td>0.0594592</td>
 <td>0.094961</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>dist/cornellbox_area.xml</td>
 <td>0.00102876</td>
 <td>0.000429739</td>
 <td>9.2073</td>
 <td>15.0258</td>
 </tr>
-<tr>
+<tr class="even">
 <td>dist/focusing_dragons.xml</td>
 <td>0.798259</td>
 <td>1.17336</td>
 <td>33.8644</td>
 <td>58.6734</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>dist/metal_glass_plates.xml</td>
 <td>0.00130076</td>
 <td>0.000488106</td>
 <td>19.3926</td>
 <td>31.6583</td>
 </tr>
-<tr>
+<tr class="even">
 <td>dist/spheres_dof.xml</td>
 <td>0.000941244</td>
 <td>0.00038669</td>
 <td>5.78713</td>
 <td>8.19425</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/bump_mapping_transformed.xml</td>
 <td>0.0748437</td>
 <td>0.0851226</td>
 <td>0.131904</td>
 <td>0.148202</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/brickwall_with_normalmap.xml</td>
 <td>0.0211646</td>
 <td>0.0224583</td>
 <td>0.0862123</td>
 <td>0.165274</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/cube_cushion.xml</td>
 <td>0.0112663</td>
 <td>0.00927417</td>
 <td>0.0838197</td>
 <td>0.16078</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/cube_perlin.xml</td>
 <td>0.00131063</td>
 <td>0.000526643</td>
 <td>0.124521</td>
 <td>0.272554</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/cube_perlin_bump.xml</td>
 <td>0.00133815</td>
 <td>0.000540437</td>
 <td>0.137821</td>
 <td>0.294797</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/cube_wall.xml</td>
 <td>0.00995929</td>
 <td>0.0110708</td>
 <td>0.0790112</td>
 <td>0.156742</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/cube_wall_normal.xml</td>
 <td>0.0178733</td>
 <td>0.0207233</td>
 <td>0.0866704</td>
 <td>0.163564</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/cube_waves.xml</td>
 <td>0.00784749</td>
 <td>0.00841713</td>
 <td>0.0843926</td>
 <td>0.162292</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/ellipsoids_texture.xml</td>
 <td>0.0179725</td>
 <td>0.0208412</td>
 <td>0.0793805</td>
 <td>0.118619</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/galactica_dynamic.xml</td>
 <td>0.0648881</td>
 <td>0.0352906</td>
 <td>36.8541</td>
 <td>70.4954</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/galactica_static.xml</td>
 <td>0.0650413</td>
 <td>0.0355861</td>
 <td>0.376033</td>
 <td>0.738424</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/killeroo_bump_walls.xml</td>
 <td>0.488267</td>
 <td>0.2826</td>
 <td>0.270957</td>
 <td>0.466517</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/plane_bilinear.xml</td>
 <td>0.0183216</td>
 <td>0.0203739</td>
 <td>0.0278078</td>
 <td>0.0332584</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/sphere_nearest_bilinear.xml</td>
 <td>0.0191072</td>
 <td>0.0204062</td>
 <td>0.0894229</td>
 <td>0.0906545</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/sphere_nobump_bump.xml</td>
 <td>0.00758596</td>
 <td>0.00873892</td>
 <td>0.0956179</td>
 <td>0.101027</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/sphere_nobump_justbump.xml</td>
 <td>0.00756381</td>
 <td>0.00877101</td>
 <td>0.0929962</td>
 <td>0.0978418</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/sphere_perlin.xml</td>
 <td>0.000815369</td>
 <td>0.000360108</td>
 <td>0.14301</td>
 <td>0.144179</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/sphere_perlin_bump.xml</td>
 <td>0.000838961</td>
 <td>0.000359113</td>
 <td>0.160708</td>
 <td>0.165377</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/sphere_perlin_scale.xml</td>
 <td>0.000605388</td>
 <td>0.000352115</td>
 <td>0.143759</td>
 <td>0.145046</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/wood_box.xml</td>
 <td>0.0141614</td>
 <td>0.0155433</td>
 <td>0.0816696</td>
 <td>0.158564</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/wood_box_all.xml</td>
 <td>0.0130072</td>
 <td>0.0156655</td>
 <td>0.0971621</td>
 <td>0.175384</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/wood_box_no_specular.xml</td>
 <td>0.00962229</td>
 <td>0.0103033</td>
 <td>0.0813137</td>
 <td>0.156096</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/veach_ajar/scene.xml</td>
 <td>0.438321</td>
 <td>0.385892</td>
 <td>54.9581</td>
 <td>106.965</td>
 </tr>
-<tr>
+<tr class="even">
 <td>texture/dragon/dragon_new_ply.xml</td>
 <td>0.39476</td>
 <td>0.601212</td>
 <td>2.449</td>
 <td>4.68368</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>texture/mytap/mytap_final.xml</td>
 <td>0.0444798</td>
 <td>0.0562646</td>
@@ -969,41 +943,30 @@
 </figure>
 <h1 id="conclusion">Conclusion</h1>
 <p>As we get closer to the end of the semester, our outputs have been becoming better with each homework. Texture support is pretty much a must for any serious rendering engine, and the results show breathtaking images with the addition of this ancient technique. Unfortunately, this time, I have not learnt a life lesson from the homework, but I think learning 3 of such lessons from this series of homeworks has been a miracle in itself. Those homeworks still addict the student tho. I find myself to work on this instead of the term project, while my grades for the term project have been abysmal compared to the 795 homeworks. It is also sad that I have not been able to implement trilinear mapping properly.</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1"><p>Oh, I have been waiting to do this reference since the end of that week! This is a reference to <a href="https://anilist.co/manga/100080/Oniichan-wa-Oshimai"><ruby>お<rp>(</rp><rt>O</rt><rp>)</rp></ruby><ruby>兄<rp>(</rp><rt>nii</rt><rp>)</rp></ruby><ruby>ち<rp>(</rp><rt>ch</rt><rp>)</rp></ruby><ruby>ゃ<rp>(</rp><rt>a</rt><rp>)</rp></ruby></ruby><ruby>ん<rp>(</rp><rt>n</rt><rp>)</rp></ruby> <ruby>は<rp>(</rp><rt>wa</rt><rp>)</rp></ruby> <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>!</a> (read as written above the characters), a manga/anime whose name is usually translated as “Older Brother is Done For!” (the “<ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>” part is translated as “to be done for” but it actually has some sort of a hidden meaning due to how it is written, <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>し<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>ま<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby> instead of <ruby>お<rp>(</rp><rt>o</rt><rp>)</rp></ruby><ruby>仕<rp>(</rp><rt>shi</rt><rp>)</rp></ruby><ruby>舞<rp>(</rp><rt>ma</rt><rp>)</rp></ruby><ruby>い<rp>(</rp><rt>i</rt><rp>)</rp></ruby>) and which is one of my favorites. The phrase “X is done for” is also used throughout different parts of the manga translation. The phrase itself is of course used generally in English, but the translation of the manga uses it so extensively that the phrase has somewhat become an inside joke of the fans.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-		</article>
+</aside>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2024-12-14 23:34:28+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>

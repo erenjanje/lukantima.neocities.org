@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html  lang="tr" >
+
+<head>
+	<meta charset="UTF-8" />
+		<meta name="author" content="Erencan Ceyhan" />
+			<meta name="keywords" content="C, Programlama, Teknoloji, Gönderi" />
+		<title>C Bok Çukuru: <code>malloc</code>suz Dinamik Hafıza</title>
+	<link href="/style/index.css" rel="stylesheet" />
+</head>
+
+<body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
+
+	<article>
+		<header>
+		<h1 id="page-title">C Bok Çukuru: <code>malloc</code>suz Dinamik Hafıza</h1>
+		</header>
+
+				<ul>
+<li><a href="#temel-bilgiler" id="toc-temel-bilgiler">Temel Bilgiler</a>
+<ul>
+<li><a href="#dinamik-dosya-okuma" id="toc-dinamik-dosya-okuma">Dinamik Dosya Okuma</a></li>
+<li><a href="#özyineleme" id="toc-özyineleme">Özyineleme</a></li>
+<li><a href="#bağlı-listeler-linked-list" id="toc-bağlı-listeler-linked-list">Bağlı Listeler (<em>Linked List</em>)</a></li>
+<li><a href="#açılmış-bağlı-listeler-unrolled-linked-list" id="toc-açılmış-bağlı-listeler-unrolled-linked-list">Açılmış Bağlı Listeler (<em>Unrolled Linked List</em>)</a></li>
+<li><a href="#devam-yollama-tarzı-continuation-passing-style" id="toc-devam-yollama-tarzı-continuation-passing-style">Devam Yollama Tarzı (<em>Continuation Passing Style</em>)</a></li>
+</ul></li>
+<li><a href="#yöntem" id="toc-yöntem">Yöntem</a></li>
+<li><a href="#sonuç" id="toc-sonuç">Sonuç</a></li>
+</ul>
+		<hr/>
+		
+		<p>Herkese selamlar! Ayda bir gönderi yazmaya çalışıyorum ama bazen yoğunluktan veya üşengeçlikten veyahut konu bulamamaktan kaynaklı olarak yazamayabiliyorum. Normalde ekimin sonuna yetiştirmeyi düşünüyordum ama ne yazık ki yetiştiremedim, dolayısıyla kasımın ilk gönderisi olmuş olacak bu arkadaş. Bu gönderideki konuyu ancak üç beş gün önce keşfettim ama bence hakkında gönderi yazmak için biçilmiş kaftan. İlk icat eden kişi ben değilim, HackerNews’te bunu yapan birilerini daha gördüm fakat çok yaygın bir teknik değil gibi gözüküyor. O zaman kollarımızı sıvayalım ve yeni bir ucubenin nasıl sunulduğunu izleyelim.</p>
+<h1 id="temel-bilgiler">Temel Bilgiler</h1>
+<p>Bir bok çukuru gönderisine dalmadan önce boku tanımakta fayda olduğuna inanmışımdır hep. C++ bok çukurlarında hep ufak hatırlatmalarla başladım bu sebeple. C bok çukurunda da aynı geleneği sürdürmemek için bir sebep göremiyorum açık konuşmak gerekirse.</p>
+<p>Bu sefer aslında çok da detaylı veya ileri düzey bilgiye ihtiyacımız yok. C++ şablonları, özellikle de gönderilerde bahsettiğim biçimiyle, oldukça karmaşık konular fakat C doğası gereği o kadar da karmaşık olmayan bir dil. Nitekim bahsdeceğim kavram da çok temel kavramların etkileşimi ile oluşuyor.</p>
+<h2 id="dinamik-dosya-okuma">Dinamik Dosya Okuma</h2>
+<p>Öncelikle bunun ne <em>olmadığını</em> söylesem iyi olabilir. <code>malloc</code>suz dinamik hafıza dendiğinde bazılarımızın aklına C99 ile hayatımıza giren ve C11 ile opsiyonel hâle gelen değişken boyutlu diziler (variable length array) gelebilir. Veya benzer bir işleve sahip olan ama bu sefer de platforma bağımlı olan <code>alloca</code> fonksiyonu da gelebilir. Fakat bu gönderide anlatacağım yöntem ikisinden de bağımsız. %100 saf C89’da, hatta hiçbir standart kütüphane fonksiyonuna ihtiyaç duymadan uygulanabilecek bir yöntem. En büyük güçlerinden biri de bu belki de. Ufak farklılıkları olacak ama elbette. Genel olarak kodlarda hata ile ilgilenme kısımlarını yazmıyorum, amacım işlevsel bir koddan ziyade yöntemi göstermek.</p>
+<p>Bir dosyayı hafızaya okumayı şu şekilde yapmamız mümkün C99 varsa elimizde:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> read_file<span class="op">(</span><span class="dt">char</span> <span class="dt">const</span><span class="op">*</span> filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">FILE</span><span class="op">*</span> file<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">long</span> file_size<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    file <span class="op">=</span> fopen<span class="op">(</span>filename<span class="op">,</span> <span class="st">&quot;rb&quot;</span><span class="op">);</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    fseek<span class="op">(</span>file<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> SEEK_END<span class="op">);</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    file_size <span class="op">=</span> ftell<span class="op">(</span>file<span class="op">);</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    fseek<span class="op">(</span>file<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> SEEK_SET<span class="op">);</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> buffer<span class="op">[</span>file_size <span class="op">+</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    fread<span class="op">(&amp;</span>buffer<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">char</span><span class="op">),</span> file_size<span class="op">,</span> file<span class="op">);</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Bu fonksiyonun sonunda dosyanın içeriği <code>buffer</code> değişkeninde bulunuyor olacak. Hem de boyutunu <code>sizeof</code> ile alabiliyoruz! Bu fonksiyonun temel sorunu, akışın ileri geri gidilebildiğini var sayması diyebiliriz. Normal dosyalarda bu geçerli olsa da en basit akışlarda (<em>stream</em>) bu geçerli değil, mesela <code>stdin</code>. Kullanıcıdan interaktif girdi okuyamaz bu hâliyle yani. Böyle bir sorunun temelde en basit çözümü <code>malloc</code> kullanmaktır. <code>realloc</code> ile her bir boyut aşımında <code>buffer</code>’ın boyutunu arttırabiliriz, hatta geometrik bir dizi şeklinde arttırırsak yer ayırma (<em>allocation</em>) sayımız okuduğumuz boyuta göre logaritmik olacağından dolayı oldukça da verimli diyebiliriz.</p>
+<h2 id="özyineleme">Özyineleme</h2>
+<p>Özyineleme, bilgisayar veya yazılım ile ilgili herhangi bir bölüm okumuşlarımız için genelde okulun ilk senesinde öğrendiğimiz bir yöntem. Müfredata bağlı olarak algoritma ve veri yapıları derslerinin dışında neredeyse hiç kullanmayız ama kolay kolay. Belki algoritmik derslerde işimize yarar, o da öyle derslerimiz varsa. Yazılımı daha karadüzen öğrenenlerimiz ise öğrenmemiş olabilir.</p>
+<p>Özyineleme ile ilgili en meşhur espri, tanımının kendisinin de özyineleme olmasıdır herhalde. Özyinelemeyi özyineleme kelimesiyle tanımlarız yani. Daha ciddi bir tanımı, kendi üzerinden tanımlanan işlemler olsa gerek. Genellikle özyinelemeli bir algoritmadaki amaç problemi daha küçük bir parçaya bölüp, küçük parçanın aynı algoritma ile çözüldüğünü varsayıp onun üzerine çözümü tamamlamaktır. Buna <em>böl ve fethet</em> (<em>divide and conquer</em>) yaklaşımı denir. En basit örneği Fibonacci sayılarıdır muhtemelen:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> fib<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>n <span class="op">==</span> <span class="dv">1</span> <span class="op">||</span> n <span class="op">==</span> <span class="dv">2</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fib<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> fib<span class="op">(</span>n <span class="op">-</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Baştaki <code>if</code>’e <em>taban durum</em> (<em>base case</em>) deniyor. Daha küçük iki sayının Fibonacci sayılarının hesaplandığını varsayıp bu ikisi üzerinden bir sonraki Fibonacci sayısını hesaplamış oluyoruz yani. Bu oldukça basit bir örnek ama bize gerekli her türlü konsepti tanıtıyor aslında.</p>
+<h2 id="bağlı-listeler-linked-list">Bağlı Listeler (<em>Linked List</em>)</h2>
+<p>Bu da yine bilgisayar veya yazılım müfredatının ilk senesinin konularından birisi. Temel mantık, bir veri parçasının yanına bir sonraki veri parçasının yerini söyleyen bir veri daha koymak aslında.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Node <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> Node<span class="op">*</span> next<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> data<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Bu düğüm (<em>node</em>) <code>int</code> türünden bir veri içeriyor, sonraki verinin adresini de <code>next</code> olarak tutuyor. En basit bağlı liste tanımı bu olsa gerek. Özyineleme ile çok güzel bir ikili oluyorlar aslında, çünkü bir düğüm üzerinde işlem yaptıktan sonra işin kalanını aynı işi, farklı parametrelerle belki, tekrar ederek bitirebiliyoruz genelde. Mesela <code>data</code>’ların her birini belli bir sayı ile çarpmak için şöyle bir işlev yazabiliriz:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> multiply<span class="op">(</span><span class="kw">struct</span> Node<span class="op">*</span> current<span class="op">,</span> <span class="dt">int</span> number<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>current<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        current<span class="op">-&gt;</span>data <span class="op">*=</span> number<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        multiply<span class="op">(</span>current<span class="op">-&gt;</span>next<span class="op">,</span> number<span class="op">);</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Bu sebeple fonksiyonel programlama dillerinin birçoğundaki en temel veri yapılarından birisi bağlı listeler olsa gerek. Bu tarz özyineleme ağırlıklı kod yazmak için birebir oluyorlar yani.</p>
+<h2 id="açılmış-bağlı-listeler-unrolled-linked-list">Açılmış Bağlı Listeler (<em>Unrolled Linked List</em>)</h2>
+<p>İşte bu görece ileri denebilecek bir konu. Bağlı listede veriyi tutmak yerine, bağlı listede <em>birden fazla</em> veri tuttuğumuzda buna açılmış bağlı liste diyoruz. Şuna benziyor bir bakıma yani:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> UnrolledNode <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> UnrolledNode<span class="op">*</span> next<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> data<span class="op">[</span><span class="dv">32</span><span class="op">];</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Burada otuz ikişer <code>int</code> tutuyoruz her bir düğümde. Bunun en büyük avantajı önbellek verimliliğini ciddi arttırması olsa gerek. Normal bir bağlı listede her adımda bir işaretçi (<em>pointer</em>) takip ederiz, sonuç olarak da belleğimizin orasına burasına gider dururuz, bu da modern önbellek sistemleri için fazlasıyla kötü. Açılmış bağlı listelerde ise verinin sayısını arttırabilir, böylece bir seferde bir önbellek bölgesin dolduracak kadar veriyi işleyebiliriz. İşlemlerimizin karmaşıklığını arttırıyor elbette, ama bence oldukça güzel ve şık bir optimizasyon.</p>
+<h2 id="devam-yollama-tarzı-continuation-passing-style">Devam Yollama Tarzı (<em>Continuation Passing Style</em>)</h2>
+<p>Bu konsept aslında C’de pek az kullanılan bir yöntem, ama C’de ne kadar enderse Lisp’te de o kadar yaygın kullanılan bir yöntem aynı zamanda. Buradaki temel olay aslında saf (<em>pure</em>) işlemlere bir “sıra” eklemek oluyor. Normalde fonksiyonel programlamada tam olarak “şunu yap, sonra şunu yap, ondan sonra da bunu yap” diye belirtmek mümkün değil. Günün sonunda ana giriş fonksiyonumuz tek bir değer döndürecek. Fakat bir sonucu başkasına doğrudan bağlamak mümkün devam yollama tarzı ile. Yapacağımız şey basit: bir işlem gerekli parametrelerinin yanında <em>ne ile devam etmesi gerektiğini</em> de alacak ve işleminin sonucunu argüman olarak bu devam fonksiyonuna verecek. Lisp’e çok hâkim olmadığım için C ile göstereceğim:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> print_integer<span class="op">(</span><span class="dt">int</span> value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> multiply_cps<span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">,</span> <span class="dt">void</span><span class="op">(*</span>cont<span class="op">)(</span><span class="dt">int</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> result <span class="op">=</span> x <span class="op">*</span> y<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    cont<span class="op">(</span>result<span class="op">);</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    multiply_cps<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="op">&amp;</span>print_integer<span class="op">);</span> <span class="co">// prints 15</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Tabii ki bu tek aşamalı bir uygulama. İki aşama olursa aradaki aşamaya devamını nasıl belirteceğimizin derdi oluşuyor. Değişken sayıda argüman alan fonksiyonlar (<em>variadic function</em>) ve biraz ekstra kod ile bu sorunu çözebiliyoruz aslında.</p>
+<h1 id="yöntem">Yöntem</h1>
+<p>Bu kadar boş yaptıktan sonra yönteme gelelim. Ya şimdiye kadar tahmin etmişsinizdir ya da görünce “Bunun için mi zamanımı bu kadar harcadın!” diye bana kızacaksınız.</p>
+<p>Temel mantık, bu açılmış bağlı listeyi <em>doldurma</em> işini de özyinelemeli bir şekilde yapmak. Normalde bir fonksiyon listeyi doldurur, listeyi döner ve en başta bunu çağıran fonksiyon işine devam eder. Fakat bunu yapmak için hafızayı ayırabileceğimiz bir yere ihtiyacımız var. İlk seçeneğimiz <code>malloc</code> kullanmak olur elbette, <code>free</code> kullanmayı da bizi çağıran fonksiyonun sorumluluğu olarak belirlemiş oluruz. Bunu otomatikleştirmenin en temel yolu akıllı işaretçi (<em>smart pointer</em>) kullanmak olur, veya bunun genellenmiş hâli olan RAII. C++ ve Rust’ta yazılan çoğu program bu yöntemi kullanıyor nitekim. O <code>std::vector</code>/<code>Vec</code> havadan gelmiyor sonuçta. Çöp toplayıcı (<em>garbage collector</em>) sahibi dillerde bu sorumluluk çağıran fonksiyona değil çöp toplayıcının kendisine verilir, en azından izlemeli çöp toplayıcı (<em>tracing garbage collector</em>) dillerde. Atıf sayaçlı (<em>reference counting</em>) çöp toplama sistemleri akıllı işaretçilerden pek farklı değil mantık olarak. İzlemeli olanlar biraz daha değişik. Bir diğer yöntem ise belli bir arenaya toplamak oluyor. Bu durumda sorumluluk çağıran fonksiyon veya çöp toplayıcı değil, içinde yer ayrımış olduğumuz arenada oluyor. Bu arena ileride bir noktada silmekle yükümlü, veya hafıza kaçağında (<em>memory leak</em>) sakınca yoksa silmeyebilir de tabii.</p>
+<p>İşte bu noktada işleri biraz tersdüz etmek aklıma geldi açıkçası. Bu mantıkta kodun çalışması düzden gerçekleşirken hafıza işleri tersten çalışıyor bir bakıma. Tabii ki nedenselliği bozmuyoruz, ama sorumluluk olarak bu şekilde olmuş oluyor. Çağıran fonksiyon veriyi üreten fonksiyonu da veriyi tüketen fonksiyonu da çağırıyor, bu noktada sorumluluk gayet düz. Ancak üreten fonksiyon veriyi ürettikten sonra sorumluluğunu kendisini çağıran fonksiyona veriyor, yani verinin sorumluluğunu çeviriyoruz. İşte tam bu noktada dedim ki, tersini yaparsak ne olur? Yani işlev çağırma sorumluluğunu devam yollama tarzı ile tersine çevirsek ve üretilen verinin sorumluluğunu üreten fonksiyondan çıkarmasak ne olur?</p>
+<p>Bu şekilde anlatınca havada kalmıştır muhtemelen, o nedenle hadi gelin bir akıştaki verileri dinamik olarak bir açılmış bağlı listeye okuyup bunun üzerinden işlem yapan bir fonksiyon yazalım.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> BufferNode <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> BufferNode<span class="op">*</span> next<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> data<span class="op">[</span>BUFSIZ <span class="op">-</span> <span class="kw">sizeof</span><span class="op">(</span><span class="kw">struct</span> BufferNode<span class="op">*)];</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Bu basit bir açılmış bağlı liste düğüm tanımı. Sadece toplam boyutu <code>BUFSIZ</code> değerini (C standardına göre stdio başlık dosyasında tanımlanan ve stdio fonksiyonlarının kullandığı buffer boyutunu belirten sabite) bulacak şekilde kendini boyutlandırıyor. Burada herhangi başka bir boyut da verilebilir, o kısım çok önemli değil açıkçası.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> read_stream_to_node<span class="op">(</span><span class="dt">FILE</span><span class="op">*</span> stream<span class="op">,</span> <span class="kw">struct</span> BufferNode<span class="op">*</span> node<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> read_count<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    read_count <span class="op">=</span> fread<span class="op">(&amp;</span>node<span class="op">-&gt;</span>data<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">char</span><span class="op">),</span> <span class="kw">sizeof</span><span class="op">(</span>node<span class="op">-&gt;</span>data<span class="op">),</span> stream<span class="op">);</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>read_count <span class="op">&lt;</span> <span class="kw">sizeof</span><span class="op">(</span>node<span class="op">-&gt;</span>data<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        assert<span class="op">(!</span>ferror<span class="op">(</span>stream<span class="op">));</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Bu da bizim temel yardımcı fonksiyonumuz. Bir düğüme veriyi okuyor, eğer okuma bitmişse 0 bitmemişse 1 dönüyor.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> read_stream_helper<span class="op">(</span><span class="dt">FILE</span><span class="op">*</span> stream<span class="op">,</span> <span class="kw">struct</span> BufferNode<span class="op">*</span> root<span class="op">,</span> <span class="kw">struct</span> BufferNode<span class="op">*</span> prev<span class="op">,</span> <span class="dt">void</span> <span class="op">(*</span>cont<span class="op">)(</span><span class="kw">struct</span> BufferNode<span class="op">*</span> root<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> BufferNode buffer<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    buffer<span class="op">.</span>next <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    prev<span class="op">-&gt;</span>next <span class="op">=</span> <span class="op">&amp;</span>buffer<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>read_stream_to_node<span class="op">(</span>stream<span class="op">,</span> <span class="op">&amp;</span>buffer<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        read_stream_helper<span class="op">(</span>stream<span class="op">,</span> root<span class="op">,</span> <span class="op">&amp;</span>buffer<span class="op">,</span> cont<span class="op">);</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        cont<span class="op">(</span>root<span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> read_stream<span class="op">(</span><span class="dt">FILE</span><span class="op">*</span> stream<span class="op">,</span> <span class="dt">void</span> <span class="op">(*</span>cont<span class="op">)(</span><span class="kw">struct</span> BufferNode<span class="op">*</span> root<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> BufferNode buffer<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    buffer<span class="op">.</span>next <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>read_stream_to_node<span class="op">(</span>stream<span class="op">,</span> <span class="op">&amp;</span>buffer<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        read_stream_helper<span class="op">(</span>stream<span class="op">,</span> <span class="op">&amp;</span>buffer<span class="op">,</span> <span class="op">&amp;</span>buffer<span class="op">,</span> cont<span class="op">);</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        cont<span class="op">(&amp;</span>buffer<span class="op">);</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Ha? Neredeyse aynı fonksiyondan iki tane olması hoş değil elbette, belki <code>root</code> ve <code>prev</code> parametreleri sona taşınıp <code>NULL</code> verilirse <code>read_stream</code> gibi çalışması sağlanabilir <code>read_stream_helper</code>’ın. Ama mantık basit: buffera veriyi okuduktan sonra eğer veri okuma bitmişse devam fonksiyonunu çağırmak. Gelin <code>tee</code>’nin tek girdiden tek çıktıya aktaran basit versiyonunu yazalım, yani verilen girdiyi değiştirmeden çıktı olarak yazdırsın:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> print<span class="op">(</span><span class="kw">struct</span> BufferNode<span class="op">*</span> root<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> BufferNode<span class="op">*</span> current<span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    current <span class="op">=</span> root<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span><span class="op">(</span>current<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">size_t</span> i<span class="op">;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span><span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="kw">sizeof</span><span class="op">(</span>current<span class="op">-&gt;</span>data<span class="op">);</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>            printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c</span><span class="st">&quot;</span><span class="op">,</span> current<span class="op">-&gt;</span>data<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> current<span class="op">-&gt;</span>next<span class="op">;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    read_stream<span class="op">(</span>stdin<span class="op">,</span> <span class="op">&amp;</span>print<span class="op">);</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_SUCCESS<span class="op">;</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Devam fonksiyonuna argüman vermek dediğim gibi görece zor C’de, dolayısıyla çıktı akışını <code>stdout</code> olarak vermek yerine direkt <code>printf</code> kullandım ama mantık bu şekilde. Bu sayede yığın (<em>heap</em>) kullanmadan tamamen yığıt (<em>stack</em>, neden bu ikisinin çevirileri bu kadar benzer kelimeler?) üzerinden yerimizi ayırabilir ve işlemimizi gerçekleştirebiliriz.</p>
+<h1 id="sonuç">Sonuç</h1>
+<p>Sonuç olarak bu yöntem ile <code>malloc</code> kullanmadan dinamik hafıza ile işlem yapmak mümkün hâle geliyor. Fakat elbette birtakım sorunları yok değil. Çağrı yığıtı (<em>call stack</em>) yığının aksine çok daha kısıtlı boyuta sahip, dolayısıyla bu şekilde çok fazla veri oluşturursak yığıt taşımı (<em>stack overflow</em>) yaşamamı mümkün. Ayrıca nasıl ki normal yöntemlerde, veri yeri ayırmanın sorumluluğunun çağıran fonksiyona aktarıldığı, verinin yerini ayırma işi dinamik bir şekilde oluyorsa burada da terslediğimiz diğer etken yani fonksiyonun kendisi dinamik oluyor. Fakat bunun bir çözümü var, devam fonksiyonunu veri oluşturma fonksiyonunun içinde belirtmek. Bunu her durum için elle yazmak C’de çok akıl kârı değil ama C++’ta şablon kullanarak bunu derleyiciye yaptırabiliriz. Tabii ki sonrasındaki her işlem için fonksiyonlarımız değişecek, bu da kod miktarının hızlı bir şekilde çoğalmasına yol açacak ama performans kaybımızı engelleyecek en azından.</p>
+<p>Bir diğer eksiğimiz ise bunun bağlı liste kullanması. Ha, açılmış bağlı liste olduğu için performans o kadar da kötü değil ama bir dizge hâline getirilse daha iyi olabilir. C89’da bu pek mümkün değil ama C99’da gelen değişken boyutlu diziler ile bu da mümkün fakat bu şekilde çalışan kodu yazmayı okuyucuya bırakıyorum. Mantık aynı, sadece oluşturulan veri yapısı bir bağlı liste değil de taştıkça boyutunu arttıran veya katlayan bir dizi olmalı.</p>
+<p>Kısacası eğer yığıtınız sınırlıysa çok işinize yaramaz ama değilse arena sistemini tamamen yığıt üzerinde gerçekleştirebilmenizi sağlar bu yöntem.</p>
+
+				<hr/>
+		<p>Gönderim Zamanı: 2025-11-02 03:33:19+03:00</p>
+		
+				<p>Etiketler: C, Programlama, Teknoloji, Gönderi</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
+			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
+
+	<img src="/consbar.gif"/>
+</body>
+
+</html>

@@ -10,21 +10,20 @@
 </head>
 
 <body>
+	<img src="/consbar.gif"/>
+	<h1 id="site-header">Lukantima</h1>
+	<nav>
+		<a href="/">Ana Sayfa</a>
+		<a href="/about">Hakkımda</a>
+		<a href="/gönderiler">Gönderiler</a>
+		<a href="/etiketler">Etiketler</a>
+	</nav>
 
-	<div id="header">
-		<a id="site-header" href="/">
-			<h1>Erencan'ın Köşesi</h1>
-		</a>
+	<article>
+		<header>
+		<h1 id="page-title">CENG795-HW2: Raytracing with BVH and Transformations</h1>
+		</header>
 
-		<div id="page-header">
-			<h1>CENG795-HW2: Raytracing with BVH and Transformations</h1>
-		</div>
-	</div>
-
-	<div id="content">
-		<div class="metadata">
-						<div id="table-of-contents">
-				<h1>İçindekiler</h1>
 				<ul>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
 <ul>
@@ -36,34 +35,9 @@
 <li><a href="#performance" id="toc-performance">Performance</a></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
-			</div>
-			<hr />
-			
-						<div id="time">
-				<h1>Gönderim Zamanı</h1>
-				<ul>
-					<li>
-						<time><a href="/gönderiler/2024">2024</a>-<a href="/gönderiler/2024/11">11</a>-09 21:57:50+03:00</time>
-					</li>
-				</ul>
-			</div>
-			<hr />
-			
-						<div id="tags">
-				<h1>Etiketler</h1>
-				<ul>
-										<li><a href="/etiketler/C++">C++</a></li>
-										<li><a href="/etiketler/Programlama">Programlama</a></li>
-										<li><a href="/etiketler/Teknoloji">Teknoloji</a></li>
-										<li><a href="/etiketler/Gönderi">Gönderi</a></li>
-										<li><a href="/etiketler/Ödev">Ödev</a></li>
-										<li><a href="/etiketler/Işın İzleme">Işın İzleme</a></li>
-									</ul>
-			</div>
-					</div>
-
-		<article class="card">
-			<p><strong>WARNING</strong>: This blog post discusses not only my submission, but also a few fixes I have done while writing the post. Whenever such a deviation from the submission occurs, it is denoted as <strong>[NYI]</strong>.</p>
+		<hr/>
+		
+		<p><strong>WARNING</strong>: This blog post discusses not only my submission, but also a few fixes I have done while writing the post. Whenever such a deviation from the submission occurs, it is denoted as <strong>[NYI]</strong>.</p>
 <p>Hello everybody. Welcome to my second blog post about the first homework of the course CENG795, Advanced Ray Tracing.</p>
 <p>I have developed a simple raytracer in the previous homework, which worked pretty well. However, it lacked two fundamental features: an acceleration structure and support for transformations. For the homework, we also had to implement instancing, which works pretty well with transformations.</p>
 <p>However, this time, I did not have a total success.</p>
@@ -179,49 +153,49 @@
 <p>Some of the instanced and/or transformed cases:</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Initialization Time</th>
 <th>Rendering Time</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>dragon_metal</td>
 <td>1.66781</td>
 <td>3.34593</td>
 </tr>
-<tr>
+<tr class="even">
 <td>ellipsoids</td>
 <td>0.0009215</td>
 <td>0.127835</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>marching_dragons</td>
 <td>0.642299</td>
 <td>1.49556</td>
 </tr>
-<tr>
+<tr class="even">
 <td>metal_glass_plates</td>
 <td>0.0009182</td>
 <td>1.4536</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>simple_transform</td>
 <td>0.0005905</td>
 <td>0.0972494</td>
 </tr>
-<tr>
+<tr class="even">
 <td>spheres</td>
 <td>0.0006594</td>
 <td>0.115266</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>grass_desert</td>
 <td>0.004157</td>
 <td>9.4637</td>
 </tr>
-<tr>
+<tr class="even">
 <td>two_berserkers</td>
 <td>0.13364</td>
 <td>0.29851</td>
@@ -238,7 +212,7 @@
 <col style="width: 17%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Testcase</th>
 <th>Initialization Time (Complete Tree BVH)</th>
 <th>Initialization Time (Median BVH)</th>
@@ -247,98 +221,98 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>Berserker</td>
 <td>0.019156044</td>
 <td>0.019131013</td>
 <td>0.335249032</td>
 <td>0.321981069</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Bunny</td>
 <td>0.026116776</td>
 <td>0.02602214</td>
 <td>0.076112225</td>
 <td>0.072042758</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Car</td>
 <td>0.036106005</td>
 <td>0.036436071</td>
 <td>0.515020124</td>
 <td>0.473704802</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Car Front</td>
 <td>0.036106005</td>
 <td>0.036436071</td>
 <td>0.51656498</td>
 <td>0.476866441</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Cornellbox</td>
 <td>0.000743204</td>
 <td>0.000748143</td>
 <td>0.145353368</td>
 <td>0.14518485</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Cornellbox Recursive</td>
 <td>0.000798003</td>
 <td>0.000804106</td>
 <td>0.235976484</td>
 <td>0.234756606</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Low Poly</td>
 <td>0.032911273</td>
 <td>0.032460691</td>
 <td>0.83449588</td>
 <td>0.816300713</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Other Dragon</td>
 <td>1.641374146</td>
 <td>1.568181485</td>
 <td>0.914947284</td>
 <td>0.961579617</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Science Tree Glass</td>
 <td>0.012107489</td>
 <td>0.012102265</td>
 <td>0.804868588</td>
 <td>0.821330206</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Spheres</td>
 <td>0.000773866</td>
 <td>0.000767542</td>
 <td>0.134561967</td>
 <td>0.130511143</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Spheres Mirror</td>
 <td>0.00081141</td>
 <td>0.000775633</td>
 <td>0.152832844</td>
 <td>0.148085395</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Tower</td>
 <td>0.023215116</td>
 <td>0.023918437</td>
 <td>0.901310673</td>
 <td>0.988822282</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Two Spheres</td>
 <td>0.000517918</td>
 <td>0.000508618</td>
 <td>0.08861407</td>
 <td>0.089882233</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Windmill</td>
 <td>0.044253173</td>
 <td>0.044485013</td>
@@ -359,35 +333,24 @@
 </figure>
 <h1 id="conclusion">Conclusion</h1>
 <p>The homework was, well, not a success. My half-baked submission is so bad that I have and will not try to render the video examples. However, I have at least some idea to fix these problems, and also an extra week. I also learnt once again that looking down to any kind of work is harmful. Having unrelated problems to the homeworks also does not help. Nevertheless, I am glad that I tried to do this homework, the insights of these homeworks are simply great.</p>
-		</article>
 
-		<div class="metadata">
-			<div id="navigation">
-				<h1>Site</h1>
-				<ul>
-					<li><a href="/about">Hakkımda</a></li>
-					<li><a href="/gönderiler">Gönderiler</a></li>
-					<li><a href="/etiketler">Etiketler</a></li>
-				</ul>
+				<hr/>
+		<p>Gönderim Zamanı: 2024-11-09 21:57:50+03:00</p>
+		
+				<p>Etiketler: C++, Programlama, Teknoloji, Gönderi, Ödev, Işın İzleme</p>
+		
+		<footer>
+			<p class="footer-text">© Erencan Ceyhan, 2025</p>
+			<div class="footer-text" id="links">
+				<a href="https://github.com/erenjanje">GitHub</a>
+				<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
+				<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
 			</div>
+		</footer>
+		<iframe id="guest-book" src="https://lukantima.atabook.org/"></iframe>
+	</article>
 
-			<hr />
-			<div id="guest-book">
-				<h1>Ziyaretçi Defteri</h1>
-				<iframe src="https://lukantima.atabook.org/"></iframe>
-			</div>
-		</div>
-
-	</div>
-
-	<footer>
-		<div id="copyup">© Erencan Ceyhan, 2025</div>
-		<div id="links">
-			<a href="https://github.com/erenjanje">GitHub</a>
-			<a href="https://www.linkedin.com/in/erencan-ceyhan/">LinkedIn</a>
-			<a href="mailto:erencan.ceyhan@hotmail.com">E-Posta</a>
-		</div>
-	</footer>
+	<img src="/consbar.gif"/>
 </body>
 
 </html>
