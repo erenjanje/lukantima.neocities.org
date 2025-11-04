@@ -1,4 +1,5 @@
 @import url('pandoc.css');
+@import url('frutiger-button.css');
 
 @font-face {
     font-family: "Dancing Script";
@@ -83,8 +84,8 @@ nav {
 
 nav > a {
 	align-content: center;
-	width: 88px;
-	height: 31px;
+	width: 120px;
+	height: 36px;
 	text-align: center;
 	justify-content: center;
 	border-radius: 4px;
