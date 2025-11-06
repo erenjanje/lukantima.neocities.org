@@ -1,8 +1,7 @@
 # Ana Sayfa
 
-Kişisel ağ sayfama hoş geldiniz! Sağ taraftaki menüyü kullanarak gezinebilirsiniz.
+Kişisel ağ sayfama hoş geldiniz! Üst taraftaki menüyü kullanarak gezinebilirsiniz.
 
 ---
-author: Erencan Ceyhan
 lang: tr
 ---
