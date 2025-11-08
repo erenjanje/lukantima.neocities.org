@@ -13,4 +13,4 @@ clean:
 
 %.html: %.md $(TEMPLATE)
 	@echo PANDOC $<
-	@pandoc $< --table-of-contents --standalone --toc-depth=4 --mathml --output $@ --template $(TEMPLATE) --shift-heading-level-by=-1 --wrap=preserve
+	@pandoc $< --table-of-contents --standalone --toc-depth=4 --webtex --output $@ --template $(TEMPLATE) --shift-heading-level-by=-1 --wrap=preserve

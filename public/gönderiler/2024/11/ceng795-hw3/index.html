@@ -121,12 +121,12 @@
 <img src="images/cornellbox_area_fever_dream.png" alt="First Try of Cornellbox Area" />
 <figcaption aria-hidden="true">First Try of Cornellbox Area</figcaption>
 </figure>
-<p>Due to the ripple-like circles, I guessed that the problem was in the irradiance calculation, and I was right. I had forgotten to divide by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>r</mi><mn>2</mn></msup><annotation encoding="application/x-tex">r^2</annotation></semantics></math> while calculating the irradiance. After fixing it, the result was much better:</p>
+<p>Due to the ripple-like circles, I guessed that the problem was in the irradiance calculation, and I was right. I had forgotten to divide by <img style="vertical-align:middle" src="https://latex.codecogs.com/png.latex?%5Ctextstyle%20r%5E2" alt="r^2" title="r^2" class="math inline" /> while calculating the irradiance. After fixing it, the result was much better:</p>
 <figure>
 <img src="images/cornellbox_area_more_fever_dream.png" alt="Second Try of Cornellbox Area" />
 <figcaption aria-hidden="true">Second Try of Cornellbox Area</figcaption>
 </figure>
-<p>But this is still bad! Finding the cause of this problem was a bit trickier than the other, but I found out that the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math> in the PDF and my calculation had the opposite signs. Putting a <code>-</code> when calculating the dot product solved the problem.</p>
+<p>But this is still bad! Finding the cause of this problem was a bit trickier than the other, but I found out that the <img style="vertical-align:middle" src="https://latex.codecogs.com/png.latex?%5Ctextstyle%20w_i" alt="w_i" title="w_i" class="math inline" /> in the PDF and my calculation had the opposite signs. Putting a <code>-</code> when calculating the dot product solved the problem.</p>
 <figure>
 <img src="images/cornellbox_area_nomax.png" alt="Third Try of Cornellbox Area" />
 <figcaption aria-hidden="true">Third Try of Cornellbox Area</figcaption>
